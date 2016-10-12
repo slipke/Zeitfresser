@@ -10,11 +10,20 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.hdm_stuttgart.zeitfresser.controller.RecordManager;
+import de.hdm_stuttgart.zeitfresser.controller.TaskManager;
+import de.hdm_stuttgart.zeitfresser.model.Task;
+import de.hdm_stuttgart.zeitfresser.model.TaskList;
+
 /**
  * MainActivity ist die Aktivität, die beim Start der App bzw. beim Klick auf den Eintrag
  * "Data input" im Drawer-Menü aufgerufen wird
  */
 public class MainActivity extends CommonActivity {
+
+    public static TaskList taskList = new TaskList();
+    public static TaskManager taskManager = new TaskManager();
+    public static RecordManager recordManager = new RecordManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,16 @@ public class MainActivity extends CommonActivity {
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(getApplicationContext(), item, duration);
                 toast.show();
+
+                /*Task task = taskList.getTaskForName(item);
+                if(task.isOn()){
+                    taskManager.stopTask(task);
+                    task.setOn(false);
+                } else {
+                    taskManager.startTask(task);
+                    task.setOn(true);
+                }*/
+
             }
 
         });
@@ -86,10 +105,6 @@ public class MainActivity extends CommonActivity {
      * zusammengebaut werden
      */
     private ArrayList<String> getListElements() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Task 1");
-        list.add("Task 2");
-        list.add("Task 3");
-        return list;
+        return this.taskList.getAllNames();
     }
 }

@@ -1,6 +1,8 @@
 package de.hdm_stuttgart.zeitfresser.controller;
 
 
+import de.hdm_stuttgart.zeitfresser.model.Record;
+
 public class RecordManager {
     public RecordManager() {
     }

@@ -1,8 +1,10 @@
 package de.hdm_stuttgart.zeitfresser.model;
 
 import java.util.Date;
+import java.util.Observable;
 
-public class Record {
+
+public class Record extends Observable{
 
     private long id;
     private long duration;
