@@ -23,10 +23,10 @@ public class TaskManager {
     }
 
     public boolean hasRecords(Task task){
-
+        return false;
     }
 
     public long getOverallDuration(Task task){
-
+        return 1L;
     }
 }

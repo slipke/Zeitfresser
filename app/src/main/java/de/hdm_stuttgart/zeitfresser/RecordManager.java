@@ -14,6 +14,6 @@ public class RecordManager {
     }
 
     public long getDuration(Record record){
-
+        return 1L;
     }
 }
