@@ -2,7 +2,7 @@ package de.hdm_stuttgart.zeitfresser.model;
 
 import java.util.Date;
 
-class Record {
+public class Record {
 
     private long id;
     private long duration;
