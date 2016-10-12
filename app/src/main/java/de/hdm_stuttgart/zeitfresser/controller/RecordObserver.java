@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.zeitfresser;
+package de.hdm_stuttgart.zeitfresser.controller;
 
 
 import java.util.Observable;
