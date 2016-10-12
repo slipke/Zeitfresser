@@ -2,7 +2,7 @@ package de.hdm_stuttgart.zeitfresser.model;
 
 import java.util.ArrayList;
 
-class Task {
+public class Task {
 
     private long id;
     private boolean on;
