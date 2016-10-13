@@ -53,5 +53,6 @@ public class Record extends Observable{
 
     public void setEnd(Date end) {
         this.end = end;
+        notifyObservers();
     }
 }
