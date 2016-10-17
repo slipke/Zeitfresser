@@ -10,6 +10,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
+import de.hdm_stuttgart.zeitfresser.model.Task;
+import de.hdm_stuttgart.zeitfresser.model.TaskList;
+
 
 /**
  * EvalActivity ist die Aktivität, diebeim Klick auf den Eintrag
@@ -50,14 +53,12 @@ public class EvalActivity extends CommonActivity {
      * sollen
      */
     private ArrayList<Entry> getEntries() {
-        // creating data values
-
+        TaskList taskList = MainActivity.taskList;
         ArrayList<Entry> entries = new ArrayList<>();
 
-        entries.add(new Entry(4f, 0));
-        entries.add(new Entry(8f, 1));
-        entries.add(new Entry(6f, 2));
-
+        for (Task task : taskList.getTasks()) {
+            entries.add(new Entry(taskList.getOverallDuration(task), (int)task.getId()));
+        }
         return entries;
     }
 
@@ -68,11 +69,6 @@ public class EvalActivity extends CommonActivity {
      * der Entries passen
      */
     private ArrayList<String> getLabels() {
-        // creating labels
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add("Task 1");
-        labels.add("Task 2");
-        labels.add("Task 3");
-        return labels;
+        return MainActivity.taskList.getAllNames();
     }
 }

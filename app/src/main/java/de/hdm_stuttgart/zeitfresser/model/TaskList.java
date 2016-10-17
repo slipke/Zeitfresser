@@ -2,9 +2,12 @@ package de.hdm_stuttgart.zeitfresser.model;
 
 import java.util.ArrayList;
 
+import de.hdm_stuttgart.zeitfresser.controller.TaskManager;
+
 public class TaskList {
 
     private ArrayList<Task> tasks;
+    private TaskManager taskManager = new TaskManager();
 
     public TaskList() {
         createTaskList();
@@ -12,13 +15,13 @@ public class TaskList {
 
     private void createTaskList() {
         tasks = new ArrayList<>();
-        tasks.add(new Task("task 1", 1));
-        tasks.add(new Task("task 2", 2));
-        tasks.add(new Task("task 3", 3));
+        addTask("Lesen", 1);
+        addTask("Zocken", 2);
+        addTask("Kochen", 3);
     }
 
-    public void addTask(String name, long id) {
-
+    private void addTask(String name, long id) {
+        tasks.add(new Task(name, id));
     }
 
     public ArrayList<String> getAllNames() {
@@ -30,23 +33,34 @@ public class TaskList {
     }
 
     public void setTaskActive(String name) {
-
+        Task task = getTaskForName(name);
+        taskManager.startTask(task);
     }
 
     public void setTaskInactive(String name) {
-
+        Task task = getTaskForName(name);
+        taskManager.stopTask(task);
     }
 
     public boolean isTaskActive(String name) {
-        return false;
+        Task task = getTaskForName(name);
+        return taskManager.taskIsActive(task);
     }
 
-    public Task getTaskForName(String name) {
+    private Task getTaskForName(String name) {
         for(Task task: tasks){
             if(task.getName().equals(name)){
                 return task;
             }
         }
         return null;
+    }
+
+    public long getOverallDuration(Task task) {
+        return taskManager.getOverallDuration(task);
+    }
+
+    public ArrayList<Task> getTasks() {
+        return tasks;
     }
 }

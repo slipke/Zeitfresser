@@ -11,8 +11,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import de.hdm_stuttgart.zeitfresser.controller.RecordManager;
-import de.hdm_stuttgart.zeitfresser.controller.TaskManager;
-import de.hdm_stuttgart.zeitfresser.model.Task;
 import de.hdm_stuttgart.zeitfresser.model.TaskList;
 
 /**
@@ -22,7 +20,6 @@ import de.hdm_stuttgart.zeitfresser.model.TaskList;
 public class MainActivity extends CommonActivity {
 
     public static TaskList taskList = new TaskList();
-    public static TaskManager taskManager = new TaskManager();
     public static RecordManager recordManager = new RecordManager();
 
     @Override
@@ -73,13 +70,12 @@ public class MainActivity extends CommonActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), item, duration);
                 toast.show();
 
-                Task task = taskList.getTaskForName(item);
-                if(taskManager.taskIsActive(task)){
+                if(taskList.isTaskActive(item)){
                     Log.v("MainActivity", "Stopping task " + item);
-                    taskManager.stopTask(task);
+                    taskList.setTaskInactive(item);
                 } else {
                     Log.v("MainActivity", "Starting task " + item);
-                    taskManager.startTask(task);
+                    taskList.setTaskActive(item);
                 }
             }
 

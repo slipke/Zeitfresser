@@ -44,6 +44,10 @@ public class TaskManager {
     }
 
     public long getOverallDuration(Task task){
-        return 1L;
+        long overall = 0;
+        for (Record record : task.getRecords()) {
+            overall += record.getDuration();
+        }
+        return overall;
     }
 }
