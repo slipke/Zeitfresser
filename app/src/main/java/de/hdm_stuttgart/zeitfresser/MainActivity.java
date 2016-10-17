@@ -67,15 +67,20 @@ public class MainActivity extends CommonActivity {
                 final String item = (String) parent.getItemAtPosition(position);
 
                 int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(getApplicationContext(), item, duration);
-                toast.show();
+
 
                 if(taskList.isTaskActive(item)){
                     Log.v("MainActivity", "Stopping task " + item);
                     taskList.setTaskInactive(item);
+                    view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    Toast toast = Toast.makeText(getApplicationContext(), item+" stopped. Duration: "+(taskList.getOverallDuration(item)/1000.0)+" s", duration);
+                    toast.show();
                 } else {
                     Log.v("MainActivity", "Starting task " + item);
                     taskList.setTaskActive(item);
+                    view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    Toast toast = Toast.makeText(getApplicationContext(), item+" started", duration);
+                    toast.show();
                 }
             }
 

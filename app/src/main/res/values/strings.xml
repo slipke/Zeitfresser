@@ -6,12 +6,12 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="eval_activity">EvalActivity</string>
+    <string name="eval_activity">Evaluation</string>
     <string name="task_list">TaskList</string>
 
     <string name="drawerIcon">Drawer Icon</string>
 
-    <string name="dataInput">Data input</string>
+    <string name="dataInput">Aktivitäten</string>
     <string name="evaluation">Evaluation</string>
 
     <string name="testString">Nur ein Test</string>

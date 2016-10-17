@@ -60,6 +60,11 @@ public class TaskList {
         return taskManager.getOverallDuration(task);
     }
 
+    public long getOverallDuration(String taskName) {
+        Task task = getTaskForName(taskName);
+        return taskManager.getOverallDuration(task);
+    }
+
     public ArrayList<Task> getTasks() {
         return tasks;
     }
