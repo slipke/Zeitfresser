@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Observable;
 
 
-public class Record extends Observable{
+public class Record extends Observable {
 
     private long id;
     private long duration;
@@ -53,6 +53,7 @@ public class Record extends Observable{
 
     public void setEnd(Date end) {
         this.end = end;
+        setChanged();
         notifyObservers();
     }
 }

@@ -1,7 +1,7 @@
 package de.hdm_stuttgart.zeitfresser;
 
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -56,8 +56,7 @@ public class MainActivity extends CommonActivity {
          * Der Adapter bildet die Elememnte aus der Liste "list" auf Einträge des Listen-Widgets
          * in der GUI ab
          */
-        final ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
+        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
 
         /**
@@ -68,31 +67,20 @@ public class MainActivity extends CommonActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                /**
-                 * Abfrage, welches Listenelement geklickt wurde. "item" enthält den String, der
-                 * im Listenelement dargestellt wird
-                 */
                 final String item = (String) parent.getItemAtPosition(position);
 
-                /**
-                 * TODO: hier ist die anwendungsspezifische Logik zu implementieren:
-                 * Momentan wird als Reaktion auf den Benutzerklick ein "Toast"
-                 * (Benachrichtigungsfenster) für die Dauer "duration" angezeigt, in dem
-                 * als Text das angeklickte Element (item) steht
-                 */
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(getApplicationContext(), item, duration);
                 toast.show();
 
-                /*Task task = taskList.getTaskForName(item);
-                if(task.isOn()){
+                Task task = taskList.getTaskForName(item);
+                if(taskManager.taskIsActive(task)){
+                    Log.v("MainActivity", "Stopping task " + item);
                     taskManager.stopTask(task);
-                    task.setOn(false);
                 } else {
+                    Log.v("MainActivity", "Starting task " + item);
                     taskManager.startTask(task);
-                    task.setOn(true);
-                }*/
-
+                }
             }
 
         });
@@ -105,6 +93,6 @@ public class MainActivity extends CommonActivity {
      * zusammengebaut werden
      */
     private ArrayList<String> getListElements() {
-        return this.taskList.getAllNames();
+        return MainActivity.taskList.getAllNames();
     }
 }

@@ -6,7 +6,7 @@ import java.util.Observer;
 
 import de.hdm_stuttgart.zeitfresser.model.Record;
 
-public class RecordObserver implements Observer{
+public class RecordObserver implements Observer {
     public RecordObserver() {
     }
 

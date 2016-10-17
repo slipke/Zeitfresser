@@ -13,6 +13,8 @@ public class Task {
     public Task(String name, long id) {
         this.name = name;
         this.id = id;
+        this.on = false;
+        this.records = new ArrayList<>();
     }
 
     public void setOn(boolean on) {

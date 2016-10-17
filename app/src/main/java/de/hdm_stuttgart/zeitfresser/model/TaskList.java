@@ -10,10 +10,11 @@ public class TaskList {
         createTaskList();
     }
 
-    public void createTaskList() {
+    private void createTaskList() {
         tasks = new ArrayList<>();
-        tasks.add(new Task("task 1",1));
-        tasks.add(new Task("task 2",2));
+        tasks.add(new Task("task 1", 1));
+        tasks.add(new Task("task 2", 2));
+        tasks.add(new Task("task 3", 3));
     }
 
     public void addTask(String name, long id) {
