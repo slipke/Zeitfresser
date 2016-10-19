@@ -8,11 +8,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.util.ArrayList;
-
-import de.hdm_stuttgart.zeitfresser.model.Task;
-import de.hdm_stuttgart.zeitfresser.model.TaskList;
-import de.hdm_stuttgart.zeitfresser.model.TaskManager;
+import java.util.List;
 
 
 /**
@@ -53,15 +49,8 @@ public class EvalActivity extends CommonActivity {
      * In der Anwendung entsprechen die Zahlen der Dauern, die im Kuchendiagramm angezeigt werden
      * sollen
      */
-    private ArrayList<Entry> getEntries() {
-        TaskManager taskManager = MainActivity.taskManager;
-        ArrayList<Entry> entries = new ArrayList<>();
-
-        for (Task task : taskList.getTasks()) {
-            entries.add(new Entry(taskList.getOverallDuration(task), (int)task.getId()));
-        }
-        return entries;
-
+    private List<Entry> getEntries() {
+        return MainActivity.taskManager.tasksAsEntryList();
 
     }
 
@@ -71,7 +60,7 @@ public class EvalActivity extends CommonActivity {
      * im Kuchendiagramm beschriftet werden. Die Reihenfolge der Labels muss zu der Reihenfolge
      * der Entries passen
      */
-    private ArrayList<String> getLabels() {
-        return MainActivity.taskList.getAllNames();
+    private List<String> getLabels() {
+        return MainActivity.taskManager.getExistentTaskNamesAsList();
     }
 }

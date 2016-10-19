@@ -1,5 +1,7 @@
 package de.hdm_stuttgart.zeitfresser.model;
 
+import com.github.mikephil.charting.data.Entry;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,7 +60,15 @@ public abstract class TaskManager {
         throw new IllegalArgumentException(String.format("Unable to find task with name %s.", taskName));
     }
 
-    public long getOverallDurationForTask(String taskName) {
+    public float getOverallDurationForTask(String taskName) {
         return findTaskByName(taskName).getOverallDuration();
+    }
+
+    public List<Entry> tasksAsEntryList() {
+        List<Entry> entries = new LinkedList<>();
+        for (Task task : taskList) {
+            entries.add(new Entry(task.getOverallDuration(), (int) task.getId()));
+        }
+        return entries;
     }
 }

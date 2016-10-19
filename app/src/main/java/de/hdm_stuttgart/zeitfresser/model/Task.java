@@ -77,7 +77,7 @@ public class Task {
         return !records.isEmpty();
     }
 
-    public long getOverallDuration() {
+    public float getOverallDuration() {
         long overallDuration = 0L;
         for (Record record : records) {
             overallDuration += record.getDuration();
@@ -87,5 +87,9 @@ public class Task {
 
     public String getName() {
         return name;
+    }
+
+    public long getId() {
+        return id;
     }
 }
