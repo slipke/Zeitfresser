@@ -15,8 +15,8 @@ import java.util.List;
 
 
 /**
- * MainActivity ist die Aktivität, die beim Start der App bzw. beim Klick auf den Eintrag
- * "Data input" im Drawer-Menü aufgerufen wird
+ * MainActivity ist die Aktivität, die beim Start der App bzw. beim Klick auf den Eintrag "Data
+ * input" im Drawer-Menü aufgerufen wird
  */
 public class MainActivity extends CommonActivity {
 
@@ -74,7 +74,13 @@ public class MainActivity extends CommonActivity {
           Log.v("MainActivity", "Stopping task " + item);
           taskManager.stopTask(item);
           view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-          Toast toast = Toast.makeText(getApplicationContext(), item + " stopped. Duration: " + (taskManager.getOverallDurationForTask(item) / 1000.0) + " s", duration);
+          Toast toast = Toast.makeText(
+                  getApplicationContext(),
+                  item
+                          + " stopped. Duration: "
+                          + (taskManager.getOverallDurationForTask(item) / 1000.0)
+                          + " s",
+                  duration);
           toast.show();
         } else {
           Log.v("MainActivity", "Starting task " + item);
@@ -89,9 +95,9 @@ public class MainActivity extends CommonActivity {
   }
 
   /**
-   * TODO: diese Methode muss anwendungsspezifisch implementiert werden. Momentan liefert sie
-   * hard kodierte Namen von Tätigkeiten. Im ersten Schritt der Anwendung sollen diese Namen aus
-   * weiteren Objekten, z.B. Instanzen einer Klasse Task, ausgelesen und hier zu einer ArrayList
+   * TODO: diese Methode muss anwendungsspezifisch implementiert werden. Momentan liefert sie hard
+   * kodierte Namen von Tätigkeiten. Im ersten Schritt der Anwendung sollen diese Namen aus weiteren
+   * Objekten, z.B. Instanzen einer Klasse Task, ausgelesen und hier zu einer ArrayList
    * zusammengebaut werden
    */
   private List<String> getListElements() {
