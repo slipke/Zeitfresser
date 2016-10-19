@@ -4,9 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * A TaskManager holds and administrates a list of tasks.
- *
  */
 
 public abstract class TaskManager {
@@ -58,5 +56,9 @@ public abstract class TaskManager {
             }
         }
         throw new IllegalArgumentException(String.format("Unable to find task with name %s.", taskName));
+    }
+
+    public long getOverallDurationForTask(String taskName) {
+        return findTaskByName(taskName).getOverallDuration();
     }
 }
