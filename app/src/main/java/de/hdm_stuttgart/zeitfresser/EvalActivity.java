@@ -46,7 +46,7 @@ public class EvalActivity extends CommonActivity {
      * Die Zahlen werden in einem Entry-Objekt gespeichert: es enthält die darzustellende
      * Zahl sowie einen eindeutigen Index. Der Index dient zur beschreibung der Reihenfolge
      * der Entries
-     * In der Anwendung entsprechen die Zaheln der Dauern, die im Kuchendiagramm angezeigt werden
+     * In der Anwendung entsprechen die Zahlen der Dauern, die im Kuchendiagramm angezeigt werden
      * sollen
      */
     private ArrayList<Entry> getEntries() {

@@ -1,6 +1,5 @@
 package de.hdm_stuttgart.zeitfresser;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,11 +8,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import de.hdm_stuttgart.zeitfresser.controller.RecordManager;
-import de.hdm_stuttgart.zeitfresser.controller.TaskManager;
-import de.hdm_stuttgart.zeitfresser.model.Task;
-import de.hdm_stuttgart.zeitfresser.model.TaskList;
+import de.hdm_stuttgart.zeitfresser.model.DefaultTaskManager;
+import de.hdm_stuttgart.zeitfresser.model.TaskManager;
 
 /**
  * MainActivity ist die Aktivität, die beim Start der App bzw. beim Klick auf den Eintrag
@@ -21,9 +19,8 @@ import de.hdm_stuttgart.zeitfresser.model.TaskList;
  */
 public class MainActivity extends CommonActivity {
 
-    public static TaskList taskList = new TaskList();
-    public static TaskManager taskManager = new TaskManager();
-    public static RecordManager recordManager = new RecordManager();
+
+    private static TaskManager taskManager = DefaultTaskManager.createInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,7 @@ public class MainActivity extends CommonActivity {
         /**
          * Aufruf der Methode, welche die Inhalte der dargestellten Liste liefert
          */
-        final ArrayList<String> list = getListElements();
+        final List<String> list = getListElements();
 
         /**
          * Der Adapter bildet die Elememnte aus der Liste "list" auf Einträge des Listen-Widgets
@@ -85,13 +82,19 @@ public class MainActivity extends CommonActivity {
                 toast.show();
 
                 /*Task task = taskList.getTaskForName(item);
-                if(task.isOn()){
+                if(task.isActive()){
                     taskManager.stopTask(task);
-                    task.setOn(false);
+                    task.setActive(false);
                 } else {
                     taskManager.startTask(task);
-                    task.setOn(true);
+                    task.setActive(true);
                 }*/
+
+                if (taskManager.isTaskActive(item)) {
+                    taskManager.stopTask(item);
+                } else {
+                    taskManager.startTask(item);
+                }
 
             }
 
@@ -104,7 +107,7 @@ public class MainActivity extends CommonActivity {
      * weiteren Objekten, z.B. Instanzen einer Klasse Task, ausgelesen und hier zu einer ArrayList
      * zusammengebaut werden
      */
-    private ArrayList<String> getListElements() {
-        return this.taskList.getAllNames();
+    private List<String> getListElements() {
+        return taskManager.getExistentTaskNamesAsList();
     }
 }
