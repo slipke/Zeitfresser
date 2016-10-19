@@ -17,7 +17,6 @@ public abstract class CommonActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     private void createDrawer() {

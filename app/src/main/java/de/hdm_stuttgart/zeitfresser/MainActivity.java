@@ -1,5 +1,6 @@
 package de.hdm_stuttgart.zeitfresser;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,7 +9,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdm_stuttgart.zeitfresser.model.DefaultTaskManager;
 import de.hdm_stuttgart.zeitfresser.model.TaskManager;
@@ -47,7 +47,7 @@ public class MainActivity extends CommonActivity {
         /**
          * Aufruf der Methode, welche die Inhalte der dargestellten Liste liefert
          */
-        final List<String> list = getListElements();
+        final ArrayList<String> list = getListElements();
 
         /**
          * Der Adapter bildet die Elememnte aus der Liste "list" auf Einträge des Listen-Widgets
@@ -65,37 +65,24 @@ public class MainActivity extends CommonActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                /**
-                 * Abfrage, welches Listenelement geklickt wurde. "item" enthält den String, der
-                 * im Listenelement dargestellt wird
-                 */
                 final String item = (String) parent.getItemAtPosition(position);
 
-                /**
-                 * TODO: hier ist die anwendungsspezifische Logik zu implementieren:
-                 * Momentan wird als Reaktion auf den Benutzerklick ein "Toast"
-                 * (Benachrichtigungsfenster) für die Dauer "duration" angezeigt, in dem
-                 * als Text das angeklickte Element (item) steht
-                 */
                 int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(getApplicationContext(), item, duration);
-                toast.show();
 
-                /*Task task = taskList.getTaskForName(item);
-                if(task.isActive()){
-                    taskManager.stopTask(task);
-                    task.setActive(false);
-                } else {
-                    taskManager.startTask(task);
-                    task.setActive(true);
-                }*/
 
-                if (taskManager.isTaskActive(item)) {
-                    taskManager.stopTask(item);
-                } else {
-                    taskManager.startTask(item);
+                if(taskList.isTaskActive(item)){
+                    Log.v("MainActivity", "Stopping task " + item);
+                    taskList.setTaskInactive(item);
+                    view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    Toast toast = Toast.makeText(getApplicationContext(), item+" stopped. Duration: "+(taskList.getOverallDuration(item)/1000.0)+" s", duration);
+                    toast.show();
+
+                    Log.v("MainActivity", "Starting task " + item);
+                    taskList.setTaskActive(item);
+                    view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    Toast toast = Toast.makeText(getApplicationContext(), item+" started", duration);
+                    toast.show();
                 }
-
             }
 
         });
