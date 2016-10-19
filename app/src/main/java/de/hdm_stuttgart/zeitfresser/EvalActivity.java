@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import de.hdm_stuttgart.zeitfresser.model.Task;
 import de.hdm_stuttgart.zeitfresser.model.TaskList;
+import de.hdm_stuttgart.zeitfresser.model.TaskManager;
 
 
 /**
@@ -53,13 +54,15 @@ public class EvalActivity extends CommonActivity {
      * sollen
      */
     private ArrayList<Entry> getEntries() {
-        TaskList taskList = MainActivity.taskList;
+        TaskManager taskManager = MainActivity.taskManager;
         ArrayList<Entry> entries = new ArrayList<>();
 
         for (Task task : taskList.getTasks()) {
             entries.add(new Entry(taskList.getOverallDuration(task), (int)task.getId()));
         }
         return entries;
+
+
     }
 
     /**

@@ -2,6 +2,7 @@ package de.hdm_stuttgart.zeitfresser;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdm_stuttgart.zeitfresser.model.DefaultTaskManager;
 import de.hdm_stuttgart.zeitfresser.model.TaskManager;
@@ -20,7 +22,7 @@ import de.hdm_stuttgart.zeitfresser.model.TaskManager;
 public class MainActivity extends CommonActivity {
 
 
-    private static TaskManager taskManager = DefaultTaskManager.createInstance();
+    protected static TaskManager taskManager = DefaultTaskManager.createInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class MainActivity extends CommonActivity {
         /**
          * Aufruf der Methode, welche die Inhalte der dargestellten Liste liefert
          */
-        final ArrayList<String> list = getListElements();
+        final List<String> list = getListElements();
 
         /**
          * Der Adapter bildet die Elememnte aus der Liste "list" auf Einträge des Listen-Widgets
@@ -70,15 +72,15 @@ public class MainActivity extends CommonActivity {
                 int duration = Toast.LENGTH_SHORT;
 
 
-                if(taskList.isTaskActive(item)){
+                if(taskManager.isTaskActive(item)) {
                     Log.v("MainActivity", "Stopping task " + item);
-                    taskList.setTaskInactive(item);
+                    taskManager.stopTask(item);
                     view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                    Toast toast = Toast.makeText(getApplicationContext(), item+" stopped. Duration: "+(taskList.getOverallDuration(item)/1000.0)+" s", duration);
+                    Toast toast = Toast.makeText(getApplicationContext(), item + " stopped. Duration: " + (taskManager.getOverallDurationForTask(item) / 1000.0) + " s", duration);
                     toast.show();
-
+                } else {
                     Log.v("MainActivity", "Starting task " + item);
-                    taskList.setTaskActive(item);
+                    taskManager.startTask(item);
                     view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     Toast toast = Toast.makeText(getApplicationContext(), item+" started", duration);
                     toast.show();
