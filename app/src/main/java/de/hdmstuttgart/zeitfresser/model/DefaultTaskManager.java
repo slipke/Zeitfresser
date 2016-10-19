@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.zeitfresser.model;
+package de.hdmstuttgart.zeitfresser.model;
 
 import java.util.LinkedList;
 import java.util.List;

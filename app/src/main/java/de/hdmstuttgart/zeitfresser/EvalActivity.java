@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.zeitfresser;
+package de.hdmstuttgart.zeitfresser;
 
 import android.os.Bundle;
 
