@@ -3,8 +3,12 @@ package de.hdm_stuttgart.zeitfresser.model;
 import java.util.Date;
 import java.util.Observable;
 
-
-public class Record extends Observable{
+/**
+ * This class represents a record, which in turn stands for a single phase of execution of a {@link Task}.
+ * As the Task class, it's implementation style also avoids the anemic domain model style.
+ *
+ */
+public class Record extends Observable {
 
     private long id;
     private long duration;
@@ -15,44 +19,27 @@ public class Record extends Observable{
 
     }
 
+    public void start() {
+        start = new Date();
+    }
+
+    public void stop() {
+        end = new Date();
+    }
+
     public long getId() {
         return id;
     }
 
     public long getDuration() {
+        if (duration == 0L && hasStartAndEndTime()) {
+            duration = end.getTime() - start.getTime();
+        }
         return duration;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    private boolean hasStartAndEndTime() {
+        return (start != null && end != null);
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
-    public Date getStart() {
-        return start;
-    }
-
-    public Date getStartTime() {
-        return start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public Date getEndTime() {
-        return end;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
-        notifyObservers();
-    }
 }

@@ -1,49 +1,91 @@
 package de.hdm_stuttgart.zeitfresser.model;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
+/**
+ * This class represents a task, which can be started, stopped and manages a collection of records. Instead of following the JavaBean
+ * pattern comprising getters and setters, this domain class only publishes business logic instead of entirely disclosing it's internals.
+ * This way, we can circumvent the "anemic domain model", as described by <a href="http://www.martinfowler.com/bliki/AnemicDomainModel.html">Martin Fowler</a>.
+ */
 public class Task {
 
     private long id;
-    private boolean on;
+    private boolean active;
     private String name;
-    private ArrayList<Record> records;
+    private List<Record> records;
     private Record activeRecord;
 
-    public Task(String name, long id) {
-        this.name = name;
-        this.id = id;
+    protected static Task withName(String name) {
+        return new Task(name);
     }
 
-    public void setOn(boolean on) {
-        this.on = on;
+    private Task(String name) {
+        Objects.requireNonNull(name);
+        this.name = name;
+        this.records = new LinkedList<>();
+    }
+
+    public void start() {
+        if (!isActive()) {
+            prepareNewRecord();
+            setActive();
+        } else {
+            throw new IllegalStateException("Task has already been started!");
+        }
+    }
+
+    private void prepareNewRecord() {
+        Record record = new Record();
+        activeRecord = record;
+        records.add(record);
+        activeRecord.start();
+    }
+
+    private void setActive() {
+        active = true;
+    }
+
+    public void stop() {
+        if (isActive() && hasActiveRecord()) {
+            disableCurrentActiveRecord();
+            setInactive();
+        } else {
+            throw new IllegalStateException("Task has not been started yet!");
+        }
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    private boolean hasActiveRecord() {
+        return activeRecord != null;
+    }
+
+    private void disableCurrentActiveRecord() {
+        activeRecord.stop();
+        activeRecord = null;
+    }
+
+    private void setInactive() {
+        active = false;
+    }
+
+    public boolean hasRecords() {
+        return !records.isEmpty();
+    }
+
+    public long getOverallDuration() {
+        long overallDuration = 0L;
+        for (Record record : records) {
+            overallDuration += record.getDuration();
+        }
+        return overallDuration;
     }
 
     public String getName() {
-        return this.name;
-    }
-
-    public boolean isOn() {
-        return this.on;
-    }
-
-    public long getId() {
-        return this.id;
-    }
-
-    public ArrayList<Record> getRecords() {
-        return this.records;
-    }
-
-    public void setRecords(ArrayList<Record> records) {
-        this.records = records;
-    }
-
-    public void setActiveRecord(Record record) {
-        this.activeRecord = record;
-    }
-
-    public Record getActiveRecord() {
-        return this.activeRecord;
+        return name;
     }
 }
