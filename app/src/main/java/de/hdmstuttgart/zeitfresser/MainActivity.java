@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import de.hdmstuttgart.zeitfresser.model.DefaultTaskManager;
 import de.hdmstuttgart.zeitfresser.model.TaskManager;
+import de.hdmstuttgart.zeitfresser.model.Task;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class MainActivity extends CommonActivity {
     /**
      * Aufruf der Methode, welche die Inhalte der dargestellten Liste liefert.
      */
-    final List<String> list = getListElements();
+    final List<Task> list = getListElements();
 
     /**
      * Der Adapter bildet die Elememnte aus der Liste "list" auf Einträge des Listen-Widgets
@@ -65,13 +66,13 @@ public class MainActivity extends CommonActivity {
       @Override
       public void onItemClick(AdapterView<?> parent, final View view,
                               int position, long id) {
-        final String item = (String) parent.getItemAtPosition(position);
+        final Task item = (Task) parent.getItemAtPosition(position);
 
         int duration = Toast.LENGTH_SHORT;
 
 
         if (taskManager.isTaskActive(item)) {
-          Log.v("MainActivity", "Stopping task " + item);
+          Log.v("MainActivity", "Stopping task " + item.getName());
           taskManager.stopTask(item);
           view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
           Toast toast = Toast.makeText(
@@ -100,7 +101,7 @@ public class MainActivity extends CommonActivity {
    * Objekten, z.B. Instanzen einer Klasse Task, ausgelesen und hier zu einer ArrayList
    * zusammengebaut werden
    */
-  private List<String> getListElements() {
-    return taskManager.getExistentTaskNamesAsList();
+  private List<Task> getListElements() {
+    return taskManager.getTaskList();
   }
 }

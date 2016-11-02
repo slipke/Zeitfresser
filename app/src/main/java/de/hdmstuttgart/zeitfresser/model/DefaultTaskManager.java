@@ -20,9 +20,9 @@ public class DefaultTaskManager extends TaskManager {
   @Override
   protected List<Task> createTaskList() {
     List<Task> tasks = new LinkedList<>();
-    tasks.add(Task.withName("Dummy Task #1"));
-    tasks.add(Task.withName("Dummy Task #2"));
-    tasks.add(Task.withName("Dummy Task #3"));
+    tasks.add(Task.withNameAndId("Dummy Task #1", 1));
+    tasks.add(Task.withNameAndId("Dummy Task #2", 2));
+    tasks.add(Task.withNameAndId("Dummy Task #3", 3));
     return tasks;
   }
 }

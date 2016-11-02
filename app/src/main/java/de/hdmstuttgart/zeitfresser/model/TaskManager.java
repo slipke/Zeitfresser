@@ -17,7 +17,7 @@ public abstract class TaskManager {
     this.taskList = createTaskList();
   }
 
-  protected List<Task> getTaskList() {
+  public List<Task> getTaskList() {
     if (taskList == null) {
       taskList = new LinkedList<>();
     }
@@ -43,17 +43,16 @@ public abstract class TaskManager {
     return taskNames;
   }
 
-  public void startTask(String taskName) {
-    findTaskByName(taskName).start();
+  public void startTask(Task task) {
+    task.start();
   }
 
-  public void stopTask(String taskName) {
-    findTaskByName(taskName).stop();
+  public void stopTask(Task task) {
+    task.stop();
   }
 
-
-  public boolean isTaskActive(String taskName) {
-    return findTaskByName(taskName).isActive();
+  public boolean isTaskActive(Task task) {
+    return task.isActive();
   }
 
   private Task findTaskByName(String taskName) {
@@ -65,8 +64,8 @@ public abstract class TaskManager {
     throw new IllegalArgumentException(String.format("Unable o find task with name %s.", taskName));
   }
 
-  public float getOverallDurationForTask(String taskName) {
-    return findTaskByName(taskName).getOverallDuration();
+  public float getOverallDurationForTask(Task task) {
+    return task.getOverallDuration();
   }
 
   /**
@@ -80,4 +79,5 @@ public abstract class TaskManager {
     }
     return entries;
   }
+
 }

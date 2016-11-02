@@ -23,10 +23,19 @@ public class Task {
     return new Task(name);
   }
 
+  protected static Task withNameAndId(String name, long id) {
+    return new Task(name, id);
+  }
+
   private Task(String name) {
+    this(name, 0);
+  }
+
+  private Task(String name, long id) {
     Objects.requireNonNull(name);
     this.name = name;
     this.records = new LinkedList<>();
+    this.id = id;
   }
 
   /**
@@ -109,5 +118,9 @@ public class Task {
 
   public long getId() {
     return id;
+  }
+
+  public String toString() {
+    return this.id + " " + this.name;
   }
 }
