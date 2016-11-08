@@ -19,11 +19,11 @@ public class Task {
   private List<Record> records;
   private Record activeRecord;
 
-  protected static Task withName(String name) {
+  public static Task withName(String name) {
     return new Task(name);
   }
 
-  protected static Task withNameAndId(String name, long id) {
+  public static Task withNameAndId(String name, long id) {
     return new Task(name, id);
   }
 
@@ -50,10 +50,17 @@ public class Task {
     }
   }
 
+  /**
+   * Add a record to the current task (needed for junit testing)
+   */
+  public void addRecord(Record record) {
+    records.add(record);
+  }
+
   private void prepareNewRecord() {
     Record record = new Record();
     activeRecord = record;
-    records.add(record);
+    addRecord(record);
     activeRecord.start();
   }
 

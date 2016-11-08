@@ -14,6 +14,21 @@ public class Record extends Observable {
   private Date start;
   private Date end;
 
+  /**
+   * This factory method is needed for junit testing (since we don't have mocking yet)
+   *
+   * @param start Startdate
+   * @param end Enddate
+   *
+   * @return The new record object
+   */
+  public static Record withStartAndEnd(Date start, Date end) {
+    Record record = new Record();
+    record.start = start;
+    record.end = end;
+    return record;
+  }
+
   public Record() {
 
   }

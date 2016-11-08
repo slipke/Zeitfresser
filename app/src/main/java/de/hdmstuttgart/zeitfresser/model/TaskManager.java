@@ -55,15 +55,6 @@ public abstract class TaskManager {
     return task.isActive();
   }
 
-  private Task findTaskByName(String taskName) {
-    for (Task task : taskList) {
-      if (task.getName().equals(taskName)) {
-        return task;
-      }
-    }
-    throw new IllegalArgumentException(String.format("Unable o find task with name %s.", taskName));
-  }
-
   public float getOverallDurationForTask(Task task) {
     return task.getOverallDuration();
   }
