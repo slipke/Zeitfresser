@@ -9,8 +9,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import de.hdmstuttgart.zeitfresser.model.DefaultTaskManager;
-import de.hdmstuttgart.zeitfresser.model.TaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
+import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
 import java.util.List;
 
