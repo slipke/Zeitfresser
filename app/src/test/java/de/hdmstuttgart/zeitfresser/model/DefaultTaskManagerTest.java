@@ -1,4 +1,4 @@
-package de.hdmstuttgart.zeitfresser;
+package de.hdmstuttgart.zeitfresser.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
