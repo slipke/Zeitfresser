@@ -15,7 +15,7 @@ public class Record extends Observable {
   private Date end;
 
   /**
-   * This factory method is needed for junit testing (since we don't have mocking yet)
+   * This factory method is needed for junit testing (since we don't have mocking yet).
    *
    * @param start Startdate
    * @param end Enddate

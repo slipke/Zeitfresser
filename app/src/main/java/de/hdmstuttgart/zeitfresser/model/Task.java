@@ -51,7 +51,7 @@ public class Task {
   }
 
   /**
-   * Add a record to the current task (needed for junit testing)
+   * Add a record to the current task (needed for junit testing).
    */
   public void addRecord(Record record) {
     records.add(record);
