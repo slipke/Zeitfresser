@@ -107,7 +107,7 @@ public class Task {
   }
 
   /**
-   * Returns the overall duration.
+   * Returns the overall duration of all records attached to a certain task.
    *
    * @return long
    */
