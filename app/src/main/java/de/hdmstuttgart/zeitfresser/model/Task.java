@@ -41,7 +41,7 @@ public class Task {
   /**
    * Start the current task. This includes preparing a new {@link Record} which keeps
    * track of the elapsing time as well as setting the task's current status to "active". Throw
-   * an {@link IllegalStateException} when {@link Task#start()} is called on a task which is already
+   * an {@link IllegalStateException} when {@code start()} is called on a task which is already
    * in active state.
    *
    */
