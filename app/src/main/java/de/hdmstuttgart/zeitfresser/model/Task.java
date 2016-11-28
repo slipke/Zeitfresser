@@ -39,7 +39,8 @@ public class Task {
   }
 
   /**
-   * Start the current task.
+   * Start the current task. This includes preparing a new {@link Record} which keeps
+   * track of the elapsing time as well as setting the task's current status to "active".
    */
   public void start() {
     if (!isActive()) {
@@ -69,7 +70,9 @@ public class Task {
   }
 
   /**
-   * Stop the current task.
+   * Stop the current task if it is active and has an active record which captures time. If this
+   * method is called on an inactive task or on a task which has no active record, an
+   * {@link IllegalStateException} is thrown.
    */
   public void stop() {
     if (isActive() && hasActiveRecord()) {
@@ -81,7 +84,7 @@ public class Task {
   }
 
   /**
-   * Returns whether the current task is active.
+   * Returns whether the current task is active or not.
    *
    * @return boolean
    */
