@@ -5,10 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import de.hdmstuttgart.zeitfresser.model.DefaultTaskManager;
-import de.hdmstuttgart.zeitfresser.model.Record;
-import de.hdmstuttgart.zeitfresser.model.Task;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -110,6 +106,6 @@ public class DefaultTaskManagerTest {
     task.addRecord(record2);
     task.addRecord(record3);
 
-    assertEquals(interval1 + interval2 + interval3, taskManager.getOverallDurationForTask(task), 0);
+    assertEquals(interval1 + interval2 + interval3, taskManager.getTotalDurationForTask(task), 0);
   }
 }

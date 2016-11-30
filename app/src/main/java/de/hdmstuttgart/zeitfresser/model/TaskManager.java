@@ -4,6 +4,7 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A TaskManager holds and administrates a list of tasks.
@@ -27,7 +28,11 @@ public abstract class TaskManager {
   protected abstract List<Task> createTaskList();
 
   public void addTaskWithName(String taskName) {
-    getTaskList().add(Task.withName(taskName));
+    if (taskName != null && !taskName.isEmpty()) {
+      getTaskList().add(Task.withName(taskName));
+    } else {
+      throw new IllegalArgumentException("Argument \"taskName\" must not be null or empty!)");
+    }
   }
 
   /**
@@ -44,23 +49,38 @@ public abstract class TaskManager {
   }
 
   public void startTask(Task task) {
-    task.start();
+    if (task != null) {
+      task.start();
+    }
   }
 
   public void stopTask(Task task) {
-    task.stop();
+    if (task != null) {
+      task.stop();
+    } else {
+      throw new IllegalArgumentException("Input argument \"task\" was null!");
+    }
   }
 
   public boolean isTaskActive(Task task) {
-    return task.isActive();
+    if (task != null) {
+      return task.isActive();
+    } else {
+      throw new IllegalArgumentException("Input argument \"task\" was null!");
+    }
   }
 
-  public float getOverallDurationForTask(Task task) {
-    return task.getOverallDuration();
+  public float getTotalDurationForTask(Task task) {
+    if (task != null) {
+      return task.getOverallDuration();
+    } else {
+      throw new IllegalArgumentException("Input argument \"task\" was null!");
+    }
   }
 
   /**
    * Returns all tasks as an entry list.
+   *
    * @return List
    */
   public List<Entry> tasksAsEntryList() {

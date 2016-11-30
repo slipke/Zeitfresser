@@ -79,7 +79,7 @@ public class MainActivity extends CommonActivity {
                   getApplicationContext(),
                   item
                           + " stopped. Duration: "
-                          + (taskManager.getOverallDurationForTask(item) / 1000.0)
+                          + (taskManager.getTotalDurationForTask(item) / 1000.0)
                           + " s",
                   duration);
           toast.show();
