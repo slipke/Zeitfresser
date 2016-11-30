@@ -43,3 +43,42 @@ repositories {
     //In diesem Repository ist die Library für das Kuchendiagramm zu finden
     maven { url "https://jitpack.io" }
 }
+
+task checkstyle(type: Checkstyle) {
+    configFile file("${project.rootDir}/google_checkstyle.xml")
+    configProperties.checkstyleSuppressionsPath =
+            file("${project.rootDir}/checkstyle_suppressions.xml").absolutePath
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    classpath = files()
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        html.enabled = true
+        html.destination rootProject.file("app/build/reports/checkstyle/checkstyle-results.html")
+        xml.enabled = true
+        xml.destination rootProject.file("app/build/reports/checkstyle/checkstyle-results.xml")
+    }
+}
+
+/**
+ * notwendiger Workaround für die Benutzung von Checkstyle
+ * Details: http://stackoverflow.com/questions/28749804/how-to-compile-project-with-
+ google-checkstyle-rules-with-gradle */
+configurations {
+    checkstyleOverride
+}
+
+dependencies {
+    checkstyleOverride('com.puppycrawl.tools:checkstyle:7.1')
+}
+
+tasks.withType(Checkstyle) {
+    checkstyleClasspath = project.configurations.checkstyleOverride
+}
+
+/**
+ * Ende des notwendigen Workarounds für die Benutzung von Checkstyle
+ dependencies {tasks.withType(Checkstyle) {*/
