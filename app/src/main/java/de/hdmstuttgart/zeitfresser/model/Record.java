@@ -20,6 +20,8 @@ public class Record extends Observable {
    * @param start Startdate
    * @param end Enddate
    *
+   *  @TODO Mock
+   *
    * @return The new record object
    */
   public static Record withStartAndEnd(Date start, Date end) {
