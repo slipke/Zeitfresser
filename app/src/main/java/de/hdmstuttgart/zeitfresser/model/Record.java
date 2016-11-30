@@ -9,10 +9,11 @@ import java.util.Observable;
  */
 public class Record extends Observable {
 
-  private long id;
-  private long duration;
-  private Date start;
-  private Date end;
+  // TODO: how to set the id
+  private long id = 0;
+  private long duration = 0;
+  private Date start = null;
+  private Date end = null;
 
   /**
    * This factory method is needed for junit testing (since we don't have mocking yet).

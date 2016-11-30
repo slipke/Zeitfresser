@@ -1,8 +1,9 @@
-package de.hdmstuttgart.zeitfresser;
+package de.hdmstuttgart.zeitfresser.model;
 
 import android.util.Log;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -10,8 +11,6 @@ import static org.junit.Assert.fail;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 
 import java.lang.reflect.Field;
@@ -29,7 +28,7 @@ public class RecordTest {
     }
 
     @After
-    public void clear(){
+    public void tearDown(){
         record = null;
     }
 
@@ -41,7 +40,12 @@ public class RecordTest {
     }
 
     @Test
-    public void test_startTimeLessOrEqualsCurrentTime() {
+    public void testHasStartAndEndTime(){
+        //assertFalse(record.has);
+    }
+
+    @Test
+    public void testStartTimeLessOrEqualsCurrentTime() {
         record.start();
         try {
             Field startField = Record.class.getDeclaredField("start");
@@ -54,7 +58,8 @@ public class RecordTest {
     }
 
     @Test
-    public void test_endTimeHigherThanStartTime(){
+    public void testEndTimeHigherThanStartTime(){
+
         record.start();
         record.stop();
         try {
@@ -71,7 +76,7 @@ public class RecordTest {
     }
 
     @Test
-    public void test_getDuration(){
+    public void testGetDuration(){
         record.start();
         try {
             Thread.sleep(10);
