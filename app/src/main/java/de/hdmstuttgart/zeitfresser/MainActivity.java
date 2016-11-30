@@ -70,7 +70,7 @@ public class MainActivity extends CommonActivity {
 
         int duration = Toast.LENGTH_SHORT;
 
-
+        // TEST
         if (taskManager.isTaskActive(item)) {
           Log.v("MainActivity", "Stopping task " + item.getName());
           taskManager.stopTask(item);
