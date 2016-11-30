@@ -83,7 +83,6 @@ public class DefaultTaskManagerTest {
 
   @Test
   public void getOverallDurationForTaskTest() {
-    Task task = Task.withName("Test");
     Date now = new Date();
 
     int interval1 = 60 * 1000; // 1min
@@ -100,6 +99,8 @@ public class DefaultTaskManagerTest {
     Record record1 = Record.withStartAndEnd(now, endDate1);
     Record record2 = Record.withStartAndEnd(now, endDate2);
     Record record3 = Record.withStartAndEnd(now, endDate3);
+
+    Task task = Task.withName("Test");
 
     // Add records to task
     task.addRecord(record1);
