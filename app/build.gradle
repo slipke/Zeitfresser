@@ -82,3 +82,33 @@ tasks.withType(Checkstyle) {
 /**
  * Ende des notwendigen Workarounds für die Benutzung von Checkstyle
  dependencies {tasks.withType(Checkstyle) {*/
+
+apply plugin: 'findbugs'
+
+task customFindbugs(type: FindBugs) {
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "low"
+    classes = files("$project.buildDir/intermediates/classes")
+
+    // Dieses File wird normalerweise in Android Studio automatisch
+    // angelegt und enthält alle Files, die nicht durch FindBugs
+    // analysiert werden sollen
+    excludeFilter = file("${project.rootDir}/findbugs_exclude.xml")
+
+    source = fileTree('src/main/java/')
+    classpath = files()
+
+    reports {
+        xml.enabled = true
+        xml.withMessages = true
+        //FindBugs kann imme rnur einen Report,
+        // entweder xml oder html erzeugen
+        html.enabled = !xml.enabled
+        xml.destination "$project.buildDir/reports/findbugs/findbugs-results.xml"
+        html.destination "$project.buildDir/eports/findbugs/findbugs-results.html"
+    }
+
+    // FindBugs benutzt kompilierte Files für die Analyse!
+    dependsOn "compileReleaseJavaWithJavac"
+}
