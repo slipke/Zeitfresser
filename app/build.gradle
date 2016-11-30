@@ -122,3 +122,38 @@ task customFindbugs(type: FindBugs) {
     // FindBugs benutzt kompilierte Files für die Analyse!
     dependsOn "compileReleaseJavaWithJavac"
 }
+
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion="0.7.6.201602180812"
+    reportsDir=file("$buildDir/reports/jacoco")
+}
+
+def coverageSourceDirs = [
+        '../app/src'
+]
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports"
+    classDirectories = fileTree(
+            dir: '../app/build/intermediates/classes',
+            excludes: [
+                    '**/R.class',
+                    '**/R$*.class',
+                    '**/*$ViewInjector*.*',
+                    '**/BuildConfig*',
+                    '**/Manifest.*'
+            ]
+    )
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('../app/build/jacoco/testUnitTestDebug.exec')
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
