@@ -18,6 +18,11 @@ public abstract class TaskManager {
     this.taskList = createTaskList();
   }
 
+  /**
+   * Return the current task list.
+   *
+   * @return the current {@link List} of tasks.
+   */
   public List<Task> getTaskList() {
     if (taskList == null) {
       taskList = new LinkedList<>();
@@ -27,6 +32,11 @@ public abstract class TaskManager {
 
   protected abstract List<Task> createTaskList();
 
+  /**
+   * Add a new task with name {@code taskName} to the list of tasks.
+   *
+   * @param taskName the name of the new {@link Task}.
+   */
   public void addTaskWithName(String taskName) {
     if (taskName != null && !taskName.isEmpty()) {
       getTaskList().add(Task.withName(taskName));
@@ -48,12 +58,23 @@ public abstract class TaskManager {
     return taskNames;
   }
 
+  /**
+   * Start a task.
+   *
+   * @param task The task to be started.
+   */
   public void startTask(Task task) {
     if (task != null) {
       task.start();
     }
   }
 
+  /**
+   * Stop a task. An {@link IllegalArgumentException} is thrown if {@code null}
+   * is passed as argument.
+   *
+   * @param task The {@link Task} to be stopped.
+   */
   public void stopTask(Task task) {
     if (task != null) {
       task.stop();
@@ -62,6 +83,12 @@ public abstract class TaskManager {
     }
   }
 
+  /**
+   * Check if a certain {@link Task} is active.
+   *
+   * @param task The {@link Task} to be checked.
+   * @return true if active, false otherwise.
+   */
   public boolean isTaskActive(Task task) {
     if (task != null) {
       return task.isActive();
@@ -70,6 +97,12 @@ public abstract class TaskManager {
     }
   }
 
+  /**
+   * Compute total amount of time recorded for a certain {@code task}.
+   *
+   * @param task The task for which total time shall be computed.
+   * @return The total amount of time over all records attached to {@code task}.
+   */
   public float getTotalDurationForTask(Task task) {
     if (task != null) {
       return task.getOverallDuration();
