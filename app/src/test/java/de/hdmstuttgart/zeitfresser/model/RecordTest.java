@@ -26,13 +26,6 @@ public class RecordTest {
   }
 
   @Test
-  public void test() {
-    //Log.v("test","test");
-    record.start();
-    assertTrue(true);
-  }
-
-  @Test
   public void testHasStartAndEndTime() {
     //assertFalse(record.has);
   }
