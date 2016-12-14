@@ -16,6 +16,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Date;
 
 
 /**
@@ -61,11 +62,11 @@ public class EvalActivity extends CommonActivity {
     fromDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
       @Override
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        //TODO: implement logic here
         month++; // month counting begins at 0 - strange
         Toast.makeText(getApplicationContext(), "set from date: "+day+"."+month+"."+year, Toast
                 .LENGTH_LONG).show();;
         fromEditText.setText(day+"."+month+"."+year);
+        updatePieChart();
       }
     },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
 
@@ -73,11 +74,11 @@ public class EvalActivity extends CommonActivity {
     toDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
       @Override
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        //TODO: implement logic here
         month++;
         Toast.makeText(getApplicationContext(), "set to date: "+day+"."+month+"."+year, Toast
                 .LENGTH_LONG).show();;
         toEditText.setText(day+"."+month+"."+year);
+        updatePieChart();
       }
     },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
 
@@ -115,8 +116,17 @@ public class EvalActivity extends CommonActivity {
    * sollen
    */
   private List<Entry> getEntries() {
-    return MainActivity.taskManager.tasksAsEntryList();
+    // @TODO
+    Date from = new Date();
+    Date to = new Date();
+    return MainActivity.taskManager.getFilteredTasks(from, to);;
+  }
 
+  private void updatePieChart() {
+    // fromDatePicker.getDate
+    // toDatePicker.getDate
+    // this.getEntries(?)
+    // pieChart.setData(?)
   }
 
   /**

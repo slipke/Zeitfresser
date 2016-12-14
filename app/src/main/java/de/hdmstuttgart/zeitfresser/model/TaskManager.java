@@ -4,6 +4,7 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Date;
 
 /**
  * A TaskManager holds and administrates a list of tasks.
@@ -69,8 +70,8 @@ public abstract class TaskManager {
   }
 
   /**
-   * Stop a task. An {@link IllegalArgumentException} is thrown if {@code null}
-   * is passed as argument.
+   * Stop a task. An {@link IllegalArgumentException} is thrown if {@code null} is passed as
+   * argument.
    *
    * @param task The {@link Task} to be stopped.
    */
@@ -121,6 +122,16 @@ public abstract class TaskManager {
       entries.add(new Entry(task.getOverallDuration(), (int) task.getId()));
     }
     return entries;
+  }
+
+  public List<Entry> getFilteredTasks(Date from, Date to) {
+    // filter from & to
+    // return remaining tasks
+    return null;
+  }
+
+  private List<Entry> filterZeroDurationTasks(List<Entry> taskList) {
+    return null;
   }
 
 }
