@@ -19,7 +19,7 @@ import java.util.List;
 
 
 /**
- * EvalActivity ist die Aktivität, diebeim Klick auf den Eintrag
+ * EvalActivity ist die Aktivität, die beim Klick auf den Eintrag
  * "Evaluation" im Drawer-Menü aufgerufen wird.
  */
 public class EvalActivity extends CommonActivity {
@@ -29,8 +29,9 @@ public class EvalActivity extends CommonActivity {
 
   private EditText fromEditText;
   private EditText toEditText;
+
   /**
-   * diese Methode muss nicht verändret werden, sie baut das Kuchendiagramm auf.
+   * diese Methode muss nicht verändert werden, sie baut das Kuchendiagramm auf.
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +42,14 @@ public class EvalActivity extends CommonActivity {
     //Content of the pie chart
     PieChart pieChart = (PieChart) findViewById(R.id.chart);
 
-    PieDataSet dataset = new PieDataSet(getEntries(), "Time spent");
+    PieDataSet dataSet = new PieDataSet(getEntries(), "Time spent");
 
     //Set the data
-    PieData data = new PieData(getLabels(), dataset); // initialize Piedata
+    PieData data = new PieData(getLabels(), dataSet); // initialize Piedata
     pieChart.setData(data); //set data into chart
 
-    dataset.setColors(ColorTemplate.COLORFUL_COLORS); // set the color
-    dataset.setValueTextSize(16);
+    dataSet.setColors(ColorTemplate.COLORFUL_COLORS); // set the color
+    dataSet.setValueTextSize(16);
 
     initDatePickerDialogs();
   }
