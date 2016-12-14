@@ -124,7 +124,7 @@ public class EvalActivity extends CommonActivity {
     Date from = new Date();
     Date to = new Date();
     List<Task> filteredTasks = MainActivity.taskManager.getFilteredTasks(from, to);
-    return MainActivity.taskManager.taskListtoEntryList(filteredTasks);
+    return MainActivity.taskManager.taskListToEntryList(filteredTasks);
   }
 
   private void updatePieChart() {

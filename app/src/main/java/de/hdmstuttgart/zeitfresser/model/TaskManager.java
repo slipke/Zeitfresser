@@ -142,7 +142,7 @@ public abstract class TaskManager {
     return filteredList;
   }
 
-  public List<Entry> taskListtoEntryList(List<Task> tasks) {
+  public List<Entry> taskListToEntryList(List<Task> tasks) {
     List<Entry> entries = new LinkedList<>();
 
     for (Task task : tasks) {
