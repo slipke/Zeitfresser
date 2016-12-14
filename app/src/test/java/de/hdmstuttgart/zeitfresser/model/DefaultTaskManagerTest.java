@@ -1,15 +1,23 @@
 package de.hdmstuttgart.zeitfresser.model;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.util.Date;
-import java.util.List;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -18,10 +26,10 @@ import java.util.List;
  */
 public class DefaultTaskManagerTest {
 
-  private static DefaultTaskManager taskManager;
+  private DefaultTaskManager taskManager;
 
-  @BeforeClass
-  public static void beforeClass() {
+  @Before
+  public void before() {
     taskManager = DefaultTaskManager.createInstance();
   }
 
@@ -108,5 +116,30 @@ public class DefaultTaskManagerTest {
     task.addRecord(record3);
 
     assertEquals(interval1 + interval2 + interval3, taskManager.getTotalDurationForTask(task), 0);
+  }
+
+  @Test
+  public void testFilterZeroDurationTasks() throws Exception {
+    Task dummyTask1 = mock(Task.class);
+    when(dummyTask1.getOverallDuration()).thenReturn(0.0f);
+
+    Task dummyTask2 = mock(Task.class);
+    when(dummyTask2.getOverallDuration()).thenReturn(1.0f);
+
+    List<Task> tasks = new LinkedList<>();
+    tasks.add(dummyTask1);
+    tasks.add(dummyTask2);
+
+    Method filterZeroDurationTasks = DefaultTaskManager.class.getSuperclass().getDeclaredMethod
+            ("filterZeroDurationTasks", List.class);
+    filterZeroDurationTasks.setAccessible(true);
+
+    List<Task> filteredList = (List<Task>) filterZeroDurationTasks.invoke(taskManager, tasks);
+
+    assertThat(filteredList, notNullValue());
+    assertThat(filteredList.size(), not(equalTo(0)));
+    assertThat(filteredList.contains(dummyTask2), equalTo(true));
+    assertThat(filteredList.contains(dummyTask1), equalTo(false));
+
   }
 }

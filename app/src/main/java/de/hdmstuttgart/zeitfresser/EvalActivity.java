@@ -19,9 +19,12 @@ import java.util.List;
 import java.util.Date;
 
 
+import de.hdmstuttgart.zeitfresser.model.Task;
+
+
 /**
- * EvalActivity ist die Aktivität, die beim Klick auf den Eintrag
- * "Evaluation" im Drawer-Menü aufgerufen wird.
+ * EvalActivity ist die Aktivität, die beim Klick auf den Eintrag "Evaluation" im Drawer-Menü
+ * aufgerufen wird.
  */
 public class EvalActivity extends CommonActivity {
 
@@ -106,6 +109,7 @@ public class EvalActivity extends CommonActivity {
       }
     });
   }
+
   /**
    * TODO: diese Methode muss anwendungsspezifisch überschrieben werden
    * Sie liefert eine Liste von Zahlen, die im Kuchendiagramm angezeigt werden
@@ -119,7 +123,8 @@ public class EvalActivity extends CommonActivity {
     // @TODO
     Date from = new Date();
     Date to = new Date();
-    return MainActivity.taskManager.getFilteredTasks(from, to);;
+    List<Task> filteredTasks = MainActivity.taskManager.getFilteredTasks(from, to);
+    return MainActivity.taskManager.taskListtoEntryList(filteredTasks);
   }
 
   private void updatePieChart() {
