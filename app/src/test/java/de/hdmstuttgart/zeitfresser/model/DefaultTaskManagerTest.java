@@ -57,19 +57,6 @@ public class DefaultTaskManagerTest {
   }
 
   @Test
-  public void getExistentTaskNamesAsListTest() {
-    List<Task> taskList = taskManager.getTaskList();
-    List<String> taskNames = taskManager.getExistentTaskNamesAsList();
-
-    assertTrue(taskManager.getExistentTaskNamesAsList().size() > 0);
-    assertEquals(taskManager.getTaskList().size(), taskManager.getExistentTaskNamesAsList().size());
-
-    for (int i = 0; i < taskList.size(); i++) {
-      assertEquals(taskList.get(i).getName(), taskNames.get(i));
-    }
-  }
-
-  @Test
   public void startTaskTest() {
     Task task = Task.withName("Test");
 
@@ -82,11 +69,6 @@ public class DefaultTaskManagerTest {
 
     assertFalse(taskManager.isTaskActive(task));
     assertFalse(task.isActive());
-  }
-
-  @Test
-  public void tasksAsEntryListTest() {
-    assertEquals(taskManager.getTaskList().size(), taskManager.tasksAsEntryList().size());
   }
 
   @Test
@@ -115,7 +97,7 @@ public class DefaultTaskManagerTest {
     task.addRecord(record2);
     task.addRecord(record3);
 
-    assertEquals(interval1 + interval2 + interval3, taskManager.getTotalDurationForTask(task), 0);
+    assertEquals(interval1 + interval2 + interval3, taskManager.getOverallDurationForTask(task), 0);
   }
 
   @Test

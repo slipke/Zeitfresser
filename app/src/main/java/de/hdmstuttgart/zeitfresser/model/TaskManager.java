@@ -46,19 +46,6 @@ public abstract class TaskManager {
   }
 
   /**
-   * Returns a list of all task names.
-   *
-   * @return List
-   */
-  public List<String> getExistentTaskNamesAsList() {
-    List<String> taskNames = new LinkedList<>();
-    for (Task task : getTaskList()) {
-      taskNames.add(task.getName());
-    }
-    return taskNames;
-  }
-
-  /**
    * Start a task.
    *
    * @param task The task to be started.
@@ -103,25 +90,12 @@ public abstract class TaskManager {
    * @param task The task for which total time shall be computed.
    * @return The total amount of time over all records attached to {@code task}.
    */
-  public float getTotalDurationForTask(Task task) {
+  public float getOverallDurationForTask(Task task) {
     if (task != null) {
       return task.getOverallDuration();
     } else {
       throw new IllegalArgumentException("Input argument \"task\" was null!");
     }
-  }
-
-  /**
-   * Returns all tasks as an entry list.
-   *
-   * @return List
-   */
-  public List<Entry> tasksAsEntryList() {
-    List<Entry> entries = new LinkedList<>();
-    for (Task task : taskList) {
-      entries.add(new Entry(task.getOverallDuration(), (int) task.getId()));
-    }
-    return entries;
   }
 
   public List<Task> getFilteredTasks(Date from, Date to) {
