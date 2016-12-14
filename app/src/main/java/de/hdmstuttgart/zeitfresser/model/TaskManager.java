@@ -4,7 +4,6 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A TaskManager holds and administrates a list of tasks.
