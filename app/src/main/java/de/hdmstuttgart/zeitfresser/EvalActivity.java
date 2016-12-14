@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
-
 import de.hdmstuttgart.zeitfresser.model.Task;
 
 
@@ -34,6 +33,8 @@ public class EvalActivity extends CommonActivity {
   private EditText fromEditText;
   private EditText toEditText;
 
+  private PieChart pieChart;
+
   /**
    * diese Methode muss nicht verändert werden, sie baut das Kuchendiagramm auf.
    */
@@ -42,23 +43,26 @@ public class EvalActivity extends CommonActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_eval);
     createNavigationBars();
-
-    //Content of the pie chart
-    PieChart pieChart = (PieChart) findViewById(R.id.chart);
-
-    PieDataSet dataSet = new PieDataSet(getEntries(), "Time spent");
-
-    //Set the data
-    PieData data = new PieData(getLabels(), dataSet); // initialize Piedata
-    pieChart.setData(data); //set data into chart
-
-    dataSet.setColors(ColorTemplate.COLORFUL_COLORS); // set the color
-    dataSet.setValueTextSize(16);
-
     initDatePickerDialogs();
+
+    pieChart = (PieChart) findViewById(R.id.chart);
+
+    // Set initial data
+    pieChart.setData(generatePieData());
   }
 
-  private void initDatePickerDialogs(){
+  private PieData generatePieData() {
+    List<Task> taskList = getTaskList();
+    List<String> labelList = MainActivity.taskManager.taskListToLabelList(taskList);
+    List<Entry> entryList = MainActivity.taskManager.taskListToEntryList(taskList);
+
+    PieDataSet dataSet = new PieDataSet(entryList, "Time spent");
+    dataSet.setColors(ColorTemplate.COLORFUL_COLORS); // set the color
+    dataSet.setValueTextSize(16);
+    return new PieData(labelList, dataSet);
+  }
+
+  private void initDatePickerDialogs() {
     Calendar calendar = Calendar.getInstance();
 
     // implement from date picker dialog
@@ -66,24 +70,26 @@ public class EvalActivity extends CommonActivity {
       @Override
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         month++; // month counting begins at 0 - strange
-        Toast.makeText(getApplicationContext(), "set from date: "+day+"."+month+"."+year, Toast
-                .LENGTH_LONG).show();;
-        fromEditText.setText(day+"."+month+"."+year);
+        Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "." + year, Toast
+                .LENGTH_LONG).show();
+        ;
+        fromEditText.setText(day + "." + month + "." + year);
         updatePieChart();
       }
-    },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
     // implement to date picker dialog
     toDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
       @Override
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         month++;
-        Toast.makeText(getApplicationContext(), "set to date: "+day+"."+month+"."+year, Toast
-                .LENGTH_LONG).show();;
-        toEditText.setText(day+"."+month+"."+year);
+        Toast.makeText(getApplicationContext(), "set to date: " + day + "." + month + "." + year, Toast
+                .LENGTH_LONG).show();
+        ;
+        toEditText.setText(day + "." + month + "." + year);
         updatePieChart();
       }
-    },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
     // get date edit text fields
     fromEditText = (EditText) findViewById(R.id.fromDateEditText);
@@ -110,37 +116,31 @@ public class EvalActivity extends CommonActivity {
     });
   }
 
-  /**
-   * TODO: diese Methode muss anwendungsspezifisch überschrieben werden
-   * Sie liefert eine Liste von Zahlen, die im Kuchendiagramm angezeigt werden
-   * Die Zahlen werden in einem Entry-Objekt gespeichert: es enthält die darzustellende
-   * Zahl sowie einen eindeutigen Index. Der Index dient zur beschreibung der Reihenfolge
-   * der Entries
-   * In der Anwendung entsprechen die Zahlen der Dauern, die im Kuchendiagramm angezeigt werden
-   * sollen
-   */
-  private List<Entry> getEntries() {
-    // @TODO
-    Date from = new Date();
-    Date to = new Date();
-    List<Task> filteredTasks = MainActivity.taskManager.getFilteredTasks(from, to);
-    return MainActivity.taskManager.taskListToEntryList(filteredTasks);
-  }
-
   private void updatePieChart() {
-    // fromDatePicker.getDate
-    // toDatePicker.getDate
-    // this.getEntries(?)
-    // pieChart.setData(?)
+    // Update data (calls notifyDataSetChanged() automatically)
+    pieChart.setData(generatePieData());
   }
 
-  /**
-   * TODO: diese Methode muss anwendungsspezifisch überschrieben werden
-   * Sie liefert eine Liste von Labels, mit denen die Zahlen aus der  Methode "getEntries"
-   * im Kuchendiagramm beschriftet werden. Die Reihenfolge der Labels muss zu der Reihenfolge
-   * der Entries passen
-   */
-  private List<String> getLabels() {
-    return MainActivity.taskManager.getExistentTaskNamesAsList();
+  private List<Task> getTaskList() {
+    Date from = null;
+    Date to = null;
+
+    if (fromDatePicker != null) {
+      from = new Date(
+              fromDatePicker.getDatePicker().getYear(),
+              fromDatePicker.getDatePicker().getMonth(),
+              fromDatePicker.getDatePicker().getDayOfMonth()
+      );
+    }
+
+    if (toDatePicker != null) {
+      to = new Date(
+              toDatePicker.getDatePicker().getYear(),
+              toDatePicker.getDatePicker().getMonth(),
+              toDatePicker.getDatePicker().getDayOfMonth()
+      );
+    }
+
+    return MainActivity.taskManager.getFilteredTasks(from, to);
   }
 }

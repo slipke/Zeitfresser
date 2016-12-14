@@ -125,9 +125,8 @@ public abstract class TaskManager {
   }
 
   public List<Task> getFilteredTasks(Date from, Date to) {
-    // filter from & to
-    // return remaining tasks
-    return null;
+    // @TODO FILTER
+    return filterZeroDurationTasks(taskList);
   }
 
   private List<Task> filterZeroDurationTasks(List<Task> tasks) {
