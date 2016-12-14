@@ -29,6 +29,8 @@ public class EvalActivity extends CommonActivity {
 
   private DatePickerDialog fromDatePicker;
   private DatePickerDialog toDatePicker;
+  private boolean fromDateSet = false;
+  private boolean toDateSet = false;
 
   private EditText fromEditText;
   private EditText toEditText;
@@ -69,6 +71,7 @@ public class EvalActivity extends CommonActivity {
     fromDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
       @Override
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        fromDateSet = true;
         month++; // month counting begins at 0 - strange
         Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "." + year, Toast
                 .LENGTH_LONG).show();
@@ -82,6 +85,7 @@ public class EvalActivity extends CommonActivity {
     toDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
       @Override
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        toDateSet = true;
         month++;
         Toast.makeText(getApplicationContext(), "set to date: " + day + "." + month + "." + year, Toast
                 .LENGTH_LONG).show();
@@ -119,23 +123,26 @@ public class EvalActivity extends CommonActivity {
   private void updatePieChart() {
     // Update data (calls notifyDataSetChanged() automatically)
     pieChart.setData(generatePieData());
+    getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
   }
 
   private List<Task> getTaskList() {
     Date from = null;
     Date to = null;
 
-    if (fromDatePicker != null) {
+    if (fromDateSet) {
+
+
       from = new Date(
-              fromDatePicker.getDatePicker().getYear(),
+              fromDatePicker.getDatePicker().getYear() - 1900,
               fromDatePicker.getDatePicker().getMonth(),
               fromDatePicker.getDatePicker().getDayOfMonth()
       );
     }
 
-    if (toDatePicker != null) {
+    if (toDateSet) {
       to = new Date(
-              toDatePicker.getDatePicker().getYear(),
+              toDatePicker.getDatePicker().getYear() - 1900,
               toDatePicker.getDatePicker().getMonth(),
               toDatePicker.getDatePicker().getDayOfMonth()
       );

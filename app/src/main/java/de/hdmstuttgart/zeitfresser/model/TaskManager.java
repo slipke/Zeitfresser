@@ -2,6 +2,7 @@ package de.hdmstuttgart.zeitfresser.model;
 
 import com.github.mikephil.charting.data.Entry;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -99,8 +100,33 @@ public abstract class TaskManager {
   }
 
   public List<Task> getFilteredTasks(Date from, Date to) {
-    // @TODO FILTER
-    return filterZeroDurationTasks(taskList);
+    List<Task> filteredTaskList = new LinkedList<>();
+
+    if (from == null && to == null) {
+      return filteredTaskList;
+    }
+
+    for (Task task : taskList) {
+      // 1.) If from and to is set, check for records above from & below date
+      if (from != null && to != null && task.hasRecordsBetween(from, to)) {
+        filteredTaskList.add(task);
+        continue;
+      }
+
+      // 2.) If only from is set, check only for records above from
+      if (from != null && to == null && task.hasRecordsAbove(from)) {
+        filteredTaskList.add(task);
+        continue;
+      }
+
+      // 3.) If only to is set, check only for records below to
+      if (from == null && to != null && task.hasRecordsBelow(to)) {
+        filteredTaskList.add(task);
+        continue;
+      }
+    }
+
+    return filterZeroDurationTasks(filteredTaskList);
   }
 
   private List<Task> filterZeroDurationTasks(List<Task> tasks) {

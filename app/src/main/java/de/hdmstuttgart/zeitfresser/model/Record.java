@@ -32,6 +32,10 @@ public class Record extends Observable {
     return record;
   }
 
+  public Date getStart() {
+    return start;
+  }
+
   public Record() {
 
   }

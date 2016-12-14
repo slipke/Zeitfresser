@@ -3,6 +3,7 @@ package de.hdmstuttgart.zeitfresser.model;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Date;
 
 /**
  * This class represents a task, which can be started, stopped and manages a collection of records.
@@ -135,5 +136,35 @@ public class Task {
 
   public String toString() {
     return this.id + " " + this.name;
+  }
+
+  public boolean hasRecordsAbove(Date date) {
+    for (Record record : records) {
+      // start has to be > than date
+      if (record.getStart().after(date)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean hasRecordsBelow(Date date) {
+    for (Record record : records) {
+      // start has to be < than date
+      if (record.getStart().before(date)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean hasRecordsBetween(Date from, Date to) {
+    for (Record record : records) {
+      // start has to be > than from & < than to
+      if (record.getStart().after(from) && record.getStart().before(to)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
