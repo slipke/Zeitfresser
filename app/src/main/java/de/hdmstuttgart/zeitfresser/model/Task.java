@@ -109,10 +109,6 @@ public class Task {
     active = false;
   }
 
-  public boolean hasRecords() {
-    return !records.isEmpty();
-  }
-
   /**
    * Returns the overall duration of all records attached to a certain task.
    *
