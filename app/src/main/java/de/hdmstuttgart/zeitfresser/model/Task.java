@@ -138,7 +138,7 @@ public class Task {
     return this.id + " " + this.name;
   }
 
-  public boolean hasRecordsAbove(Date date) {
+  public boolean hasRecordsAfter(Date date) {
     for (Record record : records) {
       // start has to be > than date
       if (record.getStart().after(date)) {
@@ -148,7 +148,7 @@ public class Task {
     return false;
   }
 
-  public boolean hasRecordsBelow(Date date) {
+  public boolean hasRecordsBefore(Date date) {
     for (Record record : records) {
       // start has to be < than date
       if (record.getStart().before(date)) {

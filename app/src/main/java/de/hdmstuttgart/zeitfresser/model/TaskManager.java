@@ -3,6 +3,7 @@ package de.hdmstuttgart.zeitfresser.model;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -100,30 +101,44 @@ public abstract class TaskManager {
   }
 
   public List<Task> getFilteredTasks(Date from, Date to) {
-    List<Task> filteredTaskList = new LinkedList<>();
+    List<Task> copiedList = new LinkedList<>(taskList);
 
     if (from == null && to == null) {
-      return filterZeroDurationTasks(taskList);
+      return filterZeroDurationTasks(copiedList);
     }
 
-    for (Task task : taskList) {
-      // 1.) If from and to is set, check for records above from & below date
-      if (from != null && to != null && task.hasRecordsBetween(from, to)) {
-        filteredTaskList.add(task);
-      }
-
-      // 2.) If only from is set, check only for records above from
-      if (from != null && to == null && task.hasRecordsAbove(from)) {
-        filteredTaskList.add(task);
-      }
-
-      // 3.) If only to is set, check only for records below to
-      if (from == null && to != null && task.hasRecordsBelow(to)) {
-        filteredTaskList.add(task);
-      }
+    if (from != null) {
+      copiedList = filterTasksStartedBefore(copiedList, from);
     }
 
-    return filterZeroDurationTasks(filteredTaskList);
+    if (to != null) {
+      copiedList = filterTasksEndedAfter(copiedList, to);
+    }
+
+    return filterZeroDurationTasks(copiedList);
+  }
+
+  private List<Task> filterTasksStartedBefore(List<Task> tasks, Date start) {
+    List<Task> filteredTasks = new LinkedList<>();
+
+    for (Task task : tasks) {
+      if (!task.hasRecordsBefore(start)) {
+        filteredTasks.add(task);
+      }
+    }
+    return filteredTasks;
+  }
+
+
+  private List<Task> filterTasksEndedAfter(List<Task> tasks, Date end) {
+    List<Task> filteredTasks = new LinkedList<>();
+
+    for (Task task : tasks) {
+      if (!task.hasRecordsAfter(end)) {
+        filteredTasks.add(task);
+      }
+    }
+    return filteredTasks;
   }
 
   private List<Task> filterZeroDurationTasks(List<Task> tasks) {
