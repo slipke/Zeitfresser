@@ -14,6 +14,8 @@ import java.util.Date;
  */
 public class Task {
 
+  private static int instanceCounter = 0;
+
   private long id;
   private boolean active;
   private String name;
@@ -21,11 +23,7 @@ public class Task {
   private Record activeRecord;
 
   public static Task withName(String name) {
-    return new Task(name);
-  }
-
-  public static Task withNameAndId(String name, long id) {
-    return new Task(name, id);
+    return new Task(name, ++instanceCounter);
   }
 
   private Task(String name) {
@@ -44,7 +42,6 @@ public class Task {
    * track of the elapsing time as well as setting the task's current status to "active". Throw
    * an {@link IllegalStateException} when {@code start()} is called on a task which is already
    * in active state.
-   *
    */
   public void start() {
     if (!isActive()) {
@@ -55,18 +52,18 @@ public class Task {
     }
   }
 
-  /**
-   * Add a record to the current task (needed for junit testing).
-   */
-  public void addRecord(Record record) {
-    records.add(record);
-  }
-
   private void prepareNewRecord() {
     Record record = new Record();
     activeRecord = record;
     addRecord(record);
     activeRecord.start();
+  }
+
+  /**
+   * Add a record to the current task (needed for junit testing).
+   */
+  public void addRecord(Record record) {
+    records.add(record);
   }
 
   private void setActive() {
@@ -87,6 +84,15 @@ public class Task {
     }
   }
 
+  private void disableCurrentActiveRecord() {
+    activeRecord.stop();
+    activeRecord = null;
+  }
+
+  private void setInactive() {
+    active = false;
+  }
+
   /**
    * Returns whether the current task is active or not.
    *
@@ -98,15 +104,6 @@ public class Task {
 
   private boolean hasActiveRecord() {
     return activeRecord != null;
-  }
-
-  private void disableCurrentActiveRecord() {
-    activeRecord.stop();
-    activeRecord = null;
-  }
-
-  private void setInactive() {
-    active = false;
   }
 
   /**
