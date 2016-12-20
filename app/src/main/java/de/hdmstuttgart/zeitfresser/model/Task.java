@@ -134,10 +134,6 @@ public class Task {
     return id;
   }
 
-  public String toString() {
-    return this.id + " " + this.name;
-  }
-
   public boolean hasRecordsAfter(Date date) {
     for (Record record : records) {
       // start has to be > than date
@@ -158,13 +154,7 @@ public class Task {
     return false;
   }
 
-  public boolean hasRecordsBetween(Date from, Date to) {
-    for (Record record : records) {
-      // start has to be > than from & < than to
-      if (record.getStart().after(from) && record.getStart().before(to)) {
-        return true;
-      }
-    }
-    return false;
+  public String toString() {
+    return this.id + " " + this.name;
   }
 }
