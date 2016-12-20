@@ -110,19 +110,16 @@ public abstract class TaskManager {
       // 1.) If from and to is set, check for records above from & below date
       if (from != null && to != null && task.hasRecordsBetween(from, to)) {
         filteredTaskList.add(task);
-        continue;
       }
 
       // 2.) If only from is set, check only for records above from
       if (from != null && to == null && task.hasRecordsAbove(from)) {
         filteredTaskList.add(task);
-        continue;
       }
 
       // 3.) If only to is set, check only for records below to
       if (from == null && to != null && task.hasRecordsBelow(to)) {
         filteredTaskList.add(task);
-        continue;
       }
     }
 
