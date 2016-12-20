@@ -98,7 +98,7 @@ public class Task {
     return active;
   }
 
-  private boolean hasActiveRecord() {
+  public boolean hasActiveRecord() {
     return activeRecord != null;
   }
 
@@ -141,6 +141,10 @@ public class Task {
       }
     }
     return false;
+  }
+
+  public boolean hasAnyRecords() {
+    return !records.isEmpty();
   }
 
   public String toString() {
