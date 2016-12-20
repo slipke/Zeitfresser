@@ -26,10 +26,6 @@ public class Task {
     return new Task(name, ++instanceCounter);
   }
 
-  private Task(String name) {
-    this(name, 0);
-  }
-
   private Task(String name, long id) {
     Objects.requireNonNull(name);
     this.name = name;
