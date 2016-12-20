@@ -103,7 +103,7 @@ public abstract class TaskManager {
     List<Task> filteredTaskList = new LinkedList<>();
 
     if (from == null && to == null) {
-      return filteredTaskList;
+      return filterZeroDurationTasks(taskList);
     }
 
     for (Task task : taskList) {
