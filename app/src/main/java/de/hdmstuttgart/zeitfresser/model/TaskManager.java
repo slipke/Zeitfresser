@@ -14,11 +14,13 @@ import java.util.List;
 
 public abstract class TaskManager {
 
-  private List<Task> taskList;
+  private List<Task> taskList = new LinkedList<>();
 
-  protected TaskManager() {
+  TaskManager() {
     this.taskList = createTaskList();
   }
+
+  protected abstract List<Task> createTaskList();
 
   /**
    * Return the current task list.
@@ -26,25 +28,7 @@ public abstract class TaskManager {
    * @return the current {@link List} of tasks.
    */
   public List<Task> getTaskList() {
-    if (taskList == null) {
-      taskList = new LinkedList<>();
-    }
     return taskList;
-  }
-
-  protected abstract List<Task> createTaskList();
-
-  /**
-   * Add a new task with name {@code taskName} to the list of tasks.
-   *
-   * @param taskName the name of the new {@link Task}.
-   */
-  public void addTaskWithName(String taskName) {
-    if (taskName != null && !taskName.isEmpty()) {
-      getTaskList().add(Task.withName(taskName));
-    } else {
-      throw new IllegalArgumentException("Argument \"taskName\" must not be null or empty!)");
-    }
   }
 
   /**
@@ -53,9 +37,11 @@ public abstract class TaskManager {
    * @param task The task to be started.
    */
   public void startTask(Task task) {
-    if (task != null) {
-      task.start();
+    if (task == null) {
+      throw new IllegalArgumentException("Argument \"task\" must not be null");
     }
+
+    task.start();
   }
 
   /**
@@ -65,11 +51,11 @@ public abstract class TaskManager {
    * @param task The {@link Task} to be stopped.
    */
   public void stopTask(Task task) {
-    if (task != null) {
-      task.stop();
-    } else {
-      throw new IllegalArgumentException("Input argument \"task\" was null!");
+    if (task == null) {
+      throw new IllegalArgumentException("Argument \"taskName\" must not be null or empty!)");
     }
+
+    task.stop();
   }
 
   /**
@@ -79,11 +65,11 @@ public abstract class TaskManager {
    * @return true if active, false otherwise.
    */
   public boolean isTaskActive(Task task) {
-    if (task != null) {
-      return task.isActive();
-    } else {
+    if (task == null) {
       throw new IllegalArgumentException("Input argument \"task\" was null!");
     }
+
+    return task.isActive();
   }
 
   /**
@@ -93,11 +79,11 @@ public abstract class TaskManager {
    * @return The total amount of time over all records attached to {@code task}.
    */
   public float getOverallDurationForTask(Task task) {
-    if (task != null) {
-      return task.getOverallDuration();
-    } else {
+    if (task == null) {
       throw new IllegalArgumentException("Input argument \"task\" was null!");
     }
+
+    return task.getOverallDuration();
   }
 
   public List<Task> getFilteredTasks(Date from, Date to) {
