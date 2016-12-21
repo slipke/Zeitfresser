@@ -10,7 +10,6 @@ import java.util.Observable;
 public class Record extends Observable {
 
   private long id = 0;
-  private long duration = 0;
   private Date start = null;
   private Date end = null;
 
@@ -47,10 +46,7 @@ public class Record extends Observable {
    * @return long
    */
   public long getDuration() {
-    if (duration == 0L && hasStartAndEndTime()) {
-      duration = end.getTime() - start.getTime();
-    }
-    return duration;
+    return end.getTime() - start.getTime();
   }
 
   public void start() {
