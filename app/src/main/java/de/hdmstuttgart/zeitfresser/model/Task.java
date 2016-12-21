@@ -71,8 +71,12 @@ public class Task {
   /**
    * Add a record to the current task (needed for junit testing).
    */
-  public void addRecord(Record record) {
-    records.add(record);
+  private void addRecord(Record record) {
+    if (record != null) {
+      records.add(record);
+    } else {
+      throw new IllegalArgumentException("Record argument must not be null!");
+    }
   }
 
   private void setActive() {
