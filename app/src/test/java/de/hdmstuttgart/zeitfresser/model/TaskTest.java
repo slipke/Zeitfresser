@@ -11,12 +11,13 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 
 /**
- * Created by patrick on 08.11.16.
+ * This is a test class for {@link Task}.
+ *
+ * @author patrick.kleindienst
  */
 
 @SuppressWarnings("unchecked")
@@ -24,15 +25,12 @@ public class TaskTest {
 
   private Task classUnderTest;
 
-  private final int durationOffset = 1000;
-
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
   @Before
   public void setUp() throws Exception {
     classUnderTest = Task.withName("DummyTask");
-
   }
 
 
@@ -126,6 +124,99 @@ public class TaskTest {
         records.contains(activeRecord), equalTo(true));
   }
 
+  /**
+   * Once a task has been started and stopped properly after a while, it is expected to be in the
+   * following state:
+   * <br/>
+   * <ul>
+   * <li>It must be in inactive state.</li>
+   * <li>It must at least contain a single record.</li>
+   * <li>It must not have an active record.</li>
+   * </ul>
+   */
+  @Test
+  public void testStopActiveTask() throws Exception {
+    classUnderTest.start();
+    classUnderTest.stop();
+
+    Field recordsField = getFieldFromTestClass("records");
+    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
+
+    assertThat("Stopped task must be inactive!", classUnderTest.isActive(), equalTo(false));
+    assertThat("Stopped task must have any records!",
+        classUnderTest.hasAnyRecords(), equalTo(true));
+    assertThat("Stopped task must have a single record!", records.size(), equalTo(1));
+    assertThat("Stopped task must not have an active record!",
+        classUnderTest.hasActiveRecord(), equalTo(false));
+  }
+
+  /**
+   * Any inactive task, which may be a newly created task or a task which has been started and
+   * stopped again, is expected to throw an {@link IllegalStateException} if <code>stop()</code>
+   * gets called on that task.
+   * Furthermore, the task is expected to be in exactly the same state as before the exception
+   * occurred:
+   * <br/>
+   * <ul>
+   * <l>It must be in inactive state.</li>
+   * <li>Its record list is in the same state as before.</li>
+   * <li>It is not allowed to have an active record.</li>
+   * </ul>
+   */
+  @Test
+  public void testStopInactiveTaskThrowsException() throws Exception {
+    expectedException.expect(IllegalStateException.class);
+    expectedException.expectMessage("Can't stop an inactive task");
+
+    classUnderTest.start();
+    classUnderTest.stop();
+    classUnderTest.stop();
+
+    Field recordsField = getFieldFromTestClass("records");
+    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
+
+    assertThat("Inactive task must still be inactive!", classUnderTest.isActive(), equalTo(false));
+    assertThat("Inactive task must have any records!",
+        classUnderTest.hasAnyRecords(), equalTo(true));
+    assertThat("Inactive task must have exactly one record!", records.size(), equalTo(1));
+    assertThat("Inactive task must not have an active record!",
+        classUnderTest.hasActiveRecord(), equalTo(false));
+  }
+
+  /**
+   * Any task, which has already been started and subsequently been stopped, is expected to
+   * be in the following state after restart:
+   * <br/>
+   * <ul>
+   * <li>It must be back in active state.</li>
+   * <li>It must contain one more record in its list.</li>
+   * <li>It must have an active record.</li>
+   * <li>The active record must be the same as the new element in the record list.</li>
+   * </ul>
+   */
+  @Test
+  public void testRestartPreviouslyStoppedTask() throws Exception {
+    classUnderTest.start();
+    classUnderTest.stop();
+    classUnderTest.start();
+
+    Field recordsField = getFieldFromTestClass("records");
+    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
+
+    Field activeRecordField = getFieldFromTestClass("activeRecord");
+    Record activeRecord = (Record) activeRecordField.get(classUnderTest);
+
+    assertThat("Restarted task must be back in active state!",
+        classUnderTest.isActive(), equalTo(true));
+    assertThat("Restarted task must have any records!",
+        classUnderTest.hasAnyRecords(), equalTo(true));
+    assertThat("Restarted task must exactly have two records!", records.size(), equalTo(2));
+    assertThat("Restarted task must have an active record!",
+        classUnderTest.hasActiveRecord(), equalTo(true));
+    assertThat("Active record must be present in record list!",
+        records.contains(activeRecord), equalTo(true));
+  }
+
   @Test
   public void testAddRecord() throws Exception {
     Record record = Record.withStartAndEnd(new Date(), new Date());
@@ -137,81 +228,6 @@ public class TaskTest {
     assertThat(records.contains(record), equalTo(true));
   }
 
-  @Test
-  public void testTaskIsInitiallyInactive() {
-    assertThat(classUnderTest.isActive(), equalTo(false));
-  }
-
-  @Test
-  public void testTaskIsActiveAfterStartup() {
-    classUnderTest.start();
-
-    assertThat(classUnderTest.isActive(), equalTo(true));
-  }
-
-  @Test
-  public void testActiveRecordIsInitiallyNull() throws Exception {
-    Field activeRecord = Task.class.getDeclaredField("activeRecord");
-    activeRecord.setAccessible(true);
-    Record record = (Record) activeRecord.get(classUnderTest);
-
-    assertThat(record, nullValue());
-  }
-
-  @Test
-  public void testActiveRecordIsSetAfterStartup() throws Exception {
-    classUnderTest.start();
-
-    Field activeRecord = getFieldFromTestClass("activeRecord");
-    Record record = (Record) activeRecord.get(classUnderTest);
-
-    assertThat(record, notNullValue());
-  }
-
-
-  @Test
-  public void testRecordListContainsActiveRecordAfterStartup() throws Exception {
-    classUnderTest.start();
-
-    Field recordList = getFieldFromTestClass("records");
-    List<Record> records = (List<Record>) recordList.get(classUnderTest);
-    Field activeRecordField = getFieldFromTestClass("activeRecord");
-    Record activeRecord = (Record) activeRecordField.get(classUnderTest);
-
-    assertThat(records, notNullValue());
-    assertThat(records.contains(activeRecord), equalTo(true));
-  }
-
-
-  @Test(expected = IllegalStateException.class)
-  public void testExceptionThrownWhenStartingActiveTask() {
-    classUnderTest.start();
-    classUnderTest.start();
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testExceptionThrownWhenStoppingInactiveTask() {
-    classUnderTest.stop();
-  }
-
-  @Test
-  public void testActiveRecordIsNullAfterStop() throws Exception {
-    classUnderTest.start();
-    classUnderTest.stop();
-
-    Field activeRecordField = getFieldFromTestClass("activeRecord");
-    Record activeRecord = (Record) activeRecordField.get(classUnderTest);
-
-    assertThat(activeRecord, nullValue());
-  }
-
-  @Test
-  public void testTaskIsInactiveAfterStop() {
-    classUnderTest.start();
-    classUnderTest.stop();
-
-    assertThat(classUnderTest.isActive(), equalTo(false));
-  }
 
   @Test
   public void testComputeOverallDuration() throws Exception {
