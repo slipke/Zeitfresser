@@ -14,7 +14,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 
 /**
@@ -267,11 +267,41 @@ public class TaskTest {
   }
 
   @Test
-  public void testHasRecordAfterThrowsExceptionOnNullArgument() {
+  public void testTaskHasRecordAfterThrowsExceptionOnNullArgument() {
     expectedException.expect(IllegalArgumentException.class);
     expectedException.expectMessage("Date argument must not be null!");
 
     classUnderTest.hasRecordsAfter(null);
+  }
+
+  @Test
+  public void testTaskHasRecordBefore() throws Exception {
+    addDummyRecordWithStartDateOffset(-1000000L);
+    Date currentDate = new Date();
+
+    boolean result = classUnderTest.hasRecordsBefore(currentDate);
+
+    assertThat("Task must have any record with start date before 'currentDate'!",
+            result, equalTo(true));
+  }
+
+  @Test
+  public void testTaskHasNoRecordBefore() throws Exception {
+    addDummyRecordWithStartDateOffset(1000000L);
+    Date currentDate = new Date();
+
+    boolean result = classUnderTest.hasRecordsBefore(currentDate);
+
+    assertThat("Task must not have any record with start date before 'currentDate'!",
+            result, equalTo(false));
+  }
+
+  @Test
+  public void testTaskHasRecordsBeforeThrowsExceptionOnNullArgument() throws Exception {
+    expectedException.expect(IllegalArgumentException.class);
+    expectedException.expectMessage("Date argument must not be null!");
+
+    classUnderTest.hasRecordsBefore(null);
   }
 
   /**
@@ -307,7 +337,8 @@ public class TaskTest {
     } catch (InvocationTargetException ex) {
       assertThat(ex.getTargetException().getClass().equals(IllegalArgumentException.class),
               equalTo(true));
-      assertThat(ex.getTargetException().getMessage(), equalTo("Record argument must not be null!"));
+      assertThat(ex.getTargetException().getMessage(), equalTo("Record argument must not be " +
+              "null!"));
     }
 
     Field recordsField = getFieldFromTestClass("records");
