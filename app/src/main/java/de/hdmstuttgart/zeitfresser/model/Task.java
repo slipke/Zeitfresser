@@ -51,7 +51,7 @@ public class Task {
   private void prepareNewRecord() {
     Record record = createNewRecord();
     setAsActiveRecord(record);
-    addToRecordList(record);
+    addRecord(record);
     startActiveRecord();
   }
 
@@ -67,9 +67,6 @@ public class Task {
     this.activeRecord.start();
   }
 
-  private void addToRecordList(Record record) {
-    this.records.add(record);
-  }
 
   /**
    * Add a record to the current task (needed for junit testing).
