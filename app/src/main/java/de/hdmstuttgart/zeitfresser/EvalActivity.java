@@ -21,10 +21,6 @@ import java.util.Date;
 import de.hdmstuttgart.zeitfresser.model.Task;
 
 
-/**
- * EvalActivity ist die Aktivität, die beim Klick auf den Eintrag "Evaluation" im Drawer-Menü
- * aufgerufen wird.
- */
 public class EvalActivity extends CommonActivity {
 
   private DatePickerDialog fromDatePicker;
@@ -37,9 +33,6 @@ public class EvalActivity extends CommonActivity {
 
   private PieChart pieChart;
 
-  /**
-   * diese Methode muss nicht verändert werden, sie baut das Kuchendiagramm auf.
-   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -53,6 +46,9 @@ public class EvalActivity extends CommonActivity {
     pieChart.setData(generatePieData());
   }
 
+  /**
+   * Creates data for the PieChart depending on selected values from the two DatePickers
+   */
   private PieData generatePieData() {
     List<Task> taskList = getTaskList();
     List<String> labelList = MainActivity.taskManager.taskListToLabelList(taskList);
@@ -64,6 +60,9 @@ public class EvalActivity extends CommonActivity {
     return new PieData(labelList, dataSet);
   }
 
+  /**
+   * Initialize the DatePicker dialogs
+   */
   private void initDatePickerDialogs() {
     Calendar calendar = Calendar.getInstance();
 
@@ -73,9 +72,7 @@ public class EvalActivity extends CommonActivity {
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         fromDateSet = true;
         month++; // month counting begins at 0 - strange
-        Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "." + year, Toast
-                .LENGTH_LONG).show();
-        ;
+        Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "." + year, Toast.LENGTH_LONG).show();
         fromEditText.setText(day + "." + month + "." + year);
         updatePieChart();
       }
@@ -87,9 +84,7 @@ public class EvalActivity extends CommonActivity {
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         toDateSet = true;
         month++;
-        Toast.makeText(getApplicationContext(), "set to date: " + day + "." + month + "." + year, Toast
-                .LENGTH_LONG).show();
-        ;
+        Toast.makeText(getApplicationContext(), "set to date: " + day + "." + month + "." + year, Toast.LENGTH_LONG).show();
         toEditText.setText(day + "." + month + "." + year);
         updatePieChart();
       }
@@ -120,20 +115,23 @@ public class EvalActivity extends CommonActivity {
     });
   }
 
+  /**
+   * Updates the PieChart data and refreshed the PieChart
+   */
   private void updatePieChart() {
-    // Update data (calls notifyDataSetChanged() automatically)
     pieChart.setData(generatePieData());
     // Refresh pieChart
     pieChart.invalidate();
   }
 
+  /**
+   * Returns the task list depending on the date values selected
+   */
   private List<Task> getTaskList() {
     Date from = null;
     Date to = null;
 
     if (fromDateSet) {
-
-
       from = new Date(
               fromDatePicker.getDatePicker().getYear() - 1900,
               fromDatePicker.getDatePicker().getMonth(),
