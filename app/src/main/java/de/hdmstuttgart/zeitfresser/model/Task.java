@@ -76,7 +76,7 @@ public class Task {
       disableCurrentActiveRecord();
       setInactive();
     } else {
-      throw new IllegalStateException("Task has not been started yet!");
+      throw new IllegalStateException("Can't stop an inactive task");
     }
   }
 
