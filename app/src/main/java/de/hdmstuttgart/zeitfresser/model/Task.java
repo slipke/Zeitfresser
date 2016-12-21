@@ -79,9 +79,6 @@ public class Task {
     }
   }
 
-  private void setActive() {
-    active = true;
-  }
 
   /**
    * Stop the current task if it is active and has an active record which captures time. If this
@@ -163,10 +160,6 @@ public class Task {
 
   private void startActiveRecord() {
     this.activeRecord.start();
-  }
-
-  public void addRecord(Record record) {
-    records.add(record);
   }
 
   private void disableCurrentActiveRecord() {
