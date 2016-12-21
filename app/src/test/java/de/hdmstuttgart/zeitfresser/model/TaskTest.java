@@ -217,6 +217,37 @@ public class TaskTest {
         records.contains(activeRecord), equalTo(true));
   }
 
+
+  @Test
+  public void testTaskHasNoRecordAfter() {
+    addDummyRecordWithStartDateOffset(-600000L);
+    Date currentDate = new Date();
+
+    boolean result = classUnderTest.hasRecordsAfter(currentDate);
+
+    assertThat("Task must not have any records after 'currentDate'!",
+        result, equalTo(false));
+  }
+
+  @Test
+  public void testTaskHasRecordAfter() {
+    addDummyRecordWithStartDateOffset(600000L);
+    Date currentDate = new Date();
+
+    boolean result = classUnderTest.hasRecordsAfter(currentDate);
+
+    assertThat("Task must have any records after 'currentDate'!",
+        result, equalTo(true));
+  }
+
+  @Test
+  public void testHasRecordAfterThrowsExceptionOnNullArgument() {
+    expectedException.expect(IllegalArgumentException.class);
+    expectedException.expectMessage("Date argument must not be null!");
+
+    classUnderTest.hasRecordsAfter(null);
+  }
+
   @Test
   public void testAddRecord() throws Exception {
     Record record = Record.withStartAndEnd(new Date(), new Date());
@@ -230,16 +261,29 @@ public class TaskTest {
 
 
   @Test
-  public void testComputeOverallDuration() throws Exception {
+  public void testComputeOverallDurationWithRecords() throws Exception {
     addDummyRecordWithDuration(1000);
     addDummyRecordWithDuration(2000);
     float duration = classUnderTest.getOverallDuration();
 
-    assertThat(duration, equalTo((float) (3000)));
+    assertThat(duration, equalTo(3000f));
   }
 
-  private void addDummyRecordWithDuration(int offset) throws NoSuchFieldException,
-      IllegalAccessException {
+  @Test
+  public void testComputeOverallDurationWithoutAnyRecord() {
+    float duration = classUnderTest.getOverallDuration();
+
+    assertThat(duration, equalTo(0f));
+  }
+
+  private void addDummyRecordWithStartDateOffset(long offsetInMillis) {
+    Date startDate = new Date(System.currentTimeMillis() + offsetInMillis);
+    Date endDate = new Date(startDate.getTime() + 1000);
+    Record record = Record.withStartAndEnd(startDate, endDate);
+    classUnderTest.addRecord(record);
+  }
+
+  private void addDummyRecordWithDuration(int offset) {
     Date startDate = new Date();
     Date endDate = new Date(startDate.getTime() + offset);
     Record testRecord = Record.withStartAndEnd(startDate, endDate);
