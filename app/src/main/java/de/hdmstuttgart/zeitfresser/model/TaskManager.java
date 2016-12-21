@@ -2,15 +2,9 @@ package de.hdmstuttgart.zeitfresser.model;
 
 import com.github.mikephil.charting.data.Entry;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-/**
- * A TaskManager holds and administrates a list of tasks.
- */
 
 public abstract class TaskManager {
 

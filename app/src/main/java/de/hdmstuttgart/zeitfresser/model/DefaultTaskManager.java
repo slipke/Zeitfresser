@@ -3,18 +3,10 @@ package de.hdmstuttgart.zeitfresser.model;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by patrick on 19.10.16.
- */
-
 public class DefaultTaskManager extends TaskManager {
 
   public static DefaultTaskManager createInstance() {
     return new DefaultTaskManager();
-  }
-
-  private DefaultTaskManager() {
-
   }
 
   @Override

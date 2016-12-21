@@ -62,7 +62,17 @@ public class TaskManagerTest {
 
   @Test
   public void testGetFilteredTasks() {
-    // @TODO TDD
+
+  }
+
+  @Test
+  public void testFilterTasksStartedBefore() {
+
+  }
+
+  @Test
+  public void testFilterTasksEndedAfter() {
+
   }
 
   @Test
@@ -77,8 +87,10 @@ public class TaskManagerTest {
     tasks.add(dummyTask1);
     tasks.add(dummyTask2);
 
-    Method filterZeroDurationTasks = DefaultTaskManager.class.getSuperclass().getDeclaredMethod
-            ("filterZeroDurationTasks", List.class);
+    Method filterZeroDurationTasks = DefaultTaskManager
+            .class
+            .getSuperclass()
+            .getDeclaredMethod("filterZeroDurationTasks", List.class);
     filterZeroDurationTasks.setAccessible(true);
 
     List<Task> filteredList = (List<Task>) filterZeroDurationTasks.invoke(taskManager, tasks);
