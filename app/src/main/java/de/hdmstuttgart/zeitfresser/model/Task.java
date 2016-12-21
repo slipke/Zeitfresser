@@ -124,13 +124,17 @@ public class Task {
   }
 
   public boolean hasRecordsAfter(Date date) {
-    for (Record record : records) {
-      // start has to be > than date
-      if (record.getStart().after(date)) {
-        return true;
+    if (date != null) {
+      for (Record record : records) {
+        // start has to be > than date
+        if (record.getStart().after(date)) {
+          return true;
+        }
       }
+      return false;
+    } else {
+      throw new IllegalArgumentException("Date argument must not be null!");
     }
-    return false;
   }
 
   public boolean hasRecordsBefore(Date date) {
