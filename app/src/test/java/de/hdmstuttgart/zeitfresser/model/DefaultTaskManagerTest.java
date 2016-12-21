@@ -3,6 +3,7 @@ package de.hdmstuttgart.zeitfresser.model;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.LinkedList;
@@ -72,7 +73,7 @@ public class DefaultTaskManagerTest {
   }
 
   @Test
-  public void getOverallDurationForTaskTest() {
+  public void getOverallDurationForTaskTest() throws Exception {
     Date now = new Date();
 
     int interval1 = 60 * 1000; // 1min
@@ -93,9 +94,12 @@ public class DefaultTaskManagerTest {
     Task task = Task.withName("Test");
 
     // Add records to task
-    task.addRecord(record1);
-    task.addRecord(record2);
-    task.addRecord(record3);
+    List<Record> records = new LinkedList<>();
+    records.add(record1);
+    records.add(record2);
+    records.add(record3);
+
+    setRecordsForTask(task, records);
 
     assertEquals(interval1 + interval2 + interval3, taskManager.getOverallDurationForTask(task), 0);
   }
@@ -123,5 +127,11 @@ public class DefaultTaskManagerTest {
     assertThat(filteredList.contains(dummyTask2), equalTo(true));
     assertThat(filteredList.contains(dummyTask1), equalTo(false));
 
+  }
+
+  private void setRecordsForTask(Task task, List<Record> records) throws Exception {
+    Field recordsField = Task.class.getDeclaredField("records");
+    recordsField.setAccessible(true);
+    recordsField.set(task, records);
   }
 }
