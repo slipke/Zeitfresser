@@ -123,7 +123,8 @@ public class EvalActivity extends CommonActivity {
   private void updatePieChart() {
     // Update data (calls notifyDataSetChanged() automatically)
     pieChart.setData(generatePieData());
-    getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
+    // Refresh pieChart
+    pieChart.invalidate();
   }
 
   private List<Task> getTaskList() {
