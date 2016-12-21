@@ -9,19 +9,16 @@ import java.util.Observable;
  */
 public class Record extends Observable {
 
-  // TODO: how to set the id
   private long id = 0;
   private long duration = 0;
   private Date start = null;
   private Date end = null;
 
   /**
-   * This factory method is needed for junit testing (since we don't have mocking yet).
+   * Create Record (factory method)
    *
    * @param start Startdate
    * @param end Enddate
-   *
-   *  @TODO Mock
    *
    * @return The new record object
    */
@@ -32,20 +29,12 @@ public class Record extends Observable {
     return record;
   }
 
-  public Date getStart() {
-    return start;
-  }
-
   public Record() {
 
   }
 
-  public void start() {
-    start = new Date();
-  }
-
-  public void stop() {
-    end = new Date();
+  public Date getStart() {
+    return start;
   }
 
   public long getId() {
@@ -62,6 +51,14 @@ public class Record extends Observable {
       duration = end.getTime() - start.getTime();
     }
     return duration;
+  }
+
+  public void start() {
+    start = new Date();
+  }
+
+  public void stop() {
+    end = new Date();
   }
 
   private boolean hasStartAndEndTime() {
