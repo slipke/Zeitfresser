@@ -69,6 +69,18 @@ public class Task {
   }
 
   /**
+   * Add a record to the current task (needed for junit testing).
+   */
+  private void addRecord(Record record) {
+    if (record != null) {
+      records.add(record);
+    } else {
+      throw new IllegalArgumentException("Record argument must not be null!");
+    }
+  }
+
+
+  /**
    * Stop the current task if it is active and has an active record which captures time. If this
    * method is called on an inactive task or on a task which has no active record, an
    * {@link IllegalStateException} is thrown.
@@ -148,10 +160,6 @@ public class Task {
 
   private void startActiveRecord() {
     this.activeRecord.start();
-  }
-
-  public void addRecord(Record record) {
-    records.add(record);
   }
 
   private void disableCurrentActiveRecord() {

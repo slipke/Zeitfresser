@@ -6,12 +6,15 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -242,7 +245,7 @@ public class TaskTest {
   }
 
   @Test
-  public void testTaskHasNoRecordAfter() {
+  public void testTaskHasNoRecordAfter() throws Exception {
     addDummyRecordWithStartDateOffset(-600000L);
     Date currentDate = new Date();
 
@@ -253,7 +256,7 @@ public class TaskTest {
   }
 
   @Test
-  public void testTaskHasRecordAfter() {
+  public void testTaskHasRecordAfter() throws Exception {
     addDummyRecordWithStartDateOffset(600000L);
     Date currentDate = new Date();
 
@@ -271,17 +274,47 @@ public class TaskTest {
     classUnderTest.hasRecordsAfter(null);
   }
 
+  /**
+   * If <code>addRecord</code> gets called with a valid non-null {@link Record} argument,
+   * the passed instance is expected to be contained within the task's record list.
+   *
+   */
   @Test
-  public void testAddRecord() throws Exception {
-    Record record = Record.withStartAndEnd(new Date(), new Date());
-    classUnderTest.addRecord(record);
+  public void testAddValidRecord() throws Exception {
+    Record recordMock = mock(Record.class);
+
+    Method addRecordMethod = getMethodFromTestClass("addRecord", new Class[]{Record.class});
+    addRecordMethod.invoke(classUnderTest, recordMock);
 
     Field recordsField = getFieldFromTestClass("records");
     List<Record> records = (List<Record>) recordsField.get(classUnderTest);
 
-    assertThat(records.contains(record), equalTo(true));
+    assertThat(records.contains(recordMock), equalTo(true));
   }
 
+  /**
+   * if <code>addRecord</code> is called with <code>null</code> as argument, the method is
+   * expected to throw an {@link IllegalArgumentException}.
+   * Additionally, the task's record list is expected to be not modified during the call.
+   *
+   */
+  @Test
+  public void testAddNullToRecordsThrowsException() throws Exception {
+    Method addRecordMethod = getMethodFromTestClass("addRecord", new Class[]{Record.class});
+
+    try {
+      addRecordMethod.invoke(classUnderTest, new Object[]{null});
+    } catch (InvocationTargetException ex) {
+      assertThat(ex.getTargetException().getClass().equals(IllegalArgumentException.class),
+              equalTo(true));
+      assertThat(ex.getTargetException().getMessage(), equalTo("Record argument must not be null!"));
+    }
+
+    Field recordsField = getFieldFromTestClass("records");
+    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
+
+    assertThat(records.size(), equalTo(0));
+  }
 
   @Test
   public void testComputeOverallDurationWithRecords() throws Exception {
@@ -299,18 +332,26 @@ public class TaskTest {
     assertThat(duration, equalTo(0f));
   }
 
-  private void addDummyRecordWithStartDateOffset(long offsetInMillis) {
+  private void addDummyRecordWithStartDateOffset(long offsetInMillis) throws Exception {
     Date startDate = new Date(System.currentTimeMillis() + offsetInMillis);
     Date endDate = new Date(startDate.getTime() + 1000);
     Record record = Record.withStartAndEnd(startDate, endDate);
-    classUnderTest.addRecord(record);
+
+    Field recordsField = getFieldFromTestClass("records");
+    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
+    records.add(record);
+    recordsField.set(classUnderTest, records);
   }
 
-  private void addDummyRecordWithDuration(int offset) {
+  private void addDummyRecordWithDuration(int offset) throws Exception {
     Date startDate = new Date();
     Date endDate = new Date(startDate.getTime() + offset);
     Record testRecord = Record.withStartAndEnd(startDate, endDate);
-    classUnderTest.addRecord(testRecord);
+
+    Field recordsField = getFieldFromTestClass("records");
+    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
+    records.add(testRecord);
+    recordsField.set(classUnderTest, records);
   }
 
 
@@ -321,5 +362,15 @@ public class TaskTest {
       return field;
     }
     throw new IllegalArgumentException("Field name must not be null or empty!");
+  }
+
+  private Method getMethodFromTestClass(String methodName, Class<?>[] params) throws
+          NoSuchMethodException {
+    if (methodName != null && !methodName.isEmpty()) {
+      Method method = Task.class.getDeclaredMethod(methodName, params);
+      method.setAccessible(true);
+      return method;
+    }
+    throw new IllegalArgumentException("Method name must not be null or empty!");
   }
 }
