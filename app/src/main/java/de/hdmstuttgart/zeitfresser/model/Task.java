@@ -33,6 +33,26 @@ public class Task {
     this.id = id;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  private void setActive() {
+    active = true;
+  }
+
+  private void setInactive() {
+    active = false;
+  }
+
   /**
    * Start the current task. This includes preparing a new {@link Record} which keeps
    * track of the elapsing time as well as setting the task's current status to "active". Throw
@@ -47,26 +67,6 @@ public class Task {
       throw new IllegalStateException("Task has already been started!");
     }
   }
-
-  private void prepareNewRecord() {
-    Record record = createNewRecord();
-    setAsActiveRecord(record);
-    addRecord(record);
-    startActiveRecord();
-  }
-
-  private Record createNewRecord() {
-    return new Record();
-  }
-
-  private void setAsActiveRecord(Record record) {
-    this.activeRecord = record;
-  }
-
-  private void startActiveRecord() {
-    this.activeRecord.start();
-  }
-
 
   /**
    * Add a record to the current task (needed for junit testing).
@@ -97,24 +97,6 @@ public class Task {
     }
   }
 
-  private void disableCurrentActiveRecord() {
-    activeRecord.stop();
-    activeRecord = null;
-  }
-
-  private void setInactive() {
-    active = false;
-  }
-
-  /**
-   * Returns whether the current task is active or not.
-   *
-   * @return boolean
-   */
-  public boolean isActive() {
-    return active;
-  }
-
   public boolean hasActiveRecord() {
     return activeRecord != null;
   }
@@ -130,14 +112,6 @@ public class Task {
       overallDuration += record.getDuration();
     }
     return overallDuration;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public long getId() {
-    return id;
   }
 
   public boolean hasRecordsAfter(Date date) {
@@ -170,5 +144,37 @@ public class Task {
 
   public String toString() {
     return this.id + " " + this.name;
+  }
+
+  private void prepareNewRecord() {
+    Record record = createNewRecord();
+    setAsActiveRecord(record);
+    addRecord(record);
+    startActiveRecord();
+  }
+
+  private Record createNewRecord() {
+    return new Record();
+  }
+
+  private void setAsActiveRecord(Record record) {
+    this.activeRecord = record;
+  }
+
+  private void startActiveRecord() {
+    this.activeRecord.start();
+  }
+
+  public void addRecord(Record record) {
+    records.add(record);
+  }
+
+  private void disableCurrentActiveRecord() {
+    stopActiveRecord();
+    setAsActiveRecord(null);
+  }
+
+  private void stopActiveRecord() {
+    activeRecord.stop();
   }
 }
