@@ -47,11 +47,11 @@ public class TaskTest {
   @Test
   public void testInitialTaskState() {
     assertThat("Newly created task must not be in active state!",
-        classUnderTest.isActive(), equalTo(false));
+            classUnderTest.isActive(), equalTo(false));
     assertThat("Newly created task must not have any records!",
-        classUnderTest.hasAnyRecords(), equalTo(false));
+            classUnderTest.hasAnyRecords(), equalTo(false));
     assertThat("Newly created task must not have an active record!",
-        classUnderTest.hasActiveRecord(), equalTo(false));
+            classUnderTest.hasActiveRecord(), equalTo(false));
     assertThat("Task name must not be null!", classUnderTest.getName(), notNullValue());
   }
 
@@ -78,11 +78,11 @@ public class TaskTest {
 
     assertThat("Task must be in active state!", classUnderTest.isActive(), equalTo(true));
     assertThat("Task's record list must not be empty!",
-        classUnderTest.hasAnyRecords(), equalTo(true));
+            classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Record list must contain exactly one element!", records.size(), equalTo(1));
     assertThat("Task must have an active record!", classUnderTest.hasActiveRecord(), equalTo(true));
     assertThat("Active record must be present in records list!",
-        records.contains(activeRecord), equalTo(true));
+            records.contains(activeRecord), equalTo(true));
   }
 
 
@@ -114,14 +114,14 @@ public class TaskTest {
     Record activeRecord = (Record) activeRecordField.get(classUnderTest);
 
     assertThat("Double-activated task must still be active!",
-        classUnderTest.isActive(), equalTo(true));
+            classUnderTest.isActive(), equalTo(true));
     assertThat("Double-activated task must still have records!",
-        classUnderTest.hasAnyRecords(), equalTo(true));
+            classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Record list must still contain a single element!", records.size(), equalTo(1));
     assertThat("Double-activated task must still have an active record!",
-        classUnderTest.hasActiveRecord(), equalTo(true));
+            classUnderTest.hasActiveRecord(), equalTo(true));
     assertThat("Active record must still be present in record list!",
-        records.contains(activeRecord), equalTo(true));
+            records.contains(activeRecord), equalTo(true));
   }
 
   /**
@@ -144,10 +144,10 @@ public class TaskTest {
 
     assertThat("Stopped task must be inactive!", classUnderTest.isActive(), equalTo(false));
     assertThat("Stopped task must have any records!",
-        classUnderTest.hasAnyRecords(), equalTo(true));
+            classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Stopped task must have a single record!", records.size(), equalTo(1));
     assertThat("Stopped task must not have an active record!",
-        classUnderTest.hasActiveRecord(), equalTo(false));
+            classUnderTest.hasActiveRecord(), equalTo(false));
   }
 
   /**
@@ -166,7 +166,7 @@ public class TaskTest {
   @Test
   public void testStopInactiveTaskThrowsException() throws Exception {
     expectedException.expect(IllegalStateException.class);
-    expectedException.expectMessage("Can't stop an inactive task");
+    expectedException.expectMessage("Can't stop inactive task");
 
     classUnderTest.start();
     classUnderTest.stop();
@@ -177,10 +177,10 @@ public class TaskTest {
 
     assertThat("Inactive task must still be inactive!", classUnderTest.isActive(), equalTo(false));
     assertThat("Inactive task must have any records!",
-        classUnderTest.hasAnyRecords(), equalTo(true));
+            classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Inactive task must have exactly one record!", records.size(), equalTo(1));
     assertThat("Inactive task must not have an active record!",
-        classUnderTest.hasActiveRecord(), equalTo(false));
+            classUnderTest.hasActiveRecord(), equalTo(false));
   }
 
   /**
@@ -207,16 +207,39 @@ public class TaskTest {
     Record activeRecord = (Record) activeRecordField.get(classUnderTest);
 
     assertThat("Restarted task must be back in active state!",
-        classUnderTest.isActive(), equalTo(true));
+            classUnderTest.isActive(), equalTo(true));
     assertThat("Restarted task must have any records!",
-        classUnderTest.hasAnyRecords(), equalTo(true));
+            classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Restarted task must exactly have two records!", records.size(), equalTo(2));
     assertThat("Restarted task must have an active record!",
-        classUnderTest.hasActiveRecord(), equalTo(true));
+            classUnderTest.hasActiveRecord(), equalTo(true));
     assertThat("Active record must be present in record list!",
-        records.contains(activeRecord), equalTo(true));
+            records.contains(activeRecord), equalTo(true));
   }
 
+  /**
+   * A newly created task which has never been started is expected to throw an {@link
+   * IllegalStateException} if <code>stop()</code> is called on it. Additionally, the task's state
+   * is expected to be the same as its initial state:
+   * <br/>
+   * <ul>
+   * <li>It is in inactive state.</li>
+   * <li>Its record list is empty.</li>
+   * <li>It does not have an active record.</li>
+   * </ul>
+   */
+  @Test
+  public void testStopNewlyCreatedTaskCausesException() {
+    expectedException.expect(IllegalStateException.class);
+    expectedException.expectMessage("Can't stop inactive task.");
+
+    classUnderTest.stop();
+
+    assertThat("Task must be in inactive state!", classUnderTest.isActive(), equalTo(false));
+    assertThat("Task must not have any records!", classUnderTest.hasAnyRecords(), equalTo(false));
+    assertThat("Task must not have an active record!",
+            classUnderTest.hasActiveRecord(), equalTo(false));
+  }
 
   @Test
   public void testTaskHasNoRecordAfter() {
@@ -226,7 +249,7 @@ public class TaskTest {
     boolean result = classUnderTest.hasRecordsAfter(currentDate);
 
     assertThat("Task must not have any records after 'currentDate'!",
-        result, equalTo(false));
+            result, equalTo(false));
   }
 
   @Test
@@ -237,7 +260,7 @@ public class TaskTest {
     boolean result = classUnderTest.hasRecordsAfter(currentDate);
 
     assertThat("Task must have any records after 'currentDate'!",
-        result, equalTo(true));
+            result, equalTo(true));
   }
 
   @Test

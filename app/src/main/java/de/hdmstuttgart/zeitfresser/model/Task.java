@@ -49,10 +49,26 @@ public class Task {
   }
 
   private void prepareNewRecord() {
-    Record record = new Record();
-    activeRecord = record;
-    addRecord(record);
-    activeRecord.start();
+    Record record = createNewRecord();
+    setAsActiveRecord(record);
+    addToRecordList(record);
+    startActiveRecord();
+  }
+
+  private Record createNewRecord() {
+    return new Record();
+  }
+
+  private void setAsActiveRecord(Record record) {
+    this.activeRecord = record;
+  }
+
+  private void startActiveRecord() {
+    this.activeRecord.start();
+  }
+
+  private void addToRecordList(Record record) {
+    this.records.add(record);
   }
 
   /**
@@ -76,7 +92,7 @@ public class Task {
       disableCurrentActiveRecord();
       setInactive();
     } else {
-      throw new IllegalStateException("Can't stop an inactive task");
+      throw new IllegalStateException("Can't stop inactive task.");
     }
   }
 
