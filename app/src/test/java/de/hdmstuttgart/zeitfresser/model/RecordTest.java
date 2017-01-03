@@ -7,6 +7,8 @@ import static org.junit.Assert.fail;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.internal.matchers.Null;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -14,6 +16,7 @@ import java.util.Date;
 public class RecordTest {
 
   private Record record;
+
 
   @Before
   public void setUp() {
@@ -30,57 +33,106 @@ public class RecordTest {
     //assertFalse(record.has);
   }
 
-  @Test
-  public void testStartTimeLessOrEqualsCurrentTime() {
+  @Test(expected = NullPointerException.class)
+  public void testStartInitialRecord(){
     record.start();
-    try {
-      Field startField = Record.class.getDeclaredField("start");
-      startField.setAccessible(true);
-      assertTrue(new Date().getTime() - ((Date) startField.get(record)).getTime() >= 0L);
-    } catch (NoSuchFieldException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      fail(ex.getMessage());
-    }
+    long start  = getStartFieldValue().getTime();
+    long end    = getEndFieldValue()  .getTime();
+    assertTrue(start >= end);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testStopInitialRecord(){
+    record.stop();
+    long start  = getStartFieldValue().getTime();
+    long end    = getEndFieldValue()  .getTime();
+    assertTrue(start >= end);
   }
 
   @Test
-  public void testEndTimeHigherThanStartTime() {
+  public void testStopStartedRecord(){
+    record.start();
+    long start  = getStartFieldValue().getTime();
+    timeout();
+    record.stop();
+    long end    = getEndFieldValue()  .getTime();
+    assertTrue(end > start);
+  }
+
+  @Test
+  public void testStartStoppedRecord(){
+    record.start();
+    timeout();
+
+    record.stop();
+    long end    = getEndFieldValue()  .getTime();
+
+    timeout();
+    record.start();
+    long start  = getStartFieldValue().getTime();
+
+    assertTrue(start >= end);
+  }
+
+  @Test(expected=IllegalStateException.class)
+  public void testStopStoppedRecord(){
+    record.start();
+    timeout();
+    long start  = getStartFieldValue().getTime();
+
+    record.stop();
+    timeout();
+
+    record.stop();
+    long end    = getEndFieldValue()  .getTime();
+
+    assertTrue(end > start);
+  }
+
+  @Test(expected=IllegalStateException.class)
+  public void testStartStartedRecord(){
+    record.start();
+    timeout();
 
     record.start();
-    record.stop();
-    try {
+    long start  = getStartFieldValue().getTime();
+    long end    = getEndFieldValue().getTime();
+    assertTrue(end > start);
+  }
+
+  // helper method,return start field via reflection
+  public Date getStartFieldValue() {
+    try{
       Field startField = Record.class.getDeclaredField("start");
       startField.setAccessible(true);
-      Date start = (Date) startField.get(record);
+      return (Date) startField.get(record);
+    } catch (IllegalAccessException | NoSuchFieldException e){
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  // helper method, returns end field via reflection
+  public Date getEndFieldValue() {
+    try{
       Field endField = Record.class.getDeclaredField("end");
       endField.setAccessible(true);
-      Date end = (Date) endField.get(record);
-      assertTrue(end.getTime() - start.getTime() >= 0);
-    } catch (NoSuchFieldException | IllegalAccessException ex) {
-      fail(ex.getMessage());
+      return (Date) endField.get(record);
+    } catch (IllegalAccessException | NoSuchFieldException e){
+      e.printStackTrace();
+      return null;
     }
   }
 
-  @Test
-  public void testGetDuration() {
-    record.start();
+  void timeout(){
     try {
       Thread.sleep(10);
-    } catch (InterruptedException ex) {
-      ex.printStackTrace();
-    }
-    record.stop();
-    try {
-      Field startField = Record.class.getDeclaredField("start");
-      startField.setAccessible(true);
-      Date start = (Date) startField.get(record);
-      Field endField = Record.class.getDeclaredField("end");
-      endField.setAccessible(true);
-      Date end = (Date) endField.get(record);
-      long expectedDuration = end.getTime() - start.getTime();
-      assertEquals(expectedDuration, record.getDuration());
-    } catch (NoSuchFieldException | IllegalAccessException ex) {
-      fail(ex.getMessage());
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
+
+  /********************************************************************/
+
+
 }
