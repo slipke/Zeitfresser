@@ -34,7 +34,7 @@ public class RecordTest {
   }
 
   @Test(expected = NullPointerException.class)
-  public void testStartInitialRecord(){
+  public void testStartInitialRecord() {
     record.start();
     long start  = getStartFieldValue().getTime();
     long end    = getEndFieldValue()  .getTime();
@@ -42,7 +42,7 @@ public class RecordTest {
   }
 
   @Test(expected = IllegalStateException.class)
-  public void testStopInitialRecord(){
+  public void testStopInitialRecord() {
     record.stop();
     long start  = getStartFieldValue().getTime();
     long end    = getEndFieldValue()  .getTime();
@@ -50,7 +50,7 @@ public class RecordTest {
   }
 
   @Test
-  public void testStopStartedRecord(){
+  public void testStopStartedRecord() {
     record.start();
     long start  = getStartFieldValue().getTime();
     timeout();
@@ -60,7 +60,7 @@ public class RecordTest {
   }
 
   @Test
-  public void testStartStoppedRecord(){
+  public void testStartStoppedRecord() {
     record.start();
     timeout();
 
@@ -74,11 +74,10 @@ public class RecordTest {
     assertTrue(start >= end);
   }
 
-  @Test(expected=IllegalStateException.class)
-  public void testStopStoppedRecord(){
+  @Test(expected = IllegalStateException.class)
+  public void testStopStoppedRecord() {
     record.start();
     timeout();
-    long start  = getStartFieldValue().getTime();
 
     record.stop();
     timeout();
@@ -86,11 +85,12 @@ public class RecordTest {
     record.stop();
     long end    = getEndFieldValue()  .getTime();
 
+    long start = getStartFieldValue().getTime();
     assertTrue(end > start);
   }
 
-  @Test(expected=IllegalStateException.class)
-  public void testStartStartedRecord(){
+  @Test(expected = IllegalStateException.class)
+  public void testStartStartedRecord() {
     record.start();
     timeout();
 
@@ -100,39 +100,33 @@ public class RecordTest {
     assertTrue(end > start);
   }
 
-  // helper method,return start field via reflection
   public Date getStartFieldValue() {
-    try{
+    try {
       Field startField = Record.class.getDeclaredField("start");
       startField.setAccessible(true);
       return (Date) startField.get(record);
-    } catch (IllegalAccessException | NoSuchFieldException e){
-      e.printStackTrace();
+    } catch (IllegalAccessException | NoSuchFieldException ex) {
+      ex.printStackTrace();
       return null;
     }
   }
 
-  // helper method, returns end field via reflection
   public Date getEndFieldValue() {
-    try{
+    try {
       Field endField = Record.class.getDeclaredField("end");
       endField.setAccessible(true);
       return (Date) endField.get(record);
-    } catch (IllegalAccessException | NoSuchFieldException e){
-      e.printStackTrace();
+    } catch (IllegalAccessException | NoSuchFieldException ex) {
+      ex.printStackTrace();
       return null;
     }
   }
 
-  void timeout(){
+  void timeout() {
     try {
       Thread.sleep(10);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    } catch (InterruptedException ex) {
+      ex.printStackTrace();
     }
   }
-
-  /********************************************************************/
-
-
 }
