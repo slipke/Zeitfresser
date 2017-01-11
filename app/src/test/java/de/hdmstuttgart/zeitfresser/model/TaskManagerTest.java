@@ -17,6 +17,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import com.github.mikephil.charting.data.Entry;
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -66,6 +68,7 @@ public class TaskManagerTest {
 
   @Test
   public void testGetFilteredTasks() throws NoSuchFieldException, IllegalAccessException {
+    // @TODO Mocks + Spies?
     // Now + 2h
     Date from = new Date();
     from.setTime(from.getTime() + (2 * 60 * 60 * 1000));
@@ -145,11 +148,33 @@ public class TaskManagerTest {
 
   @Test
   public void taskListToEntryListTest() {
+    // Create taskList with entries
+    List<Task> taskList = new LinkedList<>();
+    Task task1 = Task.withName("Dummy 1");
+    Task task2 = Task.withName("Dummy 2");
+    Task task3 = Task.withName("Dummy 3");
+    taskList.add(task1);
+    taskList.add(task2);
+    taskList.add(task3);
 
+    List<Entry> entryList = taskManager.taskListToEntryList(taskList);
+
+    assertTrue(taskList.size() == entryList.size());
   }
 
   @Test
   public void taskListToLabelListTest() {
+    // Create taskList with entries
+    List<Task> taskList = new LinkedList<>();
+    Task task1 = Task.withName("Dummy 1");
+    Task task2 = Task.withName("Dummy 2");
+    Task task3 = Task.withName("Dummy 3");
+    taskList.add(task1);
+    taskList.add(task2);
+    taskList.add(task3);
 
+    List<String> labelList = taskManager.taskListToLabelList(taskList);
+
+    assertTrue(taskList.size() == labelList.size());
   }
 }
