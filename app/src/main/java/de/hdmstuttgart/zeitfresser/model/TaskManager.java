@@ -81,44 +81,75 @@ public abstract class TaskManager {
   }
 
   public List<Task> getFilteredTasks(Date from, Date to) {
-    List<Task> copiedList = new LinkedList<>(taskList);
+    List<Task> newTaskList = new LinkedList<>();
+    List<Task> taskListFrom = new LinkedList<>();
+    List<Task> taskListTo = new LinkedList<>();
 
     if (from == null && to == null) {
-      return filterZeroDurationTasks(copiedList);
+      return filterZeroDurationTasks(taskList);
     }
 
     if (from != null) {
-      copiedList = filterTasksStartedBefore(copiedList, from);
+      taskListFrom = getTasksWithRecordsLaterThan(from, taskList);
     }
 
     if (to != null) {
-      copiedList = filterTasksEndedAfter(copiedList, to);
+      taskListTo = getTasksWithRecordsEarlierThan(to, taskList);
     }
 
-    return filterZeroDurationTasks(copiedList);
+    // Now compare both lists and return only objects which are in both lists
+    if (to == null) {
+      // No to set, return fromList
+      newTaskList = taskListFrom;
+    } else if (from == null) {
+      // No from set, return toList
+      newTaskList = taskListTo;
+    } else {
+      // Compare both lists
+      newTaskList = getOnlyObjectsPresentInBothLists(taskListFrom, taskListTo);
+    }
+
+    return filterZeroDurationTasks(newTaskList);
   }
 
-  private List<Task> filterTasksStartedBefore(List<Task> tasks, Date start) {
-    List<Task> filteredTasks = new LinkedList<>();
-
-    for (Task task : tasks) {
-      if (!task.hasRecordsBefore(start)) {
-        filteredTasks.add(task);
+  private List<Task> getTasksWithRecordsLaterThan(Date date, List<Task> fullTaskList) {
+    List<Task> newTaskList = new LinkedList<>();
+    for (Task task : fullTaskList) {
+      if (task.hasRecordsAfter(date)) {
+        newTaskList.add(task);
       }
     }
-    return filteredTasks;
+    return newTaskList;
   }
 
-
-  private List<Task> filterTasksEndedAfter(List<Task> tasks, Date end) {
-    List<Task> filteredTasks = new LinkedList<>();
-
-    for (Task task : tasks) {
-      if (!task.hasRecordsAfter(end)) {
-        filteredTasks.add(task);
+  private List<Task> getTasksWithRecordsEarlierThan(Date date, List<Task> fullTaskList) {
+    List<Task> newTaskList = new LinkedList<>();
+    for (Task task : fullTaskList) {
+      if (task.hasRecordsBefore(date)) {
+        newTaskList.add(task);
       }
     }
-    return filteredTasks;
+    return newTaskList;
+  }
+
+  private List<Task> getOnlyObjectsPresentInBothLists(List<Task> fromList, List<Task> toList) {
+    List<Task> newList = new LinkedList<>();
+
+    // Iterate over fromList and add objects which are present in toList
+    for (Task task : fromList) {
+      if (toList.contains(task)) {
+        newList.add(task);
+      }
+    }
+
+    // Iterate over toList and add objects which are present in fromList and not already in newList
+    for (Task task : toList) {
+      if (fromList.contains(task) && !newList.contains(task)) {
+        newList.add(task);
+      }
+    }
+
+    return newList;
   }
 
   private List<Task> filterZeroDurationTasks(List<Task> tasks) {
