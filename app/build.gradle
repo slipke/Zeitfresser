@@ -33,9 +33,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
     //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:24.0.0'
     //noinspection GradleDependency
@@ -47,6 +47,22 @@ dependencies {
     testCompile 'org.hamcrest:hamcrest-library:1.3'
     //Hier wird angegeben, dass diese Library mit compiliert werden muss (Kuchendiagramm)
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+
+    //androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'recyclerview-v7'
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:23.0.1'
+    }
 }
 
 repositories {
@@ -127,8 +143,8 @@ task customFindbugs(type: FindBugs) {
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion="0.7.6.201602180812"
-    reportsDir=file("$buildDir/reports/jacoco")
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/reports/jacoco")
 }
 
 def coverageSourceDirs = [
