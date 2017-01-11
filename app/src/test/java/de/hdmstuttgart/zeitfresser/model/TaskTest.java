@@ -337,8 +337,8 @@ public class TaskTest {
     } catch (InvocationTargetException ex) {
       assertThat(ex.getTargetException().getClass().equals(IllegalArgumentException.class),
               equalTo(true));
-      assertThat(ex.getTargetException().getMessage(), equalTo("Record argument must not be " +
-              "null!"));
+      assertThat(ex.getTargetException().getMessage(),
+              equalTo("Record argument must not be " + "null!"));
     }
 
     Field recordsField = getFieldFromTestClass("records");

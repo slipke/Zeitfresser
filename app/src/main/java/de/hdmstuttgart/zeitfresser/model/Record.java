@@ -50,13 +50,13 @@ public class Record extends Observable {
   }
 
   public void start() {
-    if(start != null && end != null){
-      if(start.getTime() > end.getTime()){
+    if (start != null && end != null) {
+      if (start.getTime() > end.getTime()) {
         /* if start time is even bigger than end time then
            start was called twice */
         throw new IllegalStateException();
       }
-    } else if(start != null && end == null){
+    } else if (start != null && end == null) {
       // record was started twice, but not stopped
       throw new IllegalStateException();
     }
@@ -64,11 +64,11 @@ public class Record extends Observable {
   }
 
   public void stop() {
-    if(start == null){
+    if (start == null) {
       throw new IllegalStateException();
     }
-    if(end != null && start != null){
-      if(end.getTime() >= start.getTime()){
+    if (end != null && start != null) {
+      if (end.getTime() >= start.getTime()) {
         /* if end time is even bigger than start time then
            stop was called twice */
         throw new IllegalStateException();
