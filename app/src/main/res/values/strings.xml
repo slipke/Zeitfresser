@@ -6,7 +6,7 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="eval_activity">Evaluation</string>
+    <string name="eval_activity">EvaluationActivity</string>
     <string name="task_list">TaskList</string>
 
     <string name="drawerIcon">Drawer Icon</string>
