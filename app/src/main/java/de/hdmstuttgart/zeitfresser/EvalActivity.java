@@ -18,7 +18,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
+import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
+import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
 
 public class EvalActivity extends CommonActivity {
@@ -28,6 +30,8 @@ public class EvalActivity extends CommonActivity {
   private boolean fromDateSet = false;
   private boolean toDateSet = false;
 
+  private DbTaskManager taskManager;
+
   private EditText fromEditText;
   private EditText toEditText;
 
@@ -36,6 +40,8 @@ public class EvalActivity extends CommonActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    this.taskManager = DbTaskManager.createInstance(this);
+
     setContentView(R.layout.activity_eval);
     createNavigationBars();
     initDatePickerDialogs();
@@ -51,8 +57,8 @@ public class EvalActivity extends CommonActivity {
    */
   private PieData generatePieData() {
     List<Task> taskList = getTaskList();
-    List<String> labelList = MainActivity.taskManager.taskListToLabelList(taskList);
-    List<Entry> entryList = MainActivity.taskManager.taskListToEntryList(taskList);
+    List<String> labelList = this.taskManager.taskListToLabelList(taskList);
+    List<Entry> entryList = this.taskManager.taskListToEntryList(taskList);
 
     PieDataSet dataSet = new PieDataSet(entryList, "Time spent");
     dataSet.setColors(ColorTemplate.COLORFUL_COLORS); // set the color
@@ -147,6 +153,6 @@ public class EvalActivity extends CommonActivity {
       );
     }
 
-    return MainActivity.taskManager.getFilteredTasks(from, to);
+    return this.taskManager.getFilteredTasks(from, to);
   }
 }

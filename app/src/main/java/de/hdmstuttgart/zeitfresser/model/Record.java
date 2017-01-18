@@ -1,7 +1,14 @@
 package de.hdmstuttgart.zeitfresser.model;
 
+import android.database.Cursor;
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
+
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 /**
  * This class represents a record, which in turn stands for a single phase of execution of a {@link
@@ -10,6 +17,7 @@ import java.util.Observable;
 public class Record extends Observable {
 
   private long id = 0;
+  private long recordId;
   private Date start = null;
   private Date end = null;
 
@@ -28,12 +36,35 @@ public class Record extends Observable {
     return record;
   }
 
+  public static Record fromCursor(Cursor c) {
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    String start = c.getString(c.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_START));
+    String end = c.getString(c.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_END));
+    long id = c.getLong(c.getColumnIndexOrThrow(DbStatements._ID));
+    Record record = new Record();
+
+    try {
+      record.start = formatter.parse(start);
+      record.end = formatter.parse(end);
+    } catch (ParseException exception) {
+      // This should not happen
+      Log.e("Record", "Failed to parse date");
+    }
+
+    record.id = id;
+    return record;
+  }
+
   public Record() {
 
   }
 
   public Date getStart() {
     return start;
+  }
+
+  public Date getEnd() {
+    return end;
   }
 
   public long getId() {
@@ -46,6 +77,10 @@ public class Record extends Observable {
    * @return long
    */
   public long getDuration() {
+    if (end == null || start == null) {
+      return 0;
+    }
+
     return end.getTime() - start.getTime();
   }
 

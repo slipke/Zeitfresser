@@ -8,22 +8,12 @@ import java.util.List;
 
 public abstract class TaskManager {
 
-  private List<Task> taskList = new LinkedList<>();
-
-  TaskManager() {
-    this.taskList = createTaskList();
-  }
-
-  protected abstract List<Task> createTaskList();
-
   /**
    * Return the current task list.
    *
    * @return the current {@link List} of tasks.
    */
-  public List<Task> getTaskList() {
-    return taskList;
-  }
+  public abstract List<Task> getTaskList();
 
   /**
    * Start a task.
@@ -86,15 +76,15 @@ public abstract class TaskManager {
     List<Task> taskListTo = new LinkedList<>();
 
     if (from == null && to == null) {
-      return filterZeroDurationTasks(taskList);
+      return filterZeroDurationTasks(getTaskList());
     }
 
     if (from != null) {
-      taskListFrom = getTasksWithRecordsLaterThan(from, taskList);
+      taskListFrom = getTasksWithRecordsLaterThan(from, getTaskList());
     }
 
     if (to != null) {
-      taskListTo = getTasksWithRecordsEarlierThan(to, taskList);
+      taskListTo = getTasksWithRecordsEarlierThan(to, getTaskList());
     }
 
     // Now compare both lists and return only objects which are in both lists

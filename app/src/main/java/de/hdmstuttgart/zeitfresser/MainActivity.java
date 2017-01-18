@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import de.hdmstuttgart.zeitfresser.model.DefaultTaskManager;
+import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
 import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
@@ -16,11 +16,13 @@ import java.util.List;
 
 public class MainActivity extends CommonActivity {
 
-  protected static final TaskManager taskManager = DefaultTaskManager.createInstance();
+  private TaskManager taskManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    taskManager = DbTaskManager.createInstance(this);
+
     setContentView(R.layout.activity_main);
     createNavigationBars();
 

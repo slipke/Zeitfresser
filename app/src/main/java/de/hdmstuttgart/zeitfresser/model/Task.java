@@ -1,9 +1,13 @@
 package de.hdmstuttgart.zeitfresser.model;
 
+import android.database.Cursor;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Date;
+
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 /**
  * This class represents a task, which can be started, stopped and manages a collection of records.
@@ -22,6 +26,12 @@ public class Task {
   private List<Record> records;
   private Record activeRecord;
 
+  public static Task fromCursor(Cursor c) {
+    String name = c.getString(c.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_TITLE));
+    long id = c.getLong(c.getColumnIndexOrThrow(DbStatements._ID));
+    return new Task(name, id);
+  }
+
   public static Task withName(String name) {
     return new Task(name, ++instanceCounter);
   }
@@ -39,6 +49,10 @@ public class Task {
 
   public long getId() {
     return id;
+  }
+
+  public Record getActiveRecord() {
+    return this.activeRecord;
   }
 
   public boolean isActive() {
@@ -71,7 +85,7 @@ public class Task {
   /**
    * Add a record to the current task (needed for junit testing).
    */
-  private void addRecord(Record record) {
+  public void addRecord(Record record) {
     if (record != null) {
       records.add(record);
     } else {
