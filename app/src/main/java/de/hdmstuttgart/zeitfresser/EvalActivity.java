@@ -15,12 +15,11 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
-import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
 
 public class EvalActivity extends CommonActivity {

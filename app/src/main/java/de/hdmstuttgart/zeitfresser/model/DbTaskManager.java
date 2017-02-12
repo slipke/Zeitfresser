@@ -14,12 +14,12 @@ public class DbTaskManager extends TaskManager {
   private Context context = null;
 
 
-  public static DbTaskManager createInstance(Context c) {
-    return new DbTaskManager(c);
+  public static DbTaskManager createInstance(Context context) {
+    return new DbTaskManager(context);
   }
 
-  private DbTaskManager(Context c) {
-    this.context = c;
+  private DbTaskManager(Context context) {
+    this.context = context;
     this.dbCalls = new DbCalls();
   }
 

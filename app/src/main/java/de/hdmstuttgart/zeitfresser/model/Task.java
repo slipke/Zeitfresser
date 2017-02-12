@@ -26,9 +26,15 @@ public class Task {
   private List<Record> records;
   private Record activeRecord;
 
-  public static Task fromCursor(Cursor c) {
-    String name = c.getString(c.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_TITLE));
-    long id = c.getLong(c.getColumnIndexOrThrow(DbStatements._ID));
+  /**
+   * Builds a single {@link Task} instance from a cursor.
+   *
+   * @param cursor The cursor to build the task from.
+   * @return A single task.
+   */
+  public static Task fromCursor(Cursor cursor) {
+    String name = cursor.getString(cursor.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_TITLE));
+    long id = cursor.getLong(cursor.getColumnIndexOrThrow(DbStatements._ID));
     return new Task(name, id);
   }
 
@@ -125,6 +131,13 @@ public class Task {
     return overallDuration;
   }
 
+  /**
+   * Check if the task has at least one single {@link Record}
+   * whose start lies after the specified date.
+   *
+   * @param date The date against which the task's records are checked.
+   * @return True, if task has a record starting after the specified date. False Otherwise.
+   */
   public boolean hasRecordsAfter(Date date) {
     if (date != null) {
       for (Record record : records) {
@@ -139,6 +152,13 @@ public class Task {
     }
   }
 
+  /**
+   * Check if the task has at least one single {@link Record}
+   * whose start lies before the specified date.
+   *
+   * @param date The date against which the task's records are checked.
+   * @return True, if task has a record starting before the specified date. False Otherwise.
+   */
   public boolean hasRecordsBefore(Date date) {
     if (date != null) {
       for (Record record : records) {
