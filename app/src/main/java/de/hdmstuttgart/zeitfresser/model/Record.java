@@ -3,12 +3,12 @@ package de.hdmstuttgart.zeitfresser.model;
 import android.database.Cursor;
 import android.util.Log;
 
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
-
-import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 /**
  * This class represents a record, which in turn stands for a single phase of execution of a {@link

@@ -5,11 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import de.hdmstuttgart.zeitfresser.model.Record;
+import de.hdmstuttgart.zeitfresser.model.Task;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import de.hdmstuttgart.zeitfresser.model.Record;
-import de.hdmstuttgart.zeitfresser.model.Task;
 
 public class DbCalls {
 

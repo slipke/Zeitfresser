@@ -14,12 +14,13 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
+import de.hdmstuttgart.zeitfresser.model.Task;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
-import de.hdmstuttgart.zeitfresser.model.Task;
 
 
 public class EvalActivity extends CommonActivity {
@@ -77,11 +78,13 @@ public class EvalActivity extends CommonActivity {
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         fromDateSet = true;
         month++; // month counting begins at 0 - strange
-        Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "." + year, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "." +
+            year, Toast.LENGTH_LONG).show();
         fromEditText.setText(day + "." + month + "." + year);
         updatePieChart();
       }
-    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar
+        .DAY_OF_MONTH));
 
     // implement to date picker dialog
     toDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -89,11 +92,13 @@ public class EvalActivity extends CommonActivity {
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         toDateSet = true;
         month++;
-        Toast.makeText(getApplicationContext(), "set to date: " + day + "." + month + "." + year, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "set to date: " + day + "." + month + "." + year,
+            Toast.LENGTH_LONG).show();
         toEditText.setText(day + "." + month + "." + year);
         updatePieChart();
       }
-    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar
+        .DAY_OF_MONTH));
 
     // get date edit text fields
     fromEditText = (EditText) findViewById(R.id.fromDateEditText);
@@ -138,17 +143,17 @@ public class EvalActivity extends CommonActivity {
 
     if (fromDateSet) {
       from = new Date(
-              fromDatePicker.getDatePicker().getYear() - 1900,
-              fromDatePicker.getDatePicker().getMonth(),
-              fromDatePicker.getDatePicker().getDayOfMonth()
+          fromDatePicker.getDatePicker().getYear() - 1900,
+          fromDatePicker.getDatePicker().getMonth(),
+          fromDatePicker.getDatePicker().getDayOfMonth()
       );
     }
 
     if (toDateSet) {
       to = new Date(
-              toDatePicker.getDatePicker().getYear() - 1900,
-              toDatePicker.getDatePicker().getMonth(),
-              toDatePicker.getDatePicker().getDayOfMonth()
+          toDatePicker.getDatePicker().getYear() - 1900,
+          toDatePicker.getDatePicker().getMonth(),
+          toDatePicker.getDatePicker().getDayOfMonth()
       );
     }
 

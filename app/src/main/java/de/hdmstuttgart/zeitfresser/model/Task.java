@@ -2,10 +2,10 @@ package de.hdmstuttgart.zeitfresser.model;
 
 import android.database.Cursor;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Date;
 
 import de.hdmstuttgart.zeitfresser.db.DbStatements;
 

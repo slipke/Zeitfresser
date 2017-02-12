@@ -1,8 +1,15 @@
 package de.hdmstuttgart.zeitfresser;
 
+import static org.junit.Assert.assertEquals;
+
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
+import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
+import de.hdmstuttgart.zeitfresser.model.Record;
+import de.hdmstuttgart.zeitfresser.model.Task;
+import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,13 +21,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
-import de.hdmstuttgart.zeitfresser.model.DefaultTaskManager;
-import de.hdmstuttgart.zeitfresser.model.Record;
-import de.hdmstuttgart.zeitfresser.model.Task;
-import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
-import static org.junit.Assert.assertEquals;
+
 
 @RunWith(AndroidJUnit4.class)
 public class TaskManagerTest {
