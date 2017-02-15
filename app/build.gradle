@@ -34,6 +34,7 @@ android {
         xmlReport true
         lintConfig file("$project.rootDir/Lint_for_Gradle.xml")
         xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
+        htmlOutput file("$project.buildDir/reports/lint/lint-html.xml")
     }
 }
 
