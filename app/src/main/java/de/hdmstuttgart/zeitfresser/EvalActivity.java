@@ -53,7 +53,7 @@ public class EvalActivity extends CommonActivity {
   }
 
   /**
-   * Creates data for the PieChart depending on selected values from the two DatePickers
+   * Creates data for the PieChart depending on selected values from the two DatePickers.
    */
   private PieData generatePieData() {
     List<Task> taskList = getTaskList();
@@ -67,7 +67,7 @@ public class EvalActivity extends CommonActivity {
   }
 
   /**
-   * Initialize the DatePicker dialogs
+   * Initialize the DatePicker dialogs.
    */
   private void initDatePickerDialogs() {
     Calendar calendar = Calendar.getInstance();
@@ -78,8 +78,8 @@ public class EvalActivity extends CommonActivity {
       public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         fromDateSet = true;
         month++; // month counting begins at 0 - strange
-        Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "." +
-            year, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "set from date: " + day + "." + month + "."
+            + year, Toast.LENGTH_LONG).show();
         fromEditText.setText(day + "." + month + "." + year);
         updatePieChart();
       }
@@ -126,7 +126,7 @@ public class EvalActivity extends CommonActivity {
   }
 
   /**
-   * Updates the PieChart data and refreshed the PieChart
+   * Updates the PieChart data and refreshed the PieChart.
    */
   private void updatePieChart() {
     pieChart.setData(generatePieData());
@@ -135,7 +135,7 @@ public class EvalActivity extends CommonActivity {
   }
 
   /**
-   * Returns the task list depending on the date values selected
+   * Returns the task list depending on the date values selected.
    */
   private List<Task> getTaskList() {
     Date from = null;

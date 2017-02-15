@@ -43,7 +43,8 @@ public class MainActivity extends CommonActivity {
           view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
           Toast.makeText(
                   getApplicationContext(),
-                  item + " stopped. Duration: " + (taskManager.getOverallDurationForTask(item) / 1000.0) + " s",
+                  item + " stopped. Duration: "
+                      + (taskManager.getOverallDurationForTask(item) / 1000.0) + " s",
                   duration)
                 .show();
         } else {
