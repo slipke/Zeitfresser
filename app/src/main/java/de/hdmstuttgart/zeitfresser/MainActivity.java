@@ -61,7 +61,7 @@ public class MainActivity extends CommonActivity {
   }
 
   /**
-   * Returns a list of tasks to be displayed
+   * Returns a list of tasks to be displayed.
    */
   private List<Task> getListElements() {
     return taskManager.getTaskList();

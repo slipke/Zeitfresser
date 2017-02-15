@@ -100,7 +100,8 @@ public class RecordTest {
     assertTrue(end > start);
   }
 
-  public Date getStartFieldValue() {
+
+  private Date getStartFieldValue() {
     try {
       Field startField = Record.class.getDeclaredField("start");
       startField.setAccessible(true);
@@ -111,7 +112,7 @@ public class RecordTest {
     }
   }
 
-  public Date getEndFieldValue() {
+  private Date getEndFieldValue() {
     try {
       Field endField = Record.class.getDeclaredField("end");
       endField.setAccessible(true);

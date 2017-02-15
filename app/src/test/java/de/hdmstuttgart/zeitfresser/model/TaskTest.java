@@ -1,5 +1,10 @@
 package de.hdmstuttgart.zeitfresser.model;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,10 +16,6 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 
 /**
@@ -50,11 +51,11 @@ public class TaskTest {
   @Test
   public void testInitialTaskState() {
     assertThat("Newly created task must not be in active state!",
-            classUnderTest.isActive(), equalTo(false));
+        classUnderTest.isActive(), equalTo(false));
     assertThat("Newly created task must not have any records!",
-            classUnderTest.hasAnyRecords(), equalTo(false));
+        classUnderTest.hasAnyRecords(), equalTo(false));
     assertThat("Newly created task must not have an active record!",
-            classUnderTest.hasActiveRecord(), equalTo(false));
+        classUnderTest.hasActiveRecord(), equalTo(false));
     assertThat("Task name must not be null!", classUnderTest.getName(), notNullValue());
   }
 
@@ -77,15 +78,15 @@ public class TaskTest {
     List<Record> records = (List<Record>) recordsField.get(classUnderTest);
 
     Field activeRecordField = getFieldFromTestClass("activeRecord");
-    Record activeRecord = (Record) activeRecordField.get(classUnderTest);
+    final Record activeRecord = (Record) activeRecordField.get(classUnderTest);
 
     assertThat("Task must be in active state!", classUnderTest.isActive(), equalTo(true));
     assertThat("Task's record list must not be empty!",
-            classUnderTest.hasAnyRecords(), equalTo(true));
+        classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Record list must contain exactly one element!", records.size(), equalTo(1));
     assertThat("Task must have an active record!", classUnderTest.hasActiveRecord(), equalTo(true));
     assertThat("Active record must be present in records list!",
-            records.contains(activeRecord), equalTo(true));
+        records.contains(activeRecord), equalTo(true));
   }
 
 
@@ -114,17 +115,17 @@ public class TaskTest {
     List<Record> records = (List<Record>) recordsField.get(classUnderTest);
 
     Field activeRecordField = getFieldFromTestClass("activeRecord");
-    Record activeRecord = (Record) activeRecordField.get(classUnderTest);
+    final Record activeRecord = (Record) activeRecordField.get(classUnderTest);
 
     assertThat("Double-activated task must still be active!",
-            classUnderTest.isActive(), equalTo(true));
+        classUnderTest.isActive(), equalTo(true));
     assertThat("Double-activated task must still have records!",
-            classUnderTest.hasAnyRecords(), equalTo(true));
+        classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Record list must still contain a single element!", records.size(), equalTo(1));
     assertThat("Double-activated task must still have an active record!",
-            classUnderTest.hasActiveRecord(), equalTo(true));
+        classUnderTest.hasActiveRecord(), equalTo(true));
     assertThat("Active record must still be present in record list!",
-            records.contains(activeRecord), equalTo(true));
+        records.contains(activeRecord), equalTo(true));
   }
 
   /**
@@ -147,10 +148,10 @@ public class TaskTest {
 
     assertThat("Stopped task must be inactive!", classUnderTest.isActive(), equalTo(false));
     assertThat("Stopped task must have any records!",
-            classUnderTest.hasAnyRecords(), equalTo(true));
+        classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Stopped task must have a single record!", records.size(), equalTo(1));
     assertThat("Stopped task must not have an active record!",
-            classUnderTest.hasActiveRecord(), equalTo(false));
+        classUnderTest.hasActiveRecord(), equalTo(false));
   }
 
   /**
@@ -161,7 +162,7 @@ public class TaskTest {
    * occurred:
    * <br/>
    * <ul>
-   * <l>It must be in inactive state.</li>
+   * <li>It must be in inactive state.</li>
    * <li>Its record list is in the same state as before.</li>
    * <li>It is not allowed to have an active record.</li>
    * </ul>
@@ -180,10 +181,10 @@ public class TaskTest {
 
     assertThat("Inactive task must still be inactive!", classUnderTest.isActive(), equalTo(false));
     assertThat("Inactive task must have any records!",
-            classUnderTest.hasAnyRecords(), equalTo(true));
+        classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Inactive task must have exactly one record!", records.size(), equalTo(1));
     assertThat("Inactive task must not have an active record!",
-            classUnderTest.hasActiveRecord(), equalTo(false));
+        classUnderTest.hasActiveRecord(), equalTo(false));
   }
 
   /**
@@ -207,17 +208,17 @@ public class TaskTest {
     List<Record> records = (List<Record>) recordsField.get(classUnderTest);
 
     Field activeRecordField = getFieldFromTestClass("activeRecord");
-    Record activeRecord = (Record) activeRecordField.get(classUnderTest);
+    final Record activeRecord = (Record) activeRecordField.get(classUnderTest);
 
     assertThat("Restarted task must be back in active state!",
-            classUnderTest.isActive(), equalTo(true));
+        classUnderTest.isActive(), equalTo(true));
     assertThat("Restarted task must have any records!",
-            classUnderTest.hasAnyRecords(), equalTo(true));
+        classUnderTest.hasAnyRecords(), equalTo(true));
     assertThat("Restarted task must exactly have two records!", records.size(), equalTo(2));
     assertThat("Restarted task must have an active record!",
-            classUnderTest.hasActiveRecord(), equalTo(true));
+        classUnderTest.hasActiveRecord(), equalTo(true));
     assertThat("Active record must be present in record list!",
-            records.contains(activeRecord), equalTo(true));
+        records.contains(activeRecord), equalTo(true));
   }
 
   /**
@@ -241,7 +242,7 @@ public class TaskTest {
     assertThat("Task must be in inactive state!", classUnderTest.isActive(), equalTo(false));
     assertThat("Task must not have any records!", classUnderTest.hasAnyRecords(), equalTo(false));
     assertThat("Task must not have an active record!",
-            classUnderTest.hasActiveRecord(), equalTo(false));
+        classUnderTest.hasActiveRecord(), equalTo(false));
   }
 
   @Test
@@ -252,7 +253,7 @@ public class TaskTest {
     boolean result = classUnderTest.hasRecordsAfter(currentDate);
 
     assertThat("Task must not have any records after 'currentDate'!",
-            result, equalTo(false));
+        result, equalTo(false));
   }
 
   @Test
@@ -263,7 +264,7 @@ public class TaskTest {
     boolean result = classUnderTest.hasRecordsAfter(currentDate);
 
     assertThat("Task must have any records after 'currentDate'!",
-            result, equalTo(true));
+        result, equalTo(true));
   }
 
   @Test
@@ -282,7 +283,7 @@ public class TaskTest {
     boolean result = classUnderTest.hasRecordsBefore(currentDate);
 
     assertThat("Task must have any record with start date before 'currentDate'!",
-            result, equalTo(true));
+        result, equalTo(true));
   }
 
   @Test
@@ -293,7 +294,7 @@ public class TaskTest {
     boolean result = classUnderTest.hasRecordsBefore(currentDate);
 
     assertThat("Task must not have any record with start date before 'currentDate'!",
-            result, equalTo(false));
+        result, equalTo(false));
   }
 
   @Test
@@ -307,7 +308,6 @@ public class TaskTest {
   /**
    * If <code>addRecord</code> gets called with a valid non-null {@link Record} argument,
    * the passed instance is expected to be contained within the task's record list.
-   *
    */
   @Test
   public void testAddValidRecord() throws Exception {
@@ -326,7 +326,6 @@ public class TaskTest {
    * if <code>addRecord</code> is called with <code>null</code> as argument, the method is
    * expected to throw an {@link IllegalArgumentException}.
    * Additionally, the task's record list is expected to be not modified during the call.
-   *
    */
   @Test
   public void testAddNullToRecordsThrowsException() throws Exception {
@@ -336,9 +335,9 @@ public class TaskTest {
       addRecordMethod.invoke(classUnderTest, new Object[]{null});
     } catch (InvocationTargetException ex) {
       assertThat(ex.getTargetException().getClass().equals(IllegalArgumentException.class),
-              equalTo(true));
+          equalTo(true));
       assertThat(ex.getTargetException().getMessage(),
-              equalTo("Record argument must not be " + "null!"));
+          equalTo("Record argument must not be " + "null!"));
     }
 
     Field recordsField = getFieldFromTestClass("records");
@@ -396,7 +395,7 @@ public class TaskTest {
   }
 
   private Method getMethodFromTestClass(String methodName, Class<?>[] params) throws
-          NoSuchMethodException {
+      NoSuchMethodException {
     if (methodName != null && !methodName.isEmpty()) {
       Method method = Task.class.getDeclaredMethod(methodName, params);
       method.setAccessible(true);

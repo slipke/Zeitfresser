@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbManager extends SQLiteOpenHelper {
-  public static int DATABASE_VERSION = 1;
-  public static String DATABASE_NAME = "zeitfresser.db";
+  public static final int DATABASE_VERSION = 1;
+  public static final String DATABASE_NAME = "zeitfresser.db";
 
   public DbManager(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);

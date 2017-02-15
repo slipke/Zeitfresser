@@ -1,12 +1,10 @@
 package de.hdmstuttgart.zeitfresser.model;
 
 import android.content.Context;
+import de.hdmstuttgart.zeitfresser.db.DbCalls;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import de.hdmstuttgart.zeitfresser.MainActivity;
-import de.hdmstuttgart.zeitfresser.db.DbCalls;
 
 public class DbTaskManager extends TaskManager {
 
@@ -14,12 +12,12 @@ public class DbTaskManager extends TaskManager {
   private Context context = null;
 
 
-  public static DbTaskManager createInstance(Context c) {
-    return new DbTaskManager(c);
+  public static DbTaskManager createInstance(Context context) {
+    return new DbTaskManager(context);
   }
 
-  private DbTaskManager(Context c) {
-    this.context = c;
+  private DbTaskManager(Context context) {
+    this.context = context;
     this.dbCalls = new DbCalls();
   }
 

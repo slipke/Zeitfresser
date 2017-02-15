@@ -3,12 +3,12 @@ package de.hdmstuttgart.zeitfresser.model;
 import android.database.Cursor;
 import android.util.Log;
 
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
-
-import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 /**
  * This class represents a record, which in turn stands for a single phase of execution of a {@link
@@ -22,7 +22,7 @@ public class Record extends Observable {
   private Date end = null;
 
   /**
-   * Create Record (factory method)
+   * Create Record (factory method).
    *
    * @param start Startdate
    * @param end Enddate
@@ -36,11 +36,17 @@ public class Record extends Observable {
     return record;
   }
 
-  public static Record fromCursor(Cursor c) {
+  /**
+   *  Builds a single {@link Record} instance from a cursor.
+   *
+   * @param context The current Activity context.
+   * @return A single record.
+   */
+  public static Record fromCursor(Cursor context) {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    String start = c.getString(c.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_START));
-    String end = c.getString(c.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_END));
-    long id = c.getLong(c.getColumnIndexOrThrow(DbStatements._ID));
+    String start = context.getString(context.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_START));
+    String end = context.getString(context.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_END));
+    long id = context.getLong(context.getColumnIndexOrThrow(DbStatements._ID));
     Record record = new Record();
 
     try {
@@ -60,11 +66,11 @@ public class Record extends Observable {
   }
 
   public Date getStart() {
-    return start;
+    return new Date(start.getTime());
   }
 
   public Date getEnd() {
-    return end;
+    return new Date(end.getTime());
   }
 
   public long getId() {
@@ -84,6 +90,9 @@ public class Record extends Observable {
     return end.getTime() - start.getTime();
   }
 
+  /**
+   * Start the record.
+   */
   public void start() {
     if (start != null && end != null) {
       if (start.getTime() > end.getTime()) {
@@ -98,11 +107,14 @@ public class Record extends Observable {
     start = new Date();
   }
 
+  /**
+   * Stop the record.
+   */
   public void stop() {
     if (start == null) {
       throw new IllegalStateException();
     }
-    if (end != null && start != null) {
+    if (end != null) {
       if (end.getTime() >= start.getTime()) {
         /* if end time is even bigger than start time then
            stop was called twice */
