@@ -1,14 +1,10 @@
 package de.hdmstuttgart.zeitfresser.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.internal.matchers.Null;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -30,32 +26,33 @@ public class RecordTest {
 
   @Test
   public void testHasStartAndEndTime() {
+    // TODO Implementation!
     //assertFalse(record.has);
   }
 
   @Test(expected = NullPointerException.class)
   public void testStartInitialRecord() {
     record.start();
-    long start  = getStartFieldValue().getTime();
-    long end    = getEndFieldValue()  .getTime();
+    long start = getStartFieldValue().getTime();
+    long end = getEndFieldValue().getTime();
     assertTrue(start >= end);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testStopInitialRecord() {
     record.stop();
-    long start  = getStartFieldValue().getTime();
-    long end    = getEndFieldValue()  .getTime();
+    long start = getStartFieldValue().getTime();
+    long end = getEndFieldValue().getTime();
     assertTrue(start >= end);
   }
 
   @Test
   public void testStopStartedRecord() {
     record.start();
-    long start  = getStartFieldValue().getTime();
+    long start = getStartFieldValue().getTime();
     timeout();
     record.stop();
-    long end    = getEndFieldValue()  .getTime();
+    long end = getEndFieldValue().getTime();
     assertTrue(end > start);
   }
 
@@ -65,11 +62,11 @@ public class RecordTest {
     timeout();
 
     record.stop();
-    long end    = getEndFieldValue()  .getTime();
+    long end = getEndFieldValue().getTime();
 
     timeout();
     record.start();
-    long start  = getStartFieldValue().getTime();
+    long start = getStartFieldValue().getTime();
 
     assertTrue(start >= end);
   }
@@ -83,7 +80,7 @@ public class RecordTest {
     timeout();
 
     record.stop();
-    long end    = getEndFieldValue()  .getTime();
+    long end = getEndFieldValue().getTime();
 
     long start = getStartFieldValue().getTime();
     assertTrue(end > start);
@@ -95,8 +92,8 @@ public class RecordTest {
     timeout();
 
     record.start();
-    long start  = getStartFieldValue().getTime();
-    long end    = getEndFieldValue().getTime();
+    long start = getStartFieldValue().getTime();
+    long end = getEndFieldValue().getTime();
     assertTrue(end > start);
   }
 
