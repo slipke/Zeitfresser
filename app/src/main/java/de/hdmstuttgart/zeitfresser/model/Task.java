@@ -2,12 +2,12 @@ package de.hdmstuttgart.zeitfresser.model;
 
 import android.database.Cursor;
 
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-
-import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 /**
  * This class represents a task, which can be started, stopped and manages a collection of records.
