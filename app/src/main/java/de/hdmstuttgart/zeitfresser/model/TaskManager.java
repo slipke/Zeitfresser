@@ -70,8 +70,18 @@ public abstract class TaskManager {
     return task.getOverallDuration();
   }
 
+  /**
+   * Retrieve all Tasks which have records in the {@link Date} range between
+   * <code>from</code> and <code>to</code>. If one of the arguments is null, this filter criterion
+   * is simply ignored. If both arguments are null, there's no filtering according to start or
+   * end date at all.
+   *
+   * @param from Defines the start of the period of interest (if not null).
+   * @param to Defines the end of the period of interest (if not null).
+   * @return A list of tasks matching the given date range.
+   */
   public List<Task> getFilteredTasks(Date from, Date to) {
-    List<Task> newTaskList = new LinkedList<>();
+    List<Task> newTaskList;
     List<Task> taskListFrom = new LinkedList<>();
     List<Task> taskListTo = new LinkedList<>();
 
@@ -154,6 +164,13 @@ public abstract class TaskManager {
     return filteredList;
   }
 
+  /**
+   * Convert a list of tasks to a list of entries since this is the form they need to have to get
+   * displayed at the frontend.
+   *
+   * @param tasks The list of tasks to be converted.
+   * @return A corresponding list of entries.
+   */
   public List<Entry> taskListToEntryList(List<Task> tasks) {
     List<Entry> entries = new LinkedList<>();
 
@@ -164,6 +181,12 @@ public abstract class TaskManager {
     return entries;
   }
 
+  /**
+   * Convert a list of tasks to another list containing their corresponding labels.
+   *
+   * @param tasks The list of tasks whose labels are extracted.
+   * @return A list of labels.
+   */
   public List<String> taskListToLabelList(List<Task> tasks) {
     List<String> labels = new LinkedList<>();
 
