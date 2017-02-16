@@ -1,5 +1,6 @@
 package de.hdmstuttgart.zeitfresser;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -13,23 +14,35 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.DatePicker;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieDataSet;
+
+import de.hdmstuttgart.zeitfresser.model.TaskManager;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(AndroidJUnit4.class)
 public class EvalActivityTest {
 
   @Rule
   public ActivityTestRule<EvalActivity> evalActivity =
-      new ActivityTestRule<>(EvalActivity.class);
+          new ActivityTestRule<>(EvalActivity.class);
+
+  TaskManager taskManager;
 
   @Before
   public void setUp() {
     //onView(withContentDescription("Open navigation drawer")).perform(click());
     //onView(withText(R.string.eval_activity)).perform(click());
+    taskManager = evalActivity.getActivity().getTaskManager();
   }
 
   @Test
@@ -37,8 +50,37 @@ public class EvalActivityTest {
     onView(withId(R.id.chart)).check(ViewAssertions.matches(isDisplayed()));
   }
 
-  /* test if start and end date could be altered and check if displaying date is correct*/
+  /* test if pie chart correctly shows inital data  */
+  @Test
+  public void initialPieChartCorrectnessTest() {
+    onView(withId(R.id.chart)).check(ViewAssertions.matches(isDisplayed()));
 
+    PieChart pieChart = evalActivity.getActivity().getPieChart();
+
+    List<String> chartXVals = pieChart.getData().getXVals();
+    List<String> taskManagerLabels = taskManager.taskListToLabelList(taskManager.getTaskList());
+
+    List<Entry> chartEntries = pieChart.getData().getDataSet().getYVals();
+    List<Entry> taskManagerEntries = taskManager.taskListToEntryList(taskManager.getTaskList());
+    List<Float> chartYVals = new ArrayList<>();
+    List<Float> taskManagerDurations = new ArrayList<>();
+
+    for (Entry entry : chartEntries) {
+      chartYVals.add(entry.getVal());
+    }
+
+    for (Entry entry : taskManagerEntries) {
+      taskManagerDurations.add(entry.getVal());
+    }
+
+    // test pie shows all labels with values not null
+    org.junit.Assert.assertTrue(taskManagerLabels.containsAll(chartXVals));
+
+    // test if pie shows the correct values
+    org.junit.Assert.assertArrayEquals(taskManagerDurations.toArray(), chartYVals.toArray());
+  }
+
+  /* test if start and end date could be altered and check if displaying date is correct*/
   @Test
   public void clickFromDateTest() {
     int year = 2017;
@@ -46,13 +88,13 @@ public class EvalActivityTest {
     int day = 10;
     onView(withId(R.id.fromDateEditText)).perform(click());
     onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(
-        ViewAssertions.matches(isDisplayed()));
+            ViewAssertions.matches(isDisplayed()));
     onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(
-        PickerActions.setDate(2017, 1, 10));
+            PickerActions.setDate(year, month, day));
     onView(withText("OK")).perform(click());
     onView(withId(R.id.fromDateEditText)).check(ViewAssertions.matches(withText(day + "." + month
-        + "."
-        + year)));
+            + "."
+            + year)));
     //onView(withId(R.id.fromDateEditText)).perform(typeText("test text"));
   }
 
@@ -63,11 +105,11 @@ public class EvalActivityTest {
     int day = 24;
     onView(withId(R.id.toDateEditText)).perform(click());
     onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(
-        ViewAssertions.matches(isDisplayed()));
+            ViewAssertions.matches(isDisplayed()));
     onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(
-        PickerActions.setDate(year, month, day));
+            PickerActions.setDate(year, month, day));
     onView(withText("OK")).perform(click());
     onView(withId(R.id.toDateEditText)).check(ViewAssertions.matches(withText(day + "."
-        + month + "." + year)));
+            + month + "." + year)));
   }
 }
