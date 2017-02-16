@@ -18,6 +18,10 @@ public class MainActivity extends CommonActivity {
 
   private TaskManager taskManager;
 
+  public TaskManager getTaskManager() {
+    return taskManager;
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
