@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MainActivity extends CommonActivity {
 
-  private TaskManager taskManager;
+  public TaskManager taskManager;
 
   public TaskManager getTaskManager() {
     return taskManager;
