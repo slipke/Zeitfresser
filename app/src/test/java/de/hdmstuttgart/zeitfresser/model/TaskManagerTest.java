@@ -28,11 +28,11 @@ import java.util.List;
  */
 public class TaskManagerTest {
 
-  private DefaultTaskManager taskManager;
+  private TaskManagerDummy taskManager;
 
   @Before
   public void before() {
-    taskManager = DefaultTaskManager.createInstance();
+    taskManager = new TaskManagerDummy();
   }
 
   @Test
@@ -43,12 +43,22 @@ public class TaskManagerTest {
     verify(dummyTask, times(1)).start();
   }
 
+ @Test(expected = IllegalArgumentException.class)
+ public void testStartTaskFails() {
+    taskManager.startTask(null);
+ }
+
   @Test
   public void testStopTask() {
     Task dummyTask = mock(Task.class);
     taskManager.stopTask(dummyTask);
 
     verify(dummyTask, times(1)).stop();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testStopTaskFails() {
+    taskManager.stopTask(null);
   }
 
   @Test
@@ -59,12 +69,22 @@ public class TaskManagerTest {
     verify(dummyTask, times(1)).isActive();
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testIsTaskActiveFails() {
+    taskManager.isTaskActive(null);
+  }
+
   @Test
   public void testGetOverallDurationForTask() {
     Task dummyTask = mock(Task.class);
     taskManager.getOverallDurationForTask(dummyTask);
 
     verify(dummyTask, times(1)).getOverallDuration();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetOverallDurationForTaskFails() {
+    taskManager.getOverallDurationForTask(null);
   }
 
   @Test
