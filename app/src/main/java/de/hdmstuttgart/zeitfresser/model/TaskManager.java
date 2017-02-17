@@ -94,6 +94,7 @@ public abstract class TaskManager {
     }
 
     if (to != null) {
+      // TODO Simply pass in taskListFrom as second argument
       taskListTo = getTasksWithRecordsEarlierThan(to, getTaskList());
     }
 
