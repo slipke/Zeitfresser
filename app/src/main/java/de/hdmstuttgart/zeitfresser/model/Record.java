@@ -128,4 +128,33 @@ public class Record extends Observable {
     return (start != null && end != null);
   }
 
+  /**
+   * Simple object comparison which should fit our needs
+   *
+   * @param other
+   * @return
+   */
+  @Override
+  public boolean equals(Object other) {
+    if (other == null) {
+      return false;
+    }
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Record)) {
+      return false;
+    }
+    Record recordClass = (Record) other;
+
+    if (this.getId() != recordClass.getId()
+            || !this.getStart().equals(recordClass.getStart())
+            || !this.getEnd().equals(recordClass.getEnd())
+            ) {
+      return false;
+    }
+
+    return true;
+  }
+
 }

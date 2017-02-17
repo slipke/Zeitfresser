@@ -188,24 +188,33 @@ public class TaskManagerTest {
   @Test
   public void testGetFilteredTasksWithEmptyValues() {
     List<Task> taskList = taskManager.getFilteredTasks(null, null);
+    assertEquals(3, taskList.size());
   }
 
   @Test
   public void testGetFilteredTasksWithFrom() {
     Date from = new Date();
     List<Task> taskList = taskManager.getFilteredTasks(from, null);
+    assertEquals(1, taskList.size());
   }
 
   @Test
   public void testGetFilteredTasksWithTo() {
     Date to = new Date();
     List<Task> taskList = taskManager.getFilteredTasks(null, to);
+    assertEquals(1, taskList.size());
   }
 
   @Test
   public void testGetFilteredTasksWithFromAndTo() {
     Date from = new Date();
+    // Now + 2days
+    from.setTime(from.getTime() + (2 * 24 * 60 * 60 * 1000));
     Date to = new Date();
+    // Now + 8days
+    to.setTime(to.getTime() + (8 * 24 * 60 * 60 * 1000));
+
     List<Task> taskList = taskManager.getFilteredTasks(from, to);
+    assertEquals(1, taskList.size());
   }
 }

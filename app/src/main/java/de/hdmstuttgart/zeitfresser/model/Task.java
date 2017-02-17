@@ -18,13 +18,13 @@ import java.util.Objects;
  */
 public class Task {
 
-  private static int instanceCounter = 0;
+  protected static int instanceCounter = 0;
 
-  private long id;
-  private boolean active;
-  private String name;
-  private List<Record> records;
-  private Record activeRecord;
+  protected long id;
+  protected boolean active;
+  protected String name;
+  protected List<Record> records;
+  protected Record activeRecord;
 
   /**
    * Builds a single {@link Task} instance from a cursor.
@@ -42,7 +42,11 @@ public class Task {
     return new Task(name, ++instanceCounter);
   }
 
-  private Task(String name, long id) {
+  protected Task() {
+    this("Test", 1);
+  }
+
+  protected Task(String name, long id) {
     Objects.requireNonNull(name);
     this.name = name;
     this.records = new LinkedList<>();
@@ -65,11 +69,11 @@ public class Task {
     return active;
   }
 
-  private void setActive() {
+  protected void setActive() {
     active = true;
   }
 
-  private void setInactive() {
+  protected void setInactive() {
     active = false;
   }
 
@@ -181,31 +185,67 @@ public class Task {
     return this.id + " " + this.name;
   }
 
-  private void prepareNewRecord() {
+  protected void prepareNewRecord() {
     Record record = createNewRecord();
     setAsActiveRecord(record);
     addRecord(record);
     startActiveRecord();
   }
 
-  private Record createNewRecord() {
+  protected Record createNewRecord() {
     return new Record();
   }
 
-  private void setAsActiveRecord(Record record) {
+  protected void setAsActiveRecord(Record record) {
     this.activeRecord = record;
   }
 
-  private void startActiveRecord() {
+  protected void startActiveRecord() {
     this.activeRecord.start();
   }
 
-  private void disableCurrentActiveRecord() {
+  protected void disableCurrentActiveRecord() {
     stopActiveRecord();
     setAsActiveRecord(null);
   }
 
-  private void stopActiveRecord() {
+  protected void stopActiveRecord() {
     activeRecord.stop();
+  }
+
+
+
+  /**
+   * Very simple implementation for object comparison, should fit our needs
+   *
+   * @param o
+   * @return
+   */
+  @Override
+  public boolean equals(Object other) {
+    if (other == null) {
+      return false;
+    }
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Task)) {
+      return false;
+    }
+    Task taskClass = (Task) other;
+
+    // Check if id, name and records.size() match
+    if (this.getId() != taskClass.getId() || !this.getName().equals(taskClass.getName()) || this.records.size() != taskClass.records.size()) {
+      return false;
+    }
+
+    // Check records
+    for (Record record : this.records) {
+      if (!taskClass.records.contains(record)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
