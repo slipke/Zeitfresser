@@ -1,6 +1,5 @@
 package de.hdmstuttgart.zeitfresser;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -16,7 +15,6 @@ import android.widget.DatePicker;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieDataSet;
 
 import de.hdmstuttgart.zeitfresser.model.TaskManager;
 

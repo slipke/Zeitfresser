@@ -1,13 +1,15 @@
 package de.hdmstuttgart.zeitfresser.model;
 
-import android.database.Cursor;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import android.database.Cursor;
+
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,8 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
-
-import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 
 /**
@@ -44,7 +44,7 @@ public class TaskTest {
 
   /**
    * If a new instance is created from the factory method with a DB-Cursor as parameter, the
-   * title should fit the one from the DB
+   * title should fit the one from the DB.
    */
   @Test
   public void testFactoryFromCursor() {
