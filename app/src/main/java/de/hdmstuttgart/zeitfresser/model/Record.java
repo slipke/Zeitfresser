@@ -70,7 +70,10 @@ public class Record extends Observable {
   }
 
   public Date getEnd() {
-    return new Date(end.getTime());
+    return end != null
+            ? new Date(end.getTime())
+            : null;
+
   }
 
   public long getId() {
@@ -146,6 +149,14 @@ public class Record extends Observable {
       return false;
     }
     Record recordClass = (Record) other;
+
+    // For the null checks
+    if (this.getEnd() == null && recordClass.getEnd() != null) {
+      return false;
+    }
+    if (this.getStart() == null && recordClass.getStart() != null) {
+      return false;
+    }
 
     if (this.getId() != recordClass.getId()
             || !this.getStart().equals(recordClass.getStart())
