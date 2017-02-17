@@ -3,6 +3,7 @@ package de.hdmstuttgart.zeitfresser.model;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -16,16 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 public class TaskManagerTest {
 
   private TaskManagerDummy taskManager;
@@ -35,6 +30,9 @@ public class TaskManagerTest {
     taskManager = new TaskManagerDummy();
   }
 
+  /**
+   * The startTask() method should invoke the start() method of our mocked Task once
+   */
   @Test
   public void testStartTask() {
     Task dummyTask = mock(Task.class);
@@ -43,11 +41,17 @@ public class TaskManagerTest {
     verify(dummyTask, times(1)).start();
   }
 
- @Test(expected = IllegalArgumentException.class)
- public void testStartTaskFails() {
+  /**
+   * This test should fail, since the parameter to startTask() is null
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testStartTaskFails() {
     taskManager.startTask(null);
- }
+  }
 
+  /**
+   * The stopTask() method should invoke the stop() method of our mocked Task once
+   */
   @Test
   public void testStopTask() {
     Task dummyTask = mock(Task.class);
@@ -56,11 +60,17 @@ public class TaskManagerTest {
     verify(dummyTask, times(1)).stop();
   }
 
+  /**
+   * This test should fail, since the parameter to stopTask() is null
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testStopTaskFails() {
     taskManager.stopTask(null);
   }
 
+  /**
+   * The isTaskActive() method should invoke the isActive() of our mocked Task once
+   */
   @Test
   public void testIsActiveTask() {
     Task dummyTask = mock(Task.class);
@@ -69,11 +79,18 @@ public class TaskManagerTest {
     verify(dummyTask, times(1)).isActive();
   }
 
+  /**
+   * This test should fail, since the parameter to isTaskActive() is null
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testIsTaskActiveFails() {
     taskManager.isTaskActive(null);
   }
 
+  /**
+   * The getOverallDurationForTask() method should invoke the getOverallDuration() method of our
+   * mocked Task once
+   */
   @Test
   public void testGetOverallDurationForTask() {
     Task dummyTask = mock(Task.class);
@@ -82,11 +99,18 @@ public class TaskManagerTest {
     verify(dummyTask, times(1)).getOverallDuration();
   }
 
+  /**
+   * This test should fail, since the parameter to getOverallDurationForTask() is null
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testGetOverallDurationForTaskFails() {
     taskManager.getOverallDurationForTask(null);
   }
 
+  /**
+   * The method filterZeroDurationTasks() should return a cleaned list of Tasks which does not
+   * contain Tasks with no overall duration
+   */
   @Test
   public void testFilterZeroDurationTasks() throws Exception {
     Task dummyTask1 = mock(Task.class);
@@ -111,9 +135,11 @@ public class TaskManagerTest {
     assertThat(filteredList.size(), not(equalTo(0)));
     assertThat(filteredList.contains(dummyTask2), equalTo(true));
     assertThat(filteredList.contains(dummyTask1), equalTo(false));
-
   }
 
+  /**
+   * The taskListToEntryList() method should convert a list of Task to a list of Entry
+   */
   @Test
   public void taskListToEntryListTest() {
     // Create taskList with entries
@@ -128,8 +154,14 @@ public class TaskManagerTest {
     List<Entry> entryList = taskManager.taskListToEntryList(taskList);
 
     assertTrue(taskList.size() == entryList.size());
+    for (Entry entry : entryList) {
+      assertEquals(Entry.class, entry.getClass());
+    }
   }
 
+  /**
+   * The taskListToLabelList() method should convert a list of Task to a list of String
+   */
   @Test
   public void taskListToLabelListTest() {
     // Create taskList with entries
@@ -144,5 +176,36 @@ public class TaskManagerTest {
     List<String> labelList = taskManager.taskListToLabelList(taskList);
 
     assertTrue(taskList.size() == labelList.size());
+    for (String label : labelList) {
+      assertEquals(String.class, label.getClass());
+    }
+  }
+
+  /**
+   * The getFilteredTasks() method with from and to set as null should only return the
+   * filterZeroDuration() Tasks
+   */
+  @Test
+  public void testGetFilteredTasksWithEmptyValues() {
+    List<Task> taskList = taskManager.getFilteredTasks(null, null);
+  }
+
+  @Test
+  public void testGetFilteredTasksWithFrom() {
+    Date from = new Date();
+    List<Task> taskList = taskManager.getFilteredTasks(from, null);
+  }
+
+  @Test
+  public void testGetFilteredTasksWithTo() {
+    Date to = new Date();
+    List<Task> taskList = taskManager.getFilteredTasks(null, to);
+  }
+
+  @Test
+  public void testGetFilteredTasksWithFromAndTo() {
+    Date from = new Date();
+    Date to = new Date();
+    List<Task> taskList = taskManager.getFilteredTasks(from, to);
   }
 }
