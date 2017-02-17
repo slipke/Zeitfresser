@@ -7,7 +7,10 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
 
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.ListView;
@@ -20,6 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +42,18 @@ public class TaskListTest {
     //onView(withContentDescription("Open navigation drawer")).perform(click());
     //onView(withText(R.string.dataInput)).perform(click());
     taskManager = mainActivity.getActivity().getTaskManager();
+    /*taskManager1 = mainActivity.getActivity().getTaskManager();
+    try {
+      Field field = mainActivity.getActivity().getClass().getDeclaredField
+              ("taskManager");
+      field.setAccessible(true);
+      taskManager = ((TaskManager) field.get(taskManager1));
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (NoSuchFieldException e) {
+      e.printStackTrace();
+    }*/
+
     listView = (ListView) mainActivity.getActivity().findViewById(R.id.listView);
   }
 
@@ -62,42 +78,21 @@ public class TaskListTest {
             .toArray(), tasksFromAdapter.toArray());
   }
 
-  /* TODO: test list item click behaviour */
+  /* test list item click behaviour */
   @Test
-  public void taskListItemClickTest() {
+  public void taskListItemStartTaskTest() {
     onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click());
-    //onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(1).perform(click());
-    try {
-      Thread.sleep(3000);
-    } catch (InterruptedException ex) {
-      ex.printStackTrace();
-    }
-    //Task firstItem = (Task) listView.getAdapter().getItem(0);
-    Task firstItem = taskManager.getTaskList().get(0);
-    if (firstItem.isActive()) {
-      onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click());
-    } else {
-      onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(2).perform(click());
-    }
 
-
-    //org.junit.Assert.assertFalse(firstItem.isActive());
-    //org.junit.Assert.assertEquals(firstItem.toString(), listView.getAdapter().getItem(0)
-    //.toString());
-
+    Task firstItem = (Task) listView.getAdapter().getItem(0);
+    org.junit.Assert.assertTrue(taskManager.isTaskActive(firstItem));
   }
 
-  /* TODO: test list item click behaviour */
+  /* test list item click behaviour */
   @Test
-  public void taskListItemDoubleClickTest() {
-    onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click());
+  public void taskListItemStartAndStopTaskTest() {
+    onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click(),click());
     Task firstItem = (Task) listView.getAdapter().getItem(0);
-    //onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click());
-    taskManager = mainActivity.getActivity().getTaskManager();
-    //org.junit.Assert.assertEquals(firstItem.isActive(), taskManager.getTaskList().get(0)
-    // .isActive());
-    //firstItem = (Task) listView.getAdapter().getItem(0);
-    org.junit.Assert.assertTrue(taskManager.getTaskList().get(0).isActive());
+    org.junit.Assert.assertFalse(taskManager.isTaskActive(firstItem));
   }
 
 }

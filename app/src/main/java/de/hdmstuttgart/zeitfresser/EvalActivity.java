@@ -30,12 +30,22 @@ public class EvalActivity extends CommonActivity {
   private boolean fromDateSet = false;
   private boolean toDateSet = false;
 
+
+
   private DbTaskManager taskManager;
 
   private EditText fromEditText;
   private EditText toEditText;
 
   private PieChart pieChart;
+
+  public PieChart getPieChart() {
+    return pieChart;
+  }
+
+  public DbTaskManager getTaskManager() {
+    return taskManager;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
