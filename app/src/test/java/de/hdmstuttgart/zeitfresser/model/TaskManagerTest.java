@@ -31,7 +31,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * The startTask() method should invoke the start() method of our mocked Task once
+   * The startTask() method should invoke the start() method of our mocked Task once.
    */
   @Test
   public void testStartTask() {
@@ -42,7 +42,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * This test should fail, since the parameter to startTask() is null
+   * This test should fail, since the parameter to startTask() is null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testStartTaskFails() {
@@ -50,7 +50,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * The stopTask() method should invoke the stop() method of our mocked Task once
+   * The stopTask() method should invoke the stop() method of our mocked Task once.
    */
   @Test
   public void testStopTask() {
@@ -61,7 +61,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * This test should fail, since the parameter to stopTask() is null
+   * This test should fail, since the parameter to stopTask() is null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testStopTaskFails() {
@@ -69,7 +69,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * The isTaskActive() method should invoke the isActive() of our mocked Task once
+   * The isTaskActive() method should invoke the isActive() of our mocked Task once.
    */
   @Test
   public void testIsActiveTask() {
@@ -80,7 +80,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * This test should fail, since the parameter to isTaskActive() is null
+   * This test should fail, since the parameter to isTaskActive() is null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testIsTaskActiveFails() {
@@ -88,7 +88,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * The getOverallDurationForTask() method should invoke the getOverallDuration() method of our
+   * The getOverallDurationForTask() method should invoke the getOverallDuration() method of our.
    * mocked Task once
    */
   @Test
@@ -100,7 +100,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * This test should fail, since the parameter to getOverallDurationForTask() is null
+   * This test should fail, since the parameter to getOverallDurationForTask() is null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testGetOverallDurationForTaskFails() {
@@ -109,7 +109,7 @@ public class TaskManagerTest {
 
   /**
    * The method filterZeroDurationTasks() should return a cleaned list of Tasks which does not
-   * contain Tasks with no overall duration
+   * contain Tasks with no overall duration.
    */
   @Test
   public void testFilterZeroDurationTasks() throws Exception {
@@ -138,7 +138,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * The taskListToEntryList() method should convert a list of Task to a list of Entry
+   * The taskListToEntryList() method should convert a list of Task to a list of Entry.
    */
   @Test
   public void taskListToEntryListTest() {
@@ -160,7 +160,7 @@ public class TaskManagerTest {
   }
 
   /**
-   * The taskListToLabelList() method should convert a list of Task to a list of String
+   * The taskListToLabelList() method should convert a list of Task to a list of String.
    */
   @Test
   public void taskListToLabelListTest() {
@@ -183,7 +183,7 @@ public class TaskManagerTest {
 
   /**
    * The getFilteredTasks() method with from and to set as null should only return the
-   * filterZeroDuration() Tasks
+   * filterZeroDuration() Tasks.
    */
   @Test
   public void testGetFilteredTasksWithEmptyValues() {
