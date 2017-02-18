@@ -25,12 +25,6 @@ public class RecordTest {
   }
 
   @Test
-  public void testHasStartAndEndTime() {
-    // TODO Implementation!
-    //assertFalse(record.has);
-  }
-
-  @Test
   public void testStopStartedRecord() {
     record.start();
     long start = getStartFieldValue().getTime();
@@ -115,6 +109,9 @@ public class RecordTest {
     }
   }
 
+  /**
+   * waits for 10 milliseconds
+   */
   void timeout() {
     try {
       Thread.sleep(10);
