@@ -140,7 +140,7 @@ public class EvalActivityTest {
 
     PieChart pieChart = evalActivity.getActivity().getPieChart();
 
-    List<String> chartXVals = pieChart.getData().getXVals();
+
     List<Entry> chartEntries = pieChart.getData().getDataSet().getYVals();
     List<Float> chartYVals = new ArrayList<>();
 
@@ -148,22 +148,24 @@ public class EvalActivityTest {
       chartYVals.add(entry.getVal());
     }
 
+    List<String> chartXVals = pieChart.getData().getXVals();
+
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     Date startDate = null;
     Date endDate = null;
 
     try {
-      startDate = formatter.parse(year+"-"+month+"-"+day1);
-      endDate = formatter.parse(year+"-"+month+"-"+day2);
+      startDate = formatter.parse(year + "-" + month + "-" + day1);
+      endDate = formatter.parse(year + "-" + month + "-" + day2);
 
-    } catch (ParseException e) {
-      e.printStackTrace();
+    } catch (ParseException ex) {
+      ex.printStackTrace();
     }
-    List<Task> filteredTask = taskManager.getFilteredTasks(startDate,endDate);
+    List<Task> filteredTask = taskManager.getFilteredTasks(startDate, endDate);
 
     List<String> labels = new ArrayList<>();
     List<Float> durations = new ArrayList<>();
-    for(Task task : filteredTask){
+    for (Task task : filteredTask) {
       durations.add(task.getOverallDuration());
       labels.add(task.getName());
     }
