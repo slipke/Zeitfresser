@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 
+import de.hdmstuttgart.zeitfresser.model.Task;
 import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
 import org.hamcrest.Matchers;
@@ -24,7 +25,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -109,5 +113,62 @@ public class EvalActivityTest {
     onView(withText("OK")).perform(click());
     onView(withId(R.id.toDateEditText)).check(ViewAssertions.matches(withText(day + "."
             + month + "." + year)));
+  }
+
+
+  /* test if pie chart shows correct data of time interval*/
+  @Test
+  public void chartTimeIntervalTest() {
+    int year = 2017;
+    int month = 2;
+    int day1 = 17;
+    int day2 = 19;
+
+    onView(withId(R.id.fromDateEditText)).perform(click());
+    onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(
+            ViewAssertions.matches(isDisplayed()));
+    onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(
+            PickerActions.setDate(year, month, day1));
+    onView(withText("OK")).perform(click());
+
+    onView(withId(R.id.toDateEditText)).perform(click());
+    onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(
+            ViewAssertions.matches(isDisplayed()));
+    onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(
+            PickerActions.setDate(year, month, day2));
+    onView(withText("OK")).perform(click());
+
+    PieChart pieChart = evalActivity.getActivity().getPieChart();
+
+    List<String> chartXVals = pieChart.getData().getXVals();
+    List<Entry> chartEntries = pieChart.getData().getDataSet().getYVals();
+    List<Float> chartYVals = new ArrayList<>();
+
+    for (Entry entry : chartEntries) {
+      chartYVals.add(entry.getVal());
+    }
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    Date startDate = null;
+    Date endDate = null;
+
+    try {
+      startDate = formatter.parse(year+"-"+month+"-"+day1);
+      endDate = formatter.parse(year+"-"+month+"-"+day2);
+
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    List<Task> filteredTask = taskManager.getFilteredTasks(startDate,endDate);
+
+    List<String> labels = new ArrayList<>();
+    List<Float> durations = new ArrayList<>();
+    for(Task task : filteredTask){
+      durations.add(task.getOverallDuration());
+      labels.add(task.getName());
+    }
+
+    org.junit.Assert.assertArrayEquals(labels.toArray(), chartXVals.toArray());
+    org.junit.Assert.assertArrayEquals(durations.toArray(), chartYVals.toArray());
   }
 }
