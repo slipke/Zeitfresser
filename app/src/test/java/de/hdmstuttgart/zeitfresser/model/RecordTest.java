@@ -30,22 +30,6 @@ public class RecordTest {
     //assertFalse(record.has);
   }
 
-  @Test(expected = NullPointerException.class)
-  public void testStartInitialRecord() {
-    record.start();
-    long start = getStartFieldValue().getTime();
-    long end = getEndFieldValue().getTime();
-    assertTrue(start >= end);
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testStopInitialRecord() {
-    record.stop();
-    long start = getStartFieldValue().getTime();
-    long end = getEndFieldValue().getTime();
-    assertTrue(start >= end);
-  }
-
   @Test
   public void testStopStartedRecord() {
     record.start();
@@ -97,7 +81,12 @@ public class RecordTest {
     assertTrue(end > start);
   }
 
-
+  /**
+   * returns the value of the private start field attribute
+   * of the Record object
+   *
+   * @return date object
+   */
   private Date getStartFieldValue() {
     try {
       Field startField = Record.class.getDeclaredField("start");
@@ -109,6 +98,12 @@ public class RecordTest {
     }
   }
 
+  /**
+   * returns the value of the private end field attribute
+   * of the Record object
+   *
+   * @return date object
+   */
   private Date getEndFieldValue() {
     try {
       Field endField = Record.class.getDeclaredField("end");
