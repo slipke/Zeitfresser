@@ -5,6 +5,7 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class TaskManager {
 
@@ -77,7 +78,7 @@ public abstract class TaskManager {
    * end date at all.
    *
    * @param from Defines the start of the period of interest (if not null).
-   * @param to Defines the end of the period of interest (if not null).
+   * @param to   Defines the end of the period of interest (if not null).
    * @return A list of tasks matching the given date range.
    */
   public List<Task> getFilteredTasks(Date from, Date to) {
@@ -85,37 +86,47 @@ public abstract class TaskManager {
     List<Task> taskListFrom = new LinkedList<>();
     List<Task> taskListTo = new LinkedList<>();
 
+    List<Task> tasks = new LinkedList<>();
+
     if (from == null && to == null) {
       return filterZeroDurationTasks(getTaskList());
     }
 
     if (from != null) {
-      taskListFrom = getTasksWithRecordsLaterThan(from, getTaskList());
+      tasks = getTasksWithRecordsLaterThan(from, getTaskList());
     }
 
     if (to != null) {
       // TODO Simply pass in taskListFrom as second argument
-      taskListTo = getTasksWithRecordsEarlierThan(to, getTaskList());
+      tasks = getTasksWithRecordsEarlierThan(to, tasks);
     }
 
     // Now compare both lists and return only objects which are in both lists
-    if (to == null) {
-      // No to set, return fromList
-      newTaskList = taskListFrom;
-    } else if (from == null) {
-      // No from set, return toList
-      newTaskList = taskListTo;
-    } else {
-      // Compare both lists
-      newTaskList = getOnlyObjectsPresentInBothLists(taskListFrom, taskListTo);
-    }
+//    if (to == null) {
+//      // No to set, return fromList
+//      newTaskList = taskListFrom;
+//    } else if (from == null) {
+//      // No from set, return toList
+//      newTaskList = taskListTo;
+//    } else {
+//      // Compare both lists
+//      newTaskList = getOnlyObjectsPresentInBothLists(taskListFrom, taskListTo);
+//    }
 
-    return filterZeroDurationTasks(newTaskList);
+    return filterZeroDurationTasks(tasks);
   }
 
-  private List<Task> getTasksWithRecordsLaterThan(Date date, List<Task> fullTaskList) {
+  private List<Task> getTasksWithRecordsLaterThan(Date date, List<Task> tasks) {
+    if (date == null) {
+      throw new IllegalArgumentException("Argument 'date' must not be null!");
+    }
+
+    if (tasks == null) {
+      throw new IllegalArgumentException("Argument 'tasks' must not be null!");
+    }
+
     List<Task> newTaskList = new LinkedList<>();
-    for (Task task : fullTaskList) {
+    for (Task task : tasks) {
       if (task.hasRecordsAfter(date)) {
         newTaskList.add(task);
       }
@@ -154,15 +165,22 @@ public abstract class TaskManager {
   }
 
   private List<Task> filterZeroDurationTasks(List<Task> tasks) {
-    List<Task> filteredList = new LinkedList<>();
+    if (tasks == null) {
+      throw new IllegalArgumentException("Argument 'tasks' must not be null");
+    } else {
 
-    for (Task task : tasks) {
-      if (task.getOverallDuration() > 0.0f) {
-        filteredList.add(task);
+      List<Task> filteredList = new LinkedList<>();
+
+      for (Task task : tasks) {
+        if (task.getOverallDuration() > 0.0f) {
+          filteredList.add(task);
+        }
       }
+
+      return filteredList;
     }
 
-    return filteredList;
+
   }
 
   /**
