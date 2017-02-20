@@ -134,9 +134,17 @@ public abstract class TaskManager {
     return newTaskList;
   }
 
-  private List<Task> getTasksWithRecordsEarlierThan(Date date, List<Task> fullTaskList) {
+  private List<Task> getTasksWithRecordsEarlierThan(Date date, List<Task> tasks) {
+    if (date == null) {
+      throw new IllegalArgumentException("Argument 'date' must not be null!");
+    }
+
+    if (tasks == null) {
+      throw new IllegalArgumentException("Argument 'tasks' must not be null!");
+    }
+
     List<Task> newTaskList = new LinkedList<>();
-    for (Task task : fullTaskList) {
+    for (Task task : tasks) {
       if (task.hasRecordsBefore(date)) {
         newTaskList.add(task);
       }
