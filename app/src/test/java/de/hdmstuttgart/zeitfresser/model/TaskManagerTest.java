@@ -401,7 +401,6 @@ public class TaskManagerTest extends TaskManager {
       assertThat(ex.getCause().getMessage(), equalTo("Argument 'date' must not be null!"));
     }
 
-
     try {
       getTasksWithRecordsEarlierThan.invoke(this, new Date(), null);
       fail("An exception should have been thrown.");
@@ -418,6 +417,34 @@ public class TaskManagerTest extends TaskManager {
       assertThat(ex.getCause().getMessage(), equalTo("Argument 'date' must not be null!"));
     }
 
+  }
+
+
+  @Test
+  public void testGetTasksWithRecordsEarlierThanReturnsEmptyList() throws Exception {
+    Method getTasksWithRecordsEarlierThan = TaskManager.class.getDeclaredMethod
+        ("getTasksWithRecordsEarlierThan", Date.class, List.class);
+    getTasksWithRecordsEarlierThan.setAccessible(true);
+
+    Object result = getTasksWithRecordsEarlierThan.invoke(this, new Date(), new LinkedList<>());
+
+    assertThat(result, notNullValue());
+    assertThat(result.getClass().equals(LinkedList.class), equalTo(true));
+    assertThat(((LinkedList) result).isEmpty(), equalTo(true));
+  }
+
+
+  @Test
+  public void testGetTasksWithRecordsEarlierThanFiltersProperly() throws Exception {
+    Method getTasksWithRecordsEarlierThan = TaskManager.class.getDeclaredMethod
+        ("getTasksWithRecordsEarlierThan", Date.class, List.class);
+    getTasksWithRecordsEarlierThan.setAccessible(true);
+
+    Object result = getTasksWithRecordsEarlierThan.invoke(this, testDate, getTaskList());
+
+    assertThat(result, notNullValue());
+    assertThat(result.getClass().equals(LinkedList.class), equalTo(true));
+    assertThat(((LinkedList) result).size(), equalTo(2));
   }
 
   /**
