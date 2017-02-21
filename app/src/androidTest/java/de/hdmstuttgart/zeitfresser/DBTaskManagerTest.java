@@ -87,7 +87,6 @@ public class DBTaskManagerTest {
       long id = c.getLong(1);
 
       try {
-
         result.add(constructor.newInstance(name, id));
       } catch (
               IllegalAccessException |
@@ -111,8 +110,14 @@ public class DBTaskManagerTest {
     List<Task> tasks = taskManager.getTaskList();
     Task task = tasks.get(0);
     taskManager.startTask(task);
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     taskManager.stopTask(task);
 
+    // back door manipulation
     boolean recordsInDbHigherZero = dbManager.getReadableDatabase()
             .rawQuery("SELECT * FROM record WHERE taskId = ?",
                     new String[]{task.getId() + ""})
@@ -120,6 +125,10 @@ public class DBTaskManagerTest {
 
     org.junit.Assert.assertTrue(recordsInDbHigherZero);
 
+    // round trip test
+    Task taskFromDb = taskManager.dbCalls.getTasks(InstrumentationRegistry.getTargetContext()).get
+            (0);
+    org.junit.Assert.assertTrue(taskFromDb.getOverallDuration() > 0.0);
   }
 
 }
