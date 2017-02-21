@@ -102,6 +102,10 @@ public class DBTaskManagerTest {
     return result;
   }
 
+  /**
+   * the record db table is empty, ergo if the record table is
+   * after stopping the task empty, the saving of the record was successful
+   */
   @Test
   public void testSaveRecordInDb() {
     List<Task> tasks = taskManager.getTaskList();
