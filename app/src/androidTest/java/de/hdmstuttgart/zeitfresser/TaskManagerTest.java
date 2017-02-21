@@ -31,7 +31,8 @@ public class TaskManagerTest {
 
   @Before
   public void before() {
-    taskManager = DbTaskManager.createInstance(InstrumentationRegistry.getTargetContext());
+    taskManager = DbTaskManager.createInstance(InstrumentationRegistry.getTargetContext(),
+            "test.db");
   }
 
   @Rule

@@ -8,17 +8,20 @@ import java.util.List;
 
 public class DbTaskManager extends TaskManager {
 
-  private DbCalls dbCalls = null;
+  public DbCalls dbCalls = null;
   private Context context = null;
 
-
-  public static DbTaskManager createInstance(Context context) {
-    return new DbTaskManager(context);
+  public void setDbCalls(DbCalls dbCalls) {
+    this.dbCalls = dbCalls;
   }
 
-  private DbTaskManager(Context context) {
+  public static DbTaskManager createInstance(Context context, String databaseName) {
+    return new DbTaskManager(context, databaseName);
+  }
+
+  private DbTaskManager(Context context, String databaseName) {
     this.context = context;
-    this.dbCalls = new DbCalls();
+    this.dbCalls = new DbCalls(databaseName);
   }
 
   @Override

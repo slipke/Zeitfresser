@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import de.hdmstuttgart.zeitfresser.db.DbManager;
 import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
 
@@ -50,7 +51,7 @@ public class EvalActivity extends CommonActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    this.taskManager = DbTaskManager.createInstance(this);
+    this.taskManager = DbTaskManager.createInstance(this, DbManager.DATABASE_NAME);
 
     setContentView(R.layout.activity_eval);
     createNavigationBars();

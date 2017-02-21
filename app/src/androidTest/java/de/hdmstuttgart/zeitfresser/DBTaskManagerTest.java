@@ -1,0 +1,121 @@
+package de.hdmstuttgart.zeitfresser;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.RenamingDelegatingContext;
+import android.util.Log;
+
+import de.hdmstuttgart.zeitfresser.db.DbManager;
+import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
+import de.hdmstuttgart.zeitfresser.model.Task;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@RunWith(AndroidJUnit4.class)
+public class DBTaskManagerTest {
+
+  private static DbManager dbManager;
+  private static DbTaskManager taskManager;
+  private static final String DATABASE_NAME = "test.db";
+
+  @Rule
+  public ActivityTestRule<MainActivity> mainActivity =
+          new ActivityTestRule<>(MainActivity.class);
+
+  @Before
+  public void before() {
+    dbManager = new DbManager(InstrumentationRegistry.getTargetContext(), DATABASE_NAME);
+    taskManager = DbTaskManager.createInstance(InstrumentationRegistry.getTargetContext(),
+            DATABASE_NAME);
+  }
+
+  @After
+  public void after() {
+    dbManager.deleteDatabase(DATABASE_NAME);
+  }
+
+  @AfterClass
+  public static void teardown() {
+    dbManager.deleteDatabase(DATABASE_NAME);
+  }
+
+  @Test
+  public void testGetTasks() {
+    List<Task> tasks = taskManager.getTaskList(); // production code tasks
+    List<Task> bdmTasks = getTaskList(); // back door manipulation tasks
+
+    for (int i = 0; i < bdmTasks.size(); i++) {
+      boolean isNameEq = tasks.get(i).getName().equals(bdmTasks.get(i).getName());
+      boolean isIdEq = tasks.get(i).getId() == bdmTasks.get(i).getId();
+      org.junit.Assert.assertTrue(isNameEq && isIdEq);
+    }
+  }
+
+  public List<Task> getTaskList() {
+    SQLiteDatabase db = dbManager.getReadableDatabase();
+    Cursor c = db.rawQuery("SELECT name, _id FROM tasks ORDER BY name ASC", null);
+    ArrayList<Task> result = new ArrayList<>();
+
+    c.moveToFirst();
+
+    Constructor<Task> constructor = null;
+    try {
+      constructor = Task.class.getDeclaredConstructor(String.class, long.class);
+      constructor.setAccessible(true);
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    }
+    constructor.setAccessible(true);
+
+    while (!c.isAfterLast()) {
+      String name = c.getString(0);
+      long id = c.getLong(1);
+
+      try {
+
+        result.add(constructor.newInstance(name, id));
+      } catch (
+              IllegalAccessException |
+                      InstantiationException |
+                      InvocationTargetException ex) {
+        ex.printStackTrace();
+      }
+      c.moveToNext();
+    }
+    c.close();
+    db.close();
+    return result;
+  }
+
+  @Test
+  public void testSaveRecordInDb() {
+    List<Task> tasks = taskManager.getTaskList();
+    Task task = tasks.get(0);
+    taskManager.startTask(task);
+    taskManager.stopTask(task);
+
+    boolean recordsInDbHigherZero = dbManager.getReadableDatabase()
+            .rawQuery("SELECT * FROM record WHERE taskId = ?",
+                    new String[]{task.getId() + ""})
+            .getCount() > 0;
+
+    org.junit.Assert.assertTrue(recordsInDbHigherZero);
+
+  }
+
+}

@@ -15,9 +15,14 @@ import java.util.ArrayList;
 public class DbCalls {
 
   private DbManager dbManager;
+  private String databaseName;
+
+  public DbCalls(String databaseName) {
+    this.databaseName = databaseName;
+  }
 
   DbManager createDbManager(Context context) {
-    return new DbManager(context);
+    return new DbManager(context, this.databaseName);
   }
 
   private String[] getProjection(String... columns) {
@@ -63,7 +68,7 @@ public class DbCalls {
   }
 
   private void populateTaskWithRecords(Context context, Task task) {
-    dbManager = createDbManager(context);
+    //dbManager = createDbManager(context);
     SQLiteDatabase db = dbManager.getReadableDatabase();
 
     Cursor cursor = db.query(
@@ -94,11 +99,11 @@ public class DbCalls {
    * Add a single {@link Record} to the database.
    *
    * @param context The current Activity context.
-   * @param record The {@link Record} to persist.
-   * @param task The {@link Task} the record is attached to.
+   * @param record  The {@link Record} to persist.
+   * @param task    The {@link Task} the record is attached to.
    */
   public void persistRecord(Context context, Record record, Task task) {
-    dbManager = createDbManager(context);
+    //dbManager = createDbManager(context);
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     ContentValues values = new ContentValues();
