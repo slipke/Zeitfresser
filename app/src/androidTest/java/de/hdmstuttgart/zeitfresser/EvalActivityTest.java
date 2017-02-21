@@ -7,6 +7,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
@@ -16,6 +17,7 @@ import android.widget.DatePicker;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 
+import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
 import de.hdmstuttgart.zeitfresser.model.TaskManager;
 
@@ -45,6 +47,7 @@ public class EvalActivityTest {
     //onView(withContentDescription("Open navigation drawer")).perform(click());
     //onView(withText(R.string.eval_activity)).perform(click());
     taskManager = evalActivity.getActivity().getTaskManager();
+    //taskManager = DbTaskManager.createInstance(InstrumentationRegistry.getTargetContext(),"test.db");
   }
 
   @Test
@@ -72,7 +75,9 @@ public class EvalActivityTest {
     }
 
     for (Entry entry : taskManagerEntries) {
-      taskManagerDurations.add(entry.getVal());
+      if(entry.getVal() > 0){
+        taskManagerDurations.add(entry.getVal());
+      }
     }
 
     // test pie shows all labels with values not null
