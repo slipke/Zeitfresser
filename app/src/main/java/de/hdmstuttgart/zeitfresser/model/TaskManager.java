@@ -82,36 +82,19 @@ public abstract class TaskManager {
    * @return A list of tasks matching the given date range.
    */
   public List<Task> getFilteredTasks(Date from, Date to) {
-    List<Task> newTaskList;
-    List<Task> taskListFrom = new LinkedList<>();
-    List<Task> taskListTo = new LinkedList<>();
-
-    List<Task> tasks = new LinkedList<>();
+    List<Task> tasks = getTaskList();
 
     if (from == null && to == null) {
-      return filterZeroDurationTasks(getTaskList());
+      return filterZeroDurationTasks(tasks);
     }
 
     if (from != null) {
-      tasks = getTasksWithRecordsLaterThan(from, getTaskList());
+      tasks = getTasksWithRecordsLaterThan(from, tasks);
     }
 
     if (to != null) {
-      // TODO Simply pass in taskListFrom as second argument
       tasks = getTasksWithRecordsEarlierThan(to, tasks);
     }
-
-    // Now compare both lists and return only objects which are in both lists
-//    if (to == null) {
-//      // No to set, return fromList
-//      newTaskList = taskListFrom;
-//    } else if (from == null) {
-//      // No from set, return toList
-//      newTaskList = taskListTo;
-//    } else {
-//      // Compare both lists
-//      newTaskList = getOnlyObjectsPresentInBothLists(taskListFrom, taskListTo);
-//    }
 
     return filterZeroDurationTasks(tasks);
   }
