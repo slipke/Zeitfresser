@@ -89,43 +89,7 @@ public class DbManager extends SQLiteOpenHelper {
             DbStatements.COLUMN_NAME_TITLE,
             values);
 
-    // insert initial records in Record Table for Testing
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    values = new ContentValues();
-    values.put(DbStatements.COLUMN_NAME_TASKID, 1);
 
-    Date startDate = new Date();
-    startDate.setTime(1487410215286L);
-    values.put(DbStatements.COLUMN_NAME_START, formatter.format(startDate));
-
-    Date endDate = new Date();
-    endDate.setTime(1487286000000L);
-    values.put(DbStatements.COLUMN_NAME_END, formatter.format(endDate));
-    ;
-
-    newRowId = db.insert(
-            DbStatements.TABLE_NAME_RECORD,
-            DbStatements.COLUMN_NAME_TASKID,
-            values);
-
-    values.put(DbStatements.COLUMN_NAME_START, 1);
-
-    values = new ContentValues();
-    values.put(DbStatements.COLUMN_NAME_TASKID, 1);
-
-    startDate = new Date();
-    startDate.setTime(1483743600000L);
-    values.put(DbStatements.COLUMN_NAME_START, formatter.format(startDate));
-
-    endDate = new Date();
-    endDate.setTime(1483743605120L);
-    values.put(DbStatements.COLUMN_NAME_END, formatter.format(endDate));
-    ;
-
-    newRowId = db.insert(
-            DbStatements.TABLE_NAME_RECORD,
-            DbStatements.COLUMN_NAME_TASKID,
-            values);
   }
 
 
