@@ -32,6 +32,29 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
     }
   }
 
+  @Test
+  public void testGetTasksWithRecordsLaterThanThrowsExceptionFirstArgNull() throws Exception {
+    try {
+      getTasksWithRecordsLaterThan.invoke(this, null, new LinkedList<>());
+      fail("An exception should have been thrown.");
+    } catch (InvocationTargetException ex) {
+      assertException(ex.getCause(), IllegalArgumentException.class,
+          "Argument 'date' must not be null!");
+    }
+  }
+
+
+  @Test
+  public void testGetTasksWithRecordsLaterThanThrowsExceptionSecondArgNull() throws Exception {
+    try {
+      getTasksWithRecordsLaterThan.invoke(this, new Date(), null);
+      fail("An exception should have been thrown.");
+    } catch (InvocationTargetException ex) {
+      assertException(ex.getCause(), IllegalArgumentException.class,
+          "Argument 'tasks' must not be null!");
+    }
+  }
+
   /**
    * TDD Design Decision: <br/>
    * When at least one of the arguments passed to the method (date, tasks) is null, we want the
@@ -56,30 +79,13 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
    * @throws Exception
    */
   @Test
-  public void testGetTasksWithRecordsLaterThanThrowsExceptionOnNullArgs() throws Exception {
-    // TODO Split up into several test cases.
-    try {
-      getTasksWithRecordsLaterThan.invoke(this, null, new LinkedList<>());
-      fail("An exception should have been thrown.");
-    } catch (InvocationTargetException ex) {
-      assertThat(ex.getCause().getClass().equals(IllegalArgumentException.class), equalTo(true));
-      assertThat(ex.getCause().getMessage(), equalTo("Argument 'date' must not be null!"));
-    }
-
-    try {
-      getTasksWithRecordsLaterThan.invoke(this, new Date(), null);
-      fail("An exception should have been thrown.");
-    } catch (InvocationTargetException ex) {
-      assertThat(ex.getCause().getClass().equals(IllegalArgumentException.class), equalTo(true));
-      assertThat(ex.getCause().getMessage(), equalTo("Argument 'tasks' must not be null!"));
-    }
-
+  public void testGetTasksWithRecordsLaterThanThrowsExceptionBothArgsNull() throws Exception {
     try {
       getTasksWithRecordsLaterThan.invoke(this, null, null);
       fail("An exception should have been thrown.");
     } catch (InvocationTargetException ex) {
-      assertThat(ex.getCause().getClass().equals(IllegalArgumentException.class), equalTo(true));
-      assertThat(ex.getCause().getMessage(), equalTo("Argument 'date' must not be null!"));
+      assertException(ex.getCause(), IllegalArgumentException.class,
+          "Argument 'date' must not be null!");
     }
   }
 
