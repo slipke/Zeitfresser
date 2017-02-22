@@ -1,6 +1,9 @@
 package de.hdmstuttgart.zeitfresser.model;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -229,5 +232,10 @@ public class TaskManagerBaseTest extends TaskManager {
     return task;
   }
 
+  void assertException(Throwable actual, Class<? extends Throwable> expectedType,
+                       String expectedMessage) {
+    assertThat(actual.getClass().equals(expectedType), is(true));
+    assertThat(actual.getMessage(), equalTo(expectedMessage));
+  }
 
 }
