@@ -83,7 +83,7 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
 
     assertThat(result, notNullValue());
     assertThat(result.getClass().equals(LinkedList.class), equalTo(true));
-    assertThat(((LinkedList) result).size(), equalTo(2));
+    assertThat(((LinkedList) result).size(), equalTo(4));
   }
 
 }

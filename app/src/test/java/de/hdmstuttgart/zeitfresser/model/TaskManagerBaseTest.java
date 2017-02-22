@@ -196,32 +196,66 @@ public class TaskManagerBaseTest extends TaskManager {
   @Override
   public List<Task> getTaskList() {
     List<Task> tasks = new LinkedList<>();
-    tasks.add(createTaskWithJustRecordsStartedBeforeNow());
-    tasks.add(createTaskWithJustRecordsStartedAfterNow());
-    tasks.add(createTaskWithRecordsStartedBeforeAndAfterNow());
+
+    tasks.add(createTaskWithJustRecordsStartedBeforeNowZeroDuration());
+    tasks.add(createTaskWithJustRecordsStartedBeforeNowNonZeroDuration());
+
+    tasks.add(createTaskWithJustRecordsStartedAfterNowZeroDuration());
+    tasks.add(createTaskWithJustRecordsStartedAfterNowNonZeroDuration());
+
+    tasks.add(createTaskWithRecordsStartedBeforeAndAfterNowZeroDuration());
+    tasks.add(createTaskWithRecordsStartedBeforeAndAfterNowNonZeroDuration());
+
     tasks.add(createTaskWithNoRecordsAtAll());
 
     return tasks;
   }
 
-  private Task createTaskWithJustRecordsStartedBeforeNow() {
+  private Task createTaskWithJustRecordsStartedBeforeNowZeroDuration() {
     Task task = mock(Task.class);
     when(task.hasRecordsBefore(eq(testDate))).thenReturn(true);
     when(task.hasRecordsAfter(eq(testDate))).thenReturn(false);
+    when(task.getOverallDuration()).thenReturn(0.0f);
     return task;
   }
 
-  private Task createTaskWithJustRecordsStartedAfterNow() {
+  private Task createTaskWithJustRecordsStartedBeforeNowNonZeroDuration() {
+    Task task = mock(Task.class);
+    when(task.hasRecordsBefore(eq(testDate))).thenReturn(true);
+    when(task.hasRecordsAfter(eq(testDate))).thenReturn(false);
+    when(task.getOverallDuration()).thenReturn(1.0f);
+    return task;
+  }
+
+  private Task createTaskWithJustRecordsStartedAfterNowZeroDuration() {
     Task task = mock(Task.class);
     when(task.hasRecordsBefore(eq(testDate))).thenReturn(false);
     when(task.hasRecordsAfter(eq(testDate))).thenReturn(true);
+    when(task.getOverallDuration()).thenReturn(0.0f);
     return task;
   }
 
-  private Task createTaskWithRecordsStartedBeforeAndAfterNow() {
+  private Task createTaskWithJustRecordsStartedAfterNowNonZeroDuration() {
+    Task task = mock(Task.class);
+    when(task.hasRecordsBefore(eq(testDate))).thenReturn(false);
+    when(task.hasRecordsAfter(eq(testDate))).thenReturn(true);
+    when(task.getOverallDuration()).thenReturn(1.0f);
+    return task;
+  }
+
+  private Task createTaskWithRecordsStartedBeforeAndAfterNowZeroDuration() {
     Task task = mock(Task.class);
     when(task.hasRecordsBefore(eq(testDate))).thenReturn(true);
     when(task.hasRecordsAfter(eq(testDate))).thenReturn(true);
+    when(task.getOverallDuration()).thenReturn(0.0f);
+    return task;
+  }
+
+  private Task createTaskWithRecordsStartedBeforeAndAfterNowNonZeroDuration() {
+    Task task = mock(Task.class);
+    when(task.hasRecordsBefore(eq(testDate))).thenReturn(true);
+    when(task.hasRecordsAfter(eq(testDate))).thenReturn(true);
+    when(task.getOverallDuration()).thenReturn(1.0f);
     return task;
   }
 
@@ -229,6 +263,7 @@ public class TaskManagerBaseTest extends TaskManager {
     Task task = mock(Task.class);
     when(task.hasRecordsBefore(eq(new Date()))).thenReturn(false);
     when(task.hasRecordsAfter(eq(new Date()))).thenReturn(false);
+    when(task.getOverallDuration()).thenReturn(0.0f);
     return task;
   }
 
