@@ -1,4 +1,4 @@
-package de.hdmstuttgart.zeitfresser.model;
+package de.hdmstuttgart.zeitfresser.model.manager;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -12,6 +12,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.mikephil.charting.data.Entry;
+import de.hdmstuttgart.zeitfresser.model.Task;
+import de.hdmstuttgart.zeitfresser.model.manager.TaskManager;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

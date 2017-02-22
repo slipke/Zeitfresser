@@ -1,4 +1,6 @@
-package de.hdmstuttgart.zeitfresser.model;
+package de.hdmstuttgart.zeitfresser.model.manager;
+
+import de.hdmstuttgart.zeitfresser.model.Task;
 
 import java.util.LinkedList;
 import java.util.List;

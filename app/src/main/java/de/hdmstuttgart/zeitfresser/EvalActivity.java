@@ -15,7 +15,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import de.hdmstuttgart.zeitfresser.db.DbManager;
-import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
+import de.hdmstuttgart.zeitfresser.model.manager.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
 
 import java.util.Calendar;

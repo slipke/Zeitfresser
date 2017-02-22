@@ -1,7 +1,9 @@
-package de.hdmstuttgart.zeitfresser.model;
+package de.hdmstuttgart.zeitfresser.model.manager;
 
 import static junit.framework.Assert.assertTrue;
 
+import de.hdmstuttgart.zeitfresser.model.Task;
+import de.hdmstuttgart.zeitfresser.model.manager.DefaultTaskManager;
 import org.junit.Before;
 import org.junit.Test;
 

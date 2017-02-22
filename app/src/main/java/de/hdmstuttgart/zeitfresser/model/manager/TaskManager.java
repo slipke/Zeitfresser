@@ -1,6 +1,7 @@
-package de.hdmstuttgart.zeitfresser.model;
+package de.hdmstuttgart.zeitfresser.model.manager;
 
 import com.github.mikephil.charting.data.Entry;
+import de.hdmstuttgart.zeitfresser.model.Task;
 
 import java.util.Date;
 import java.util.LinkedList;

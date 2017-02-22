@@ -1,6 +1,7 @@
 package de.hdmstuttgart.zeitfresser.model;
 
-import java.lang.reflect.Field;
+import de.hdmstuttgart.zeitfresser.model.manager.TaskManager;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;

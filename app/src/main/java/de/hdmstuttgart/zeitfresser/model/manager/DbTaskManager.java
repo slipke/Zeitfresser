@@ -1,7 +1,9 @@
-package de.hdmstuttgart.zeitfresser.model;
+package de.hdmstuttgart.zeitfresser.model.manager;
 
 import android.content.Context;
 import de.hdmstuttgart.zeitfresser.db.DbCalls;
+import de.hdmstuttgart.zeitfresser.model.Record;
+import de.hdmstuttgart.zeitfresser.model.Task;
 
 import java.util.List;
 

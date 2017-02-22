@@ -5,17 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.RenamingDelegatingContext;
-import android.util.Log;
 
 import de.hdmstuttgart.zeitfresser.db.DbManager;
-import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
+import de.hdmstuttgart.zeitfresser.model.manager.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

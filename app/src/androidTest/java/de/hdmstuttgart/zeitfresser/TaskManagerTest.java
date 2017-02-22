@@ -6,22 +6,12 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
-import de.hdmstuttgart.zeitfresser.model.Record;
-import de.hdmstuttgart.zeitfresser.model.Task;
-import de.hdmstuttgart.zeitfresser.model.TaskManager;
+import de.hdmstuttgart.zeitfresser.model.manager.DbTaskManager;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
-
 
 
 @RunWith(AndroidJUnit4.class)

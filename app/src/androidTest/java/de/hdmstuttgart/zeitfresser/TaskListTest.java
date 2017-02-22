@@ -8,24 +8,19 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isA;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.ListView;
 
-import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
-import de.hdmstuttgart.zeitfresser.model.TaskManager;
+import de.hdmstuttgart.zeitfresser.model.manager.TaskManager;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 

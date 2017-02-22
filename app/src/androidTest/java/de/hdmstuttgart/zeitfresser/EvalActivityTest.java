@@ -7,7 +7,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
@@ -17,9 +16,8 @@ import android.widget.DatePicker;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 
-import de.hdmstuttgart.zeitfresser.model.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
-import de.hdmstuttgart.zeitfresser.model.TaskManager;
+import de.hdmstuttgart.zeitfresser.model.manager.TaskManager;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;

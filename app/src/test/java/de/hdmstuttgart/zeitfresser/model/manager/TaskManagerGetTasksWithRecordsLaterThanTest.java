@@ -1,10 +1,12 @@
-package de.hdmstuttgart.zeitfresser.model;
+package de.hdmstuttgart.zeitfresser.model.manager;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import de.hdmstuttgart.zeitfresser.model.manager.TaskManager;
+import de.hdmstuttgart.zeitfresser.model.manager.TaskManagerBaseTest;
 import org.junit.Before;
 import org.junit.Test;
 
