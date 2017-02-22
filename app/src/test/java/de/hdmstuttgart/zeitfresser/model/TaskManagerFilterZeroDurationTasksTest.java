@@ -29,9 +29,18 @@ public class TaskManagerFilterZeroDurationTasksTest {
 
   private TaskManager taskManager;
 
+  private Method filterZeroDurationTasks;
+
   @Before
-  public void setUp() {
-    this.taskManager = new DefaultTaskManager();
+  public void setUp() throws Exception {
+    taskManager = new DefaultTaskManager();
+
+    filterZeroDurationTasks = TaskManager.class.getDeclaredMethod(
+        "filterZeroDurationTasks", List.class);
+
+    if (filterZeroDurationTasks != null) {
+      filterZeroDurationTasks.setAccessible(true);
+    }
   }
 
   /**
@@ -48,9 +57,6 @@ public class TaskManagerFilterZeroDurationTasksTest {
    */
   @Test
   public void testFilterZeroDurationTasksExists() throws Exception {
-    Method filterZeroDurationTasks = TaskManager.class.getDeclaredMethod(
-        "filterZeroDurationTasks", List.class);
-
     assertThat(filterZeroDurationTasks, notNullValue());
     assertThat(filterZeroDurationTasks.getClass().equals(Method.class), is(true));
   }
@@ -73,10 +79,6 @@ public class TaskManagerFilterZeroDurationTasksTest {
    */
   @Test
   public void testFilterZeroDurationTasksFailsOnNullArg() throws Exception {
-    Method filterZeroDurationTasks = TaskManager.class.getDeclaredMethod(
-        "filterZeroDurationTasks", List.class);
-    filterZeroDurationTasks.setAccessible(true);
-
     try {
       filterZeroDurationTasks.invoke(taskManager, new Object[]{null});
       fail("An exception should have been thrown.");
@@ -101,10 +103,6 @@ public class TaskManagerFilterZeroDurationTasksTest {
    */
   @Test
   public void testFilterZeroDurationTasksReturnsEmptyList() throws Exception {
-    Method filterZeroDurationTasks = TaskManager.class.getDeclaredMethod(
-        "filterZeroDurationTasks", List.class);
-    filterZeroDurationTasks.setAccessible(true);
-
     Object result = filterZeroDurationTasks.invoke(taskManager, new LinkedList<>());
 
     assertThat(result.getClass().equals(LinkedList.class), is(true));
@@ -142,10 +140,6 @@ public class TaskManagerFilterZeroDurationTasksTest {
     List<Task> tasks = new LinkedList<>();
     tasks.add(dummyTask1);
     tasks.add(dummyTask2);
-
-    Method filterZeroDurationTasks = TaskManager.class
-        .getDeclaredMethod("filterZeroDurationTasks", List.class);
-    filterZeroDurationTasks.setAccessible(true);
 
     Object result = filterZeroDurationTasks.invoke(taskManager, tasks);
 
