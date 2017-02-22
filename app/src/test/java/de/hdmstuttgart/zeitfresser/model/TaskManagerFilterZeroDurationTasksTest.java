@@ -24,41 +24,19 @@ import java.util.List;
  * @author patrick.kleindienst
  */
 
-public class TaskManagerFilterZeroDurationTasksTest {
+public class TaskManagerFilterZeroDurationTasksTest extends TaskManagerBaseTest {
 
-
-  private TaskManager taskManager;
 
   private Method filterZeroDurationTasks;
 
   @Before
   public void setUp() throws Exception {
-    taskManager = new DefaultTaskManager();
-
     filterZeroDurationTasks = TaskManager.class.getDeclaredMethod(
         "filterZeroDurationTasks", List.class);
 
     if (filterZeroDurationTasks != null) {
       filterZeroDurationTasks.setAccessible(true);
     }
-  }
-
-  /**
-   * TDD Design Decision: <br/>
-   * We want to have a private method <code>filterZeroDurationTasks</code> which
-   * takes a list of tasks as an argument and filters out tasks with a total duration of zero.
-   * <br/><br/>
-   * Goal: <br/>
-   * This test checks if the
-   * method exists and throws an Exception which makes the test fail if it doesn't.
-   * <br/><br/>
-   * Implementation: <br/>
-   * Make test pass by adding the required method to class <code>TaskManager.</code>
-   */
-  @Test
-  public void testFilterZeroDurationTasksExists() throws Exception {
-    assertThat(filterZeroDurationTasks, notNullValue());
-    assertThat(filterZeroDurationTasks.getClass().equals(Method.class), is(true));
   }
 
 
@@ -80,7 +58,7 @@ public class TaskManagerFilterZeroDurationTasksTest {
   @Test
   public void testFilterZeroDurationTasksFailsOnNullArg() throws Exception {
     try {
-      filterZeroDurationTasks.invoke(taskManager, new Object[]{null});
+      filterZeroDurationTasks.invoke(this, new Object[]{null});
       fail("An exception should have been thrown.");
     } catch (InvocationTargetException ex) {
       assertThat(ex.getCause().getClass().equals(IllegalArgumentException.class), is(true));
@@ -103,7 +81,7 @@ public class TaskManagerFilterZeroDurationTasksTest {
    */
   @Test
   public void testFilterZeroDurationTasksReturnsEmptyList() throws Exception {
-    Object result = filterZeroDurationTasks.invoke(taskManager, new LinkedList<>());
+    Object result = filterZeroDurationTasks.invoke(this, new LinkedList<>());
 
     assertThat(result.getClass().equals(LinkedList.class), is(true));
     assertThat(((LinkedList) result).size(), is(0));
@@ -141,7 +119,7 @@ public class TaskManagerFilterZeroDurationTasksTest {
     tasks.add(dummyTask1);
     tasks.add(dummyTask2);
 
-    Object result = filterZeroDurationTasks.invoke(taskManager, tasks);
+    Object result = filterZeroDurationTasks.invoke(this, tasks);
 
     assertThat(result, notNullValue());
     assertThat(result.getClass().equals(LinkedList.class), equalTo(true));

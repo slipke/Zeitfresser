@@ -5,7 +5,6 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class TaskManager {
 

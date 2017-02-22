@@ -1,11 +1,11 @@
 package de.hdmstuttgart.zeitfresser.model;
 
+import static junit.framework.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by simonlipke on 17.02.17.
