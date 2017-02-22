@@ -34,30 +34,36 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
 
 
   @Test
-  public void testGetTasksWithRecordsEarlierThanThrowsExceptionOnNullArgs() throws Exception {
-    // TODO Split up into several test cases.
+  public void testGetTasksWithRecordsEarlierThanThrowsExceptionFirstArgIsNull() throws Exception {
     try {
       getTasksWithRecordsEarlierThan.invoke(this, null, new LinkedList<>());
       fail("An exception should have been thrown.");
     } catch (InvocationTargetException ex) {
-      assertThat(ex.getCause().getClass().equals(IllegalArgumentException.class), equalTo(true));
-      assertThat(ex.getCause().getMessage(), equalTo("Argument 'date' must not be null!"));
+      assertException(ex.getCause(), IllegalArgumentException.class,
+          "Argument 'date' must not be null!");
     }
+  }
 
+  @Test
+  public void testGetTasksWithRecordsEarlierThanThrowsExceptionSecondArgIsNull() throws Exception {
     try {
       getTasksWithRecordsEarlierThan.invoke(this, new Date(), null);
       fail("An exception should have been thrown.");
     } catch (InvocationTargetException ex) {
-      assertThat(ex.getCause().getClass().equals(IllegalArgumentException.class), equalTo(true));
-      assertThat(ex.getCause().getMessage(), equalTo("Argument 'tasks' must not be null!"));
+      assertException(ex.getCause(), IllegalArgumentException.class,
+          "Argument 'tasks' must not be null!");
     }
+  }
 
+  @Test
+  public void testGetTasksWithRecordsEarlierThanThrowsExceptionBothArgsAreNull() throws
+      Exception {
     try {
       getTasksWithRecordsEarlierThan.invoke(this, null, null);
       fail("An exception should have been thrown.");
     } catch (InvocationTargetException ex) {
-      assertThat(ex.getCause().getClass().equals(IllegalArgumentException.class), equalTo(true));
-      assertThat(ex.getCause().getMessage(), equalTo("Argument 'date' must not be null!"));
+      assertException(ex.getCause(), IllegalArgumentException.class,
+          "Argument 'date' must not be null!");
     }
   }
 
