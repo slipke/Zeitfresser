@@ -72,7 +72,7 @@ public class TaskListTest {
       tasksFromAdapter.add(((Task) listView.getAdapter().getItem(i)).getName());
     }
 
-    org.junit.Assert.assertArrayEquals(taskManager.taskListToLabelList(taskManager.getTaskList())
+    org.junit.Assert.assertArrayEquals(taskManager.asNamesList(taskManager.getTaskList())
             .toArray(), tasksFromAdapter.toArray());
   }
 
