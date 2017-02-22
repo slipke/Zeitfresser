@@ -7,7 +7,7 @@
         <Class name="~.*\.Manifest\$.*"/>
     </Match>
     <Match>
-        <Class name="de.hdmstuttgart.zeitfresser.model.TaskManagerBaseTest"/>
+        <Class name="de.hdmstuttgart.zeitfresser.model.manager.TaskManagerBaseTest"/>
         <Method name="testIsActiveTask"/>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
     </Match>
