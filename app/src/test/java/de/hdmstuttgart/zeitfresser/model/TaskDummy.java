@@ -4,9 +4,7 @@ import java.util.List;
 
 /**
  * The TaskDummy class is used for testing. It extends the current Task by some constructors for
- * easier access and the setRecord() method
- *
- * Created by simonlipke on 17.02.17.
+ * easier access and the setRecord() method.
  */
 class TaskDummy extends Task {
   TaskDummy(String name) {

@@ -77,7 +77,7 @@ public class RecordTest {
 
   /**
    * returns the value of the private start field attribute
-   * of the Record object
+   * of the Record object.
    *
    * @return date object
    */
@@ -94,7 +94,7 @@ public class RecordTest {
 
   /**
    * returns the value of the private end field attribute
-   * of the Record object
+   * of the Record object.
    *
    * @return date object
    */
@@ -110,7 +110,7 @@ public class RecordTest {
   }
 
   /**
-   * waits for 10 milliseconds
+   * waits for 10 milliseconds.
    */
   void timeout() {
     try {

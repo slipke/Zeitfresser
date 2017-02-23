@@ -29,6 +29,11 @@ public class DbManager extends SQLiteOpenHelper {
     insertInitialValues(sqLiteDatabase);
   }
 
+  /**
+   * Resets the database.
+   *
+   * @param dbName Name of the db
+   */
   public void resetDatabase(String dbName) {
     if (this.context != null) {
       deleteDatabase(dbName);
@@ -36,6 +41,11 @@ public class DbManager extends SQLiteOpenHelper {
     }
   }
 
+  /**
+   * deletes a database.
+   *
+   * @param dbName Name of the db
+   */
   public void deleteDatabase(String dbName) {
     if (this.context != null) {
       getWritableDatabase().execSQL("DROP TABLE " + DbStatements.TABLE_NAME_RECORD);
@@ -45,7 +55,7 @@ public class DbManager extends SQLiteOpenHelper {
   }
 
   @Override
-  public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+  public void onUpgrade(SQLiteDatabase sqLiteDatabase, int version, int i1) {
 
   }
 

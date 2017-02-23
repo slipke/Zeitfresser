@@ -22,10 +22,16 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
 
   private Method getTasksWithRecordsLaterThan;
 
+  /**
+   * Setup the test.
+   *
+   * @throws Exception Exception
+   */
   @Before
   public void setUp() throws Exception {
-    getTasksWithRecordsLaterThan = TaskManager.class.getDeclaredMethod
-        ("getTasksWithRecordsLaterThan", Date.class, List.class);
+    getTasksWithRecordsLaterThan = TaskManager
+            .class
+            .getDeclaredMethod("getTasksWithRecordsLaterThan", Date.class, List.class);
 
     if (getTasksWithRecordsLaterThan != null) {
       getTasksWithRecordsLaterThan.setAccessible(true);
@@ -76,7 +82,7 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
    * fails if only the first argument is null. So covering that doesn't really add value to our
    * tests.
    *
-   * @throws Exception
+   * @throws Exception Exception
    */
   @Test
   public void testGetTasksWithRecordsLaterThanThrowsExceptionBothArgsNull() throws Exception {
@@ -102,7 +108,7 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
    * Adding a return statement like <code>return new LinkedList<>()</code> under the section of
    * null-checks makes the test pass.
    *
-   * @throws Exception
+   * @throws Exception Exception
    */
   @Test
   public void testGetTasksWithRecordsLaterThanReturnsEmptyList() throws Exception {
@@ -130,7 +136,7 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
    * invokes <code>hasRecordsAfter</code> on every task in the passed list. Every task that
    * returns true is added to the list which is returned after iteration has finished.
    *
-   * @throws Exception
+   * @throws Exception Exception
    */
 
   @Test

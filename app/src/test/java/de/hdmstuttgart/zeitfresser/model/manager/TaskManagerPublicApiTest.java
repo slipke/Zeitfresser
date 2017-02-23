@@ -158,7 +158,6 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
 
   @Test
   public void testAsEntryList() {
-    List<Task> tasks = new LinkedList<>();
     Task mockedTask1 = mock(Task.class);
     Task mockedTask2 = mock(Task.class);
 
@@ -173,6 +172,8 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
 
     when(mockedTask2.getOverallDuration()).thenReturn(task2Duration);
     when(mockedTask2.getId()).thenReturn(task2Id);
+
+    List<Task> tasks = new LinkedList<>();
 
     tasks.addAll(Arrays.asList(mockedTask1, mockedTask2));
 

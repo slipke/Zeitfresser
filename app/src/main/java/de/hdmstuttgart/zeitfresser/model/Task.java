@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class Task {
 
-  protected static int instanceCounter = 0;
+  static int instanceCounter = 0;
 
   protected long id;
   protected boolean active;
@@ -216,10 +216,11 @@ public class Task {
 
 
   /**
-   * Very simple implementation for object comparison, should fit our needs
+   * Very simple implementation for object comparison, should fit our needs.
    *
-   * @param o
-   * @return
+   * @param other The other object
+   *
+   * @return boolean
    */
   @Override
   public boolean equals(Object other) {
@@ -235,7 +236,9 @@ public class Task {
     Task taskClass = (Task) other;
 
     // Check if id, name and records.size() match
-    if (this.getId() != taskClass.getId() || !this.getName().equals(taskClass.getName()) || this.records.size() != taskClass.records.size()) {
+    if (this.getId() != taskClass.getId()
+            || !this.getName().equals(taskClass.getName())
+            || this.records.size() != taskClass.records.size()) {
       return false;
     }
 
@@ -247,5 +250,11 @@ public class Task {
     }
 
     return true;
+  }
+
+  @Override
+  public int hashCode() {
+    assert false : "hashCode not designed";
+    return 42; // any arbitrary constant will do
   }
 }

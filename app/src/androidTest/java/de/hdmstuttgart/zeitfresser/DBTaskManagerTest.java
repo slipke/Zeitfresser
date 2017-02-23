@@ -7,8 +7,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import de.hdmstuttgart.zeitfresser.db.DbManager;
-import de.hdmstuttgart.zeitfresser.model.manager.DbTaskManager;
 import de.hdmstuttgart.zeitfresser.model.Task;
+import de.hdmstuttgart.zeitfresser.model.manager.DbTaskManager;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -24,7 +24,7 @@ import java.util.List;
 
 
 @RunWith(AndroidJUnit4.class)
-public class DBTaskManagerTest {
+public class DbTaskManagerTest {
 
   private static DbManager dbManager;
   private static DbTaskManager taskManager;
@@ -34,6 +34,9 @@ public class DBTaskManagerTest {
   public ActivityTestRule<MainActivity> mainActivity =
           new ActivityTestRule<>(MainActivity.class);
 
+  /**
+   * Setup the test.
+   */
   @Before
   public void before() {
     dbManager = new DbManager(InstrumentationRegistry.getTargetContext(), DATABASE_NAME);
@@ -41,6 +44,9 @@ public class DBTaskManagerTest {
             DATABASE_NAME);
   }
 
+  /**
+   * Cleanup the test.
+   */
   @After
   public void after() {
     dbManager.deleteDatabase(DATABASE_NAME);
@@ -63,44 +69,49 @@ public class DBTaskManagerTest {
     }
   }
 
+  /**
+   * Returns the task list.
+   *
+   * @return the task list
+   */
   public List<Task> getTaskList() {
     SQLiteDatabase db = dbManager.getReadableDatabase();
-    Cursor c = db.rawQuery("SELECT name, _id FROM tasks ORDER BY name ASC", null);
+    Cursor cursor = db.rawQuery("SELECT name, _id FROM tasks ORDER BY name ASC", null);
     ArrayList<Task> result = new ArrayList<>();
 
-    c.moveToFirst();
+    cursor.moveToFirst();
 
     Constructor<Task> constructor = null;
     try {
       constructor = Task.class.getDeclaredConstructor(String.class, long.class);
       constructor.setAccessible(true);
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
+    } catch (NoSuchMethodException exception) {
+      exception.printStackTrace();
     }
     constructor.setAccessible(true);
 
-    while (!c.isAfterLast()) {
-      String name = c.getString(0);
-      long id = c.getLong(1);
+    while (!cursor.isAfterLast()) {
+      String name = cursor.getString(0);
+      long id = cursor.getLong(1);
 
       try {
         result.add(constructor.newInstance(name, id));
       } catch (
-              IllegalAccessException |
-                      InstantiationException |
-                      InvocationTargetException ex) {
+              IllegalAccessException
+                      | InstantiationException
+                      | InvocationTargetException ex) {
         ex.printStackTrace();
       }
-      c.moveToNext();
+      cursor.moveToNext();
     }
-    c.close();
+    cursor.close();
     db.close();
     return result;
   }
 
   /**
    * the record db table is empty, ergo if the record table is after stopping the task empty, the
-   * saving of the record was successful
+   * saving of the record was successful.
    */
   @Test
   public void testSaveRecordInDb() {
@@ -109,8 +120,8 @@ public class DBTaskManagerTest {
     taskManager.startTask(task);
     try {
       Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    } catch (InterruptedException exception) {
+      exception.printStackTrace();
     }
     taskManager.stopTask(task);
 
@@ -123,8 +134,10 @@ public class DBTaskManagerTest {
     org.junit.Assert.assertTrue(recordsInDbHigherZero);
 
     // round trip test
-    Task taskFromDb = taskManager.dbCalls.getTasks(InstrumentationRegistry.getTargetContext()).get
-            (0);
+    Task taskFromDb = taskManager
+            .dbCalls
+            .getTasks(InstrumentationRegistry.getTargetContext())
+            .get(0);
     org.junit.Assert.assertTrue(taskFromDb.getOverallDuration() > 0.0);
   }
 

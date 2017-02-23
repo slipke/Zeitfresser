@@ -22,10 +22,16 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
 
   private Method getTasksWithRecordsEarlierThan;
 
+  /**
+   * Setup the test.
+   *
+   * @throws Exception Exception
+   */
   @Before
   public void setUp() throws Exception {
-    getTasksWithRecordsEarlierThan = TaskManager.class.getDeclaredMethod
-        ("getTasksWithRecordsEarlierThan", Date.class, List.class);
+    getTasksWithRecordsEarlierThan = TaskManager
+            .class
+            .getDeclaredMethod("getTasksWithRecordsEarlierThan", Date.class, List.class);
 
     if (getTasksWithRecordsEarlierThan != null) {
       getTasksWithRecordsEarlierThan.setAccessible(true);

@@ -8,9 +8,7 @@ import java.util.List;
 
 /**
  * This class is a dummy class for the task manager used for testing. The method getTaskList()
- * returns a fixed list of TaskDummy which contain a fixed list of records
- *
- * Created by simonlipke on 17.02.17.
+ * returns a fixed list of TaskDummy which contain a fixed list of records.
  */
 class TaskManagerDummy extends TaskManager {
 
@@ -27,22 +25,22 @@ class TaskManagerDummy extends TaskManager {
   }
 
   /**
-   * Returns a record with given duration in hours
+   * Returns a record with given duration in hours.
    *
    * @param startDate Start date
    * @param duration Duration in hours
-   * @return
+   * @return The record
    */
-  private Record createRecordWithStartAndDuration(Date startDate, int duration) {
+  private Record createRecordWithStartAndDuration(Date startDate, long duration) {
     Date endDate = new Date();
     endDate.setTime(startDate.getTime() + (duration * 60 * 60 * 1000));
     return Record.withStartAndEnd(startDate, endDate);
   }
 
   /**
-   * Creates the first dummy task which has two records before the current date
+   * Creates the first dummy task which has two records before the current date.
    *
-   * @return
+   * @return The task
    */
   private Task createDummy1Task() {
     List<Record> recordList = new LinkedList<>();
@@ -59,8 +57,9 @@ class TaskManagerDummy extends TaskManager {
   }
 
   /**
-   * Creates the second dummy task which has two records 4 days in the future
-   * @return
+   * Creates the second dummy task which has two records 4 days in the future.
+   *
+   * @return The task
    */
   private Task createDummy2Task() {
     List<Record> recordList = new LinkedList<>();
@@ -76,9 +75,9 @@ class TaskManagerDummy extends TaskManager {
   }
 
   /**
-   * Creates the third dummy task with no records
+   * Creates the third dummy task with no records.
    *
-   * @return
+   * @return The task
    */
   private Task createDummy3Task() {
     List<Record> recordList = new LinkedList<>();
@@ -86,8 +85,9 @@ class TaskManagerDummy extends TaskManager {
   }
 
   /**
-   * Creates the fourth task with one record today
-   * @return
+   * Creates the fourth task with one record today.
+   *
+   * @return The task
    */
   private Task createDummy4Task() {
     List<Record> recordList = new LinkedList<>();
@@ -100,10 +100,11 @@ class TaskManagerDummy extends TaskManager {
   }
 
   /**
-   * Creates a task with a given name and recordList
+   * Creates a task with a given name and recordList.
+   *
    * @param name The name
    * @param recordList The recordList
-   * @return
+   * @return The task
    */
   private Task createTaskWithRecordList(String name, List<Record> recordList) {
     return new TaskDummy(name, recordList);

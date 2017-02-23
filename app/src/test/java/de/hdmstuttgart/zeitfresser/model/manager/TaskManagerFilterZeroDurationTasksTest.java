@@ -30,6 +30,11 @@ public class TaskManagerFilterZeroDurationTasksTest extends TaskManagerBaseTest 
 
   private Method filterZeroDurationTasks;
 
+  /**
+   * Setup the task.
+   *
+   * @throws Exception Exception
+   */
   @Before
   public void setUp() throws Exception {
     filterZeroDurationTasks = TaskManager.class.getDeclaredMethod(

@@ -61,14 +61,20 @@ public class Record extends Observable {
     return record;
   }
 
-  public Record() {
-
-  }
-
+  /**
+   * Getter for start date.
+   *
+   * @return The start date
+   */
   public Date getStart() {
     return new Date(start.getTime());
   }
 
+  /**
+   * Getter for end date.
+   *
+   * @return The end date
+   */
   public Date getEnd() {
     return end != null
             ? new Date(end.getTime())
@@ -76,6 +82,11 @@ public class Record extends Observable {
 
   }
 
+  /**
+   * Getter for id.
+   *
+   * @return The id
+   */
   public long getId() {
     return id;
   }
@@ -109,6 +120,7 @@ public class Record extends Observable {
     }
     start = new Date();
   }
+
   /**
    * Stop the record.
    */
@@ -131,10 +143,10 @@ public class Record extends Observable {
   }
 
   /**
-   * Simple object comparison which should fit our needs
+   * Simple object comparison which should fit our needs.
    *
-   * @param other
-   * @return
+   * @param other Object to compare
+   * @return boolean
    */
   @Override
   public boolean equals(Object other) {
@@ -159,12 +171,16 @@ public class Record extends Observable {
 
     if (this.getId() != recordClass.getId()
             || !this.getStart().equals(recordClass.getStart())
-            || !this.getEnd().equals(recordClass.getEnd())
-            ) {
+            || !this.getEnd().equals(recordClass.getEnd())) {
       return false;
     }
 
     return true;
   }
 
+  @Override
+  public int hashCode() {
+    assert false : "hashCode not designed";
+    return 42; // any arbitrary constant will do
+  }
 }

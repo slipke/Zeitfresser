@@ -24,7 +24,7 @@ public class DefaultTaskManagerTest {
 
   /**
    * Since this is our Task-Manager before the Database, the returned list is static with a fixed
-   * length of 3
+   * length of 3.
    */
   @Test
   public void testGetTaskList() {
