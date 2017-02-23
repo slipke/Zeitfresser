@@ -36,22 +36,7 @@ public class TaskListTest {
 
   @Before
   public void setUp() {
-    //onView(withContentDescription("Open navigation drawer")).perform(click());
-    //onView(withText(R.string.dataInput)).perform(click());
     taskManager = mainActivity.getActivity().getTaskManager();
-
-    /*taskManager1 = mainActivity.getActivity().getTaskManager();
-    try {
-      Field field = mainActivity.getActivity().getClass().getDeclaredField
-              ("taskManager");
-      field.setAccessible(true);
-      taskManager = ((TaskManager) field.get(taskManager1));
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (NoSuchFieldException e) {
-      e.printStackTrace();
-    }*/
-
     listView = (ListView) mainActivity.getActivity().findViewById(R.id.listView);
   }
 
@@ -88,7 +73,7 @@ public class TaskListTest {
   /* test list item click behaviour */
   @Test
   public void taskListItemStartAndStopTaskTest() {
-    onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click(),click());
+    onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click(), click());
     Task firstItem = (Task) listView.getAdapter().getItem(0);
     org.junit.Assert.assertFalse(taskManager.isTaskActive(firstItem));
   }

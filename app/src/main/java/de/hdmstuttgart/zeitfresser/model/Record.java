@@ -99,8 +99,8 @@ public class Record extends Observable {
   public void start() {
     if (start != null && end != null) {
       if (start.getTime() > end.getTime()) {
-        /* if start time is even bigger than end time then
-           start was called twice */
+        // if start time is even bigger than end time then
+        // start was called twice
         throw new IllegalStateException();
       }
     } else if (start != null && end == null) {
@@ -109,7 +109,6 @@ public class Record extends Observable {
     }
     start = new Date();
   }
-
   /**
    * Stop the record.
    */

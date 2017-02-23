@@ -42,10 +42,7 @@ public class EvalActivityTest {
 
   @Before
   public void setUp() {
-    //onView(withContentDescription("Open navigation drawer")).perform(click());
-    //onView(withText(R.string.eval_activity)).perform(click());
     taskManager = evalActivity.getActivity().getTaskManager();
-    //taskManager = DbTaskManager.createInstance(InstrumentationRegistry.getTargetContext(),"test.db");
   }
 
   @Test
@@ -73,7 +70,7 @@ public class EvalActivityTest {
     }
 
     for (Entry entry : taskManagerEntries) {
-      if(entry.getVal() > 0){
+      if (entry.getVal() > 0) {
         taskManagerDurations.add(entry.getVal());
       }
     }

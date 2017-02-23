@@ -99,8 +99,8 @@ public class DBTaskManagerTest {
   }
 
   /**
-   * the record db table is empty, ergo if the record table is
-   * after stopping the task empty, the saving of the record was successful
+   * the record db table is empty, ergo if the record table is after stopping the task empty, the
+   * saving of the record was successful
    */
   @Test
   public void testSaveRecordInDb() {
