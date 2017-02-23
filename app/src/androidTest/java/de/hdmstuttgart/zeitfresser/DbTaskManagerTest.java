@@ -24,7 +24,7 @@ import java.util.List;
 
 
 @RunWith(AndroidJUnit4.class)
-public class _DbTaskManagerTest {
+public class DbTaskManagerTest {
 
   private static DbManager dbManager;
   private static DbTaskManager taskManager;
