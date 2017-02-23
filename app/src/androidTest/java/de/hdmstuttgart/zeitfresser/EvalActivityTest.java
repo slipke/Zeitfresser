@@ -61,10 +61,10 @@ public class EvalActivityTest {
     PieChart pieChart = evalActivity.getActivity().getPieChart();
 
     List<String> chartXVals = pieChart.getData().getXVals();
-    List<String> taskManagerLabels = taskManager.taskListToLabelList(taskManager.getTaskList());
+    List<String> taskManagerLabels = taskManager.asNamesList(taskManager.getTaskList());
 
     List<Entry> chartEntries = pieChart.getData().getDataSet().getYVals();
-    List<Entry> taskManagerEntries = taskManager.taskListToEntryList(taskManager.getTaskList());
+    List<Entry> taskManagerEntries = taskManager.asEntryList(taskManager.getTaskList());
     List<Float> chartYVals = new ArrayList<>();
     List<Float> taskManagerDurations = new ArrayList<>();
 

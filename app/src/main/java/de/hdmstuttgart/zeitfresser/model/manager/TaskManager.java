@@ -135,25 +135,6 @@ public abstract class TaskManager {
     return newTaskList;
   }
 
-  private List<Task> getOnlyObjectsPresentInBothLists(List<Task> fromList, List<Task> toList) {
-    List<Task> newList = new LinkedList<>();
-
-    // Iterate over fromList and add objects which are present in toList
-    for (Task task : fromList) {
-      if (toList.contains(task)) {
-        newList.add(task);
-      }
-    }
-
-    // Iterate over toList and add objects which are present in fromList and not already in newList
-    for (Task task : toList) {
-      if (fromList.contains(task) && !newList.contains(task)) {
-        newList.add(task);
-      }
-    }
-
-    return newList;
-  }
 
   private List<Task> filterZeroDurationTasks(List<Task> tasks) {
     if (tasks == null) {
@@ -181,7 +162,11 @@ public abstract class TaskManager {
    * @param tasks The list of tasks to be converted.
    * @return A corresponding list of entries.
    */
-  public List<Entry> taskListToEntryList(List<Task> tasks) {
+  public List<Entry> asEntryList(List<Task> tasks) {
+    if (tasks == null) {
+      throw new IllegalArgumentException("Argument 'tasks' must not be null!");
+    }
+
     List<Entry> entries = new LinkedList<>();
 
     for (Task task : tasks) {
@@ -197,7 +182,11 @@ public abstract class TaskManager {
    * @param tasks The list of tasks whose labels are extracted.
    * @return A list of labels.
    */
-  public List<String> taskListToLabelList(List<Task> tasks) {
+  public List<String> asNamesList(List<Task> tasks) {
+    if (tasks == null) {
+      throw new IllegalArgumentException("Argument 'tasks' must not be null!");
+    }
+
     List<String> labels = new LinkedList<>();
 
     for (Task task : tasks) {
@@ -206,5 +195,6 @@ public abstract class TaskManager {
 
     return labels;
   }
+
 
 }

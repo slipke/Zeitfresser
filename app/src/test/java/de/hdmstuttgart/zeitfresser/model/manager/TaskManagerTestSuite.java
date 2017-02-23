@@ -8,8 +8,8 @@ import org.junit.runners.Suite;
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TaskManagerBaseTest.class, TaskManagerFilterZeroDurationTasksTest.class,
+@Suite.SuiteClasses({TaskManagerFilterZeroDurationTasksTest.class,
     TaskManagerGetTasksWithRecordsEarlierThanTest.class,
-    TaskManagerGetTasksWithRecordsLaterThanTest.class})
+    TaskManagerGetTasksWithRecordsLaterThanTest.class, TaskManagerPublicApiTest.class})
 public class TaskManagerTestSuite {
 }

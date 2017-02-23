@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import de.hdmstuttgart.zeitfresser.model.manager.TaskManager;
-import de.hdmstuttgart.zeitfresser.model.manager.TaskManagerBaseTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -137,7 +135,7 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
 
   @Test
   public void testGetTasksWithRecordsLaterThanFiltersProperly() throws Exception {
-    Object result = getTasksWithRecordsLaterThan.invoke(this, testDate, getTaskList());
+    Object result = getTasksWithRecordsLaterThan.invoke(this, testFromDate, getTaskList());
 
     assertThat(result, notNullValue());
     assertThat(result.getClass().equals(LinkedList.class), equalTo(true));

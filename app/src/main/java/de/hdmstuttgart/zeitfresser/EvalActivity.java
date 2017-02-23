@@ -68,8 +68,8 @@ public class EvalActivity extends CommonActivity {
    */
   private PieData generatePieData() {
     List<Task> taskList = getTaskList();
-    List<String> labelList = this.taskManager.taskListToLabelList(taskList);
-    List<Entry> entryList = this.taskManager.taskListToEntryList(taskList);
+    List<String> labelList = this.taskManager.asNamesList(taskList);
+    List<Entry> entryList = this.taskManager.asEntryList(taskList);
 
     PieDataSet dataSet = new PieDataSet(entryList, "Time spent");
     dataSet.setColors(ColorTemplate.COLORFUL_COLORS); // set the color
