@@ -100,7 +100,6 @@ public class EvalActivityTest {
     onView(withId(R.id.fromDateEditText)).check(ViewAssertions.matches(withText(day + "." + month
             + "."
             + year)));
-    //onView(withId(R.id.fromDateEditText)).perform(typeText("test text"));
   }
 
   @Test
