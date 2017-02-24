@@ -24,15 +24,10 @@ public class Record extends Observable {
   /**
    * Create Record (factory method).
    *
-   * @param start Startdate
-   * @param end   Enddate
    * @return The new record object
    */
-  public static Record withStartAndEnd(Date start, Date end) {
-    Record record = new Record();
-    record.start = start;
-    record.end = end;
-    return record;
+  public static Record create() {
+    return new Record();
   }
 
   /**
