@@ -393,11 +393,13 @@ public class TaskTest {
   @Test
   public void testEquals() {
     Task task1 = new Task();
-    Task task2 = new Task();
 
     assertFalse(task1.equals(null));
     assertTrue(task1.equals(task1));
     assertFalse(task1.equals(new Object()));
+
+    Task task2 = new Task();
+
     assertTrue(task1.equals(task2));
 
     task1.id = 1;
@@ -408,13 +410,14 @@ public class TaskTest {
     assertTrue(task1.equals(task2));
 
     Record testRecord = mock(Record.class);
-    Record testRecord2 = mock(Record.class);
     task1.addRecord(testRecord);
 
     assertFalse(task1.equals(task2));
 
     task2.addRecord(testRecord);
     assertTrue(task1.equals(task2));
+
+    Record testRecord2 = mock(Record.class);
 
     task2.addRecord(testRecord2);
     assertFalse(task2.equals(task1));

@@ -1,14 +1,14 @@
 package de.hdmstuttgart.zeitfresser.model;
 
-import android.database.Cursor;
-
-import de.hdmstuttgart.zeitfresser.db.DbStatements;
-
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import android.database.Cursor;
+
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 import org.junit.After;
 import org.junit.Before;
@@ -136,11 +136,13 @@ public class RecordTest {
   @Test
   public void testEquals() {
     Record record1 = new Record();
-    Record record2 = new Record();
 
     assertFalse(record1.equals(null));
     assertTrue(record1.equals(record1));
     assertFalse(record1.equals(new Object()));
+
+    Record record2 = new Record();
+
     assertTrue(record1.equals(record2));
     assertTrue(record2.equals(record1));
   }
