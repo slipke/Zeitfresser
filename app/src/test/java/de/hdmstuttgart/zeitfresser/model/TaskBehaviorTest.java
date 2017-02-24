@@ -145,7 +145,7 @@ public class TaskBehaviorTest extends TaskBaseTest {
 
     float duration = classUnderTest.getOverallDuration();
 
-    assertThat(duration, equalTo(3000f));
+    assertThat(duration, is(3000f));
   }
 
 
@@ -158,7 +158,7 @@ public class TaskBehaviorTest extends TaskBaseTest {
     clearRecords();
     float duration = classUnderTest.getOverallDuration();
 
-    assertThat(duration, equalTo(0f));
+    assertThat(duration, is(0f));
   }
 
 
