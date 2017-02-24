@@ -84,11 +84,11 @@ public class Task {
    * in active state.
    */
   public void start() {
-    if (!isActive()) {
+    if (isActive()) {
+      throw new IllegalStateException("Task has already been started!");
+    } else {
       prepareNewRecord();
       setActive();
-    } else {
-      throw new IllegalStateException("Task has already been started!");
     }
   }
 
@@ -96,10 +96,10 @@ public class Task {
    * Add a record to the current task (needed for junit testing).
    */
   public void addRecord(Record record) {
-    if (record != null) {
-      records.add(record);
-    } else {
+    if (record == null) {
       throw new IllegalArgumentException("Record argument must not be null!");
+    } else {
+      records.add(record);
     }
   }
 
@@ -143,16 +143,15 @@ public class Task {
    * @return True, if task has a record starting after the specified date. False Otherwise.
    */
   public boolean hasRecordsAfter(Date date) {
-    if (date != null) {
+    if (date == null) {
+      throw new IllegalArgumentException("Argument for param 'date' must not be null!");
+    } else {
       for (Record record : records) {
-        // start has to be > than date
         if (record.getStart().after(date)) {
           return true;
         }
       }
       return false;
-    } else {
-      throw new IllegalArgumentException("Date argument must not be null!");
     }
   }
 
@@ -164,7 +163,9 @@ public class Task {
    * @return True, if task has a record starting before the specified date. False Otherwise.
    */
   public boolean hasRecordsBefore(Date date) {
-    if (date != null) {
+    if (date == null) {
+      throw new IllegalArgumentException("Argument for param 'date' must not be null!");
+    } else {
       for (Record record : records) {
         // start has to be < than date
         if (record.getStart().before(date)) {
@@ -172,12 +173,10 @@ public class Task {
         }
       }
       return false;
-    } else {
-      throw new IllegalArgumentException("Date argument must not be null!");
     }
   }
 
-  public boolean hasAnyRecords() {
+  public boolean hasRecords() {
     return !records.isEmpty();
   }
 
@@ -214,12 +213,10 @@ public class Task {
   }
 
 
-
   /**
    * Very simple implementation for object comparison, should fit our needs.
    *
    * @param other The other object
-   *
    * @return boolean
    */
   @Override
@@ -237,8 +234,8 @@ public class Task {
 
     // Check if id, name and records.size() match
     if (this.getId() != taskClass.getId()
-            || !this.getName().equals(taskClass.getName())
-            || this.records.size() != taskClass.records.size()) {
+        || !this.getName().equals(taskClass.getName())
+        || this.records.size() != taskClass.records.size()) {
       return false;
     }
 
