@@ -25,8 +25,7 @@ public class Record extends Observable {
    * Create Record (factory method).
    *
    * @param start Startdate
-   * @param end Enddate
-   *
+   * @param end   Enddate
    * @return The new record object
    */
   public static Record withStartAndEnd(Date start, Date end) {
@@ -37,7 +36,7 @@ public class Record extends Observable {
   }
 
   /**
-   *  Builds a single {@link Record} instance from a cursor.
+   * Builds a single {@link Record} instance from a cursor.
    *
    * @param context The current Activity context.
    * @return A single record.
@@ -156,25 +155,26 @@ public class Record extends Observable {
     if (!(other instanceof Record)) {
       return false;
     }
-    Record recordClass = (Record) other;
 
-    // For the null checks
-    if (this.getEnd() == null && recordClass.getEnd() != null) {
-      return false;
-    }
-    if (this.getStart() == null && recordClass.getStart() != null) {
+    Record otherRecord = (Record) other;
+
+    if (this.getStart() != null && !this.getStart().equals(otherRecord.getStart())) {
       return false;
     }
 
-    if (this.getStart() != null && !this.getStart().equals(recordClass.getStart())) {
+    if (otherRecord.getStart() != null && !otherRecord.getStart().equals(this.getStart())) {
       return false;
     }
 
-    if (this.getEnd() != null && !this.getEnd().equals(recordClass.getEnd())) {
+    if (this.getEnd() == null && otherRecord.getEnd() != null) {
       return false;
     }
 
-    if (this.getId() != recordClass.getId()) {
+    if (this.getEnd() != null && !this.getEnd().equals(otherRecord.getEnd())) {
+      return false;
+    }
+
+    if (this.getId() != otherRecord.getId()) {
       return false;
     }
 
