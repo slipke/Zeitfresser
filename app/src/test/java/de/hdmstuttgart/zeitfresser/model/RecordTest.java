@@ -1,12 +1,22 @@
 package de.hdmstuttgart.zeitfresser.model;
 
+import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import android.database.Cursor;
+
+import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RecordTest {
@@ -118,5 +128,40 @@ public class RecordTest {
     } catch (InterruptedException ex) {
       ex.printStackTrace();
     }
+  }
+
+  /**
+   * Test the equals method.
+   */
+  @Test
+  public void testEquals() {
+    Record record1 = new Record();
+
+    assertFalse(record1.equals(null));
+    assertTrue(record1.equals(record1));
+    assertFalse(record1.equals(new Object()));
+
+    Record record2 = new Record();
+
+    assertTrue(record1.equals(record2));
+    assertTrue(record2.equals(record1));
+  }
+
+  /**
+   * If a new instance is created from the factory method with a DB-Cursor as parameter, the
+   * title should fit the one from the DB.
+   */
+  @Test
+  public void testFactoryFromCursor() throws ParseException {
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    String start = "2017-02-12T12:00:00";
+    Date startDate = formatter.parse(start);
+
+    Cursor cursorMock = mock(Cursor.class);
+    when(cursorMock.getString(cursorMock.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_START)))
+            .thenReturn(start);
+    Record record = Record.fromCursor(cursorMock);
+
+    assertEquals(startDate, record.getStart());
   }
 }
