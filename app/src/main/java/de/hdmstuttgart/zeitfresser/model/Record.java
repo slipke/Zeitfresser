@@ -67,7 +67,7 @@ public class Record extends Observable {
    * @return The start date
    */
   public Date getStart() {
-    return new Date(start.getTime());
+    return start != null ? new Date(start.getTime()) : null;
   }
 
   /**
@@ -76,10 +76,7 @@ public class Record extends Observable {
    * @return The end date
    */
   public Date getEnd() {
-    return end != null
-            ? new Date(end.getTime())
-            : null;
-
+    return end != null ? new Date(end.getTime()) : null;
   }
 
   /**
@@ -169,9 +166,15 @@ public class Record extends Observable {
       return false;
     }
 
-    if (this.getId() != recordClass.getId()
-            || !this.getStart().equals(recordClass.getStart())
-            || !this.getEnd().equals(recordClass.getEnd())) {
+    if (this.getStart() != null && !this.getStart().equals(recordClass.getStart())) {
+      return false;
+    }
+
+    if (this.getEnd() != null && !this.getEnd().equals(recordClass.getEnd())) {
+      return false;
+    }
+
+    if (this.getId() != recordClass.getId()) {
       return false;
     }
 
