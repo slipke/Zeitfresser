@@ -1,23 +1,12 @@
 package de.hdmstuttgart.zeitfresser.model;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-import android.database.Cursor;
-
-import de.hdmstuttgart.zeitfresser.db.DbStatements;
-
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -27,42 +16,21 @@ import java.util.List;
 
 
 /**
- * This is a test class for {@link Task}.
+ * This is a test class for {@link Task} which focuses on validating the expected behavior on any
+ * internal state transitions.
  *
  * @author patrick.kleindienst
  */
 
 @SuppressWarnings("unchecked")
-public class TaskTest {
+public class TaskStateTest extends TaskBaseTest {
 
-  private Task classUnderTest;
 
-  @Rule
-  public ExpectedException expectedException = ExpectedException.none();
-
-  @Before
-  public void setUp() throws Exception {
-    classUnderTest = Task.withName("DummyTask");
-  }
-
-  /**
-   * If a new instance is created from the factory method with a DB-Cursor as parameter, the
-   * title should fit the one from the DB.
+  /*
+      These are the state tests following the state diagram we describe in our documentation.
+      Depending on the current state of a task, they verify if after a certain method call, the
+      task is in the expected state.
    */
-  @Test
-  public void testFactoryFromCursor() {
-    int id = 1;
-    String title = "testTitle";
-
-    Cursor cursorMock = mock(Cursor.class);
-    when(cursorMock.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_TITLE)).thenReturn(id);
-    when(cursorMock.getString(cursorMock.getColumnIndexOrThrow(DbStatements.COLUMN_NAME_TITLE)))
-        .thenReturn(title);
-    Task task = Task.fromCursor(cursorMock);
-
-    assertEquals(title, task.getName());
-  }
-
 
   /**
    * If a new task instance has been created, it is expected to be in the following initial state:
@@ -79,7 +47,7 @@ public class TaskTest {
     assertThat("Newly created task must not be in active state!",
         classUnderTest.isActive(), is(false));
     assertThat("Newly created task must not have any records!",
-        classUnderTest.hasAnyRecords(), is(false));
+        classUnderTest.hasRecords(), is(false));
     assertThat("Newly created task must not have an active record!",
         classUnderTest.hasActiveRecord(), is(false));
     assertThat("Task name must not be null!", classUnderTest.getName(), notNullValue());
@@ -108,7 +76,7 @@ public class TaskTest {
 
     assertThat("Task must be in active state!", classUnderTest.isActive(), is(true));
     assertThat("Task's record list must not be empty!",
-        classUnderTest.hasAnyRecords(), is(true));
+        classUnderTest.hasRecords(), is(true));
     assertThat("Record list must contain exactly one element!", records.size(), is(1));
     assertThat("Task must have an active record!", classUnderTest.hasActiveRecord(), is(true));
     assertThat("Active record must be present in records list!",
@@ -146,7 +114,7 @@ public class TaskTest {
     assertThat("Double-activated task must still be active!",
         classUnderTest.isActive(), is(true));
     assertThat("Double-activated task must still have records!",
-        classUnderTest.hasAnyRecords(), is(true));
+        classUnderTest.hasRecords(), is(true));
     assertThat("Record list must still contain a single element!", records.size(), is(1));
     assertThat("Double-activated task must still have an active record!",
         classUnderTest.hasActiveRecord(), is(true));
@@ -174,7 +142,7 @@ public class TaskTest {
 
     assertThat("Stopped task must be inactive!", classUnderTest.isActive(), is(false));
     assertThat("Stopped task must have any records!",
-        classUnderTest.hasAnyRecords(), is(true));
+        classUnderTest.hasRecords(), is(true));
     assertThat("Stopped task must have a single record!", records.size(), is(1));
     assertThat("Stopped task must not have an active record!",
         classUnderTest.hasActiveRecord(), is(false));
@@ -206,7 +174,7 @@ public class TaskTest {
 
     assertThat("Inactive task must still be inactive!", classUnderTest.isActive(), is(false));
     assertThat("Inactive task must have any records!",
-        classUnderTest.hasAnyRecords(), is(true));
+        classUnderTest.hasRecords(), is(true));
     assertThat("Inactive task must have exactly one record!", records.size(), is(1));
     assertThat("Inactive task must not have an active record!",
         classUnderTest.hasActiveRecord(), is(false));
@@ -232,7 +200,7 @@ public class TaskTest {
     classUnderTest.stop();
 
     assertThat("Task must be in inactive state!", classUnderTest.isActive(), is(false));
-    assertThat("Task must not have any records!", classUnderTest.hasAnyRecords(), is(false));
+    assertThat("Task must not have any records!", classUnderTest.hasRecords(), is(false));
     assertThat("Task must not have an active record!",
         classUnderTest.hasActiveRecord(), is(false));
   }
@@ -263,7 +231,7 @@ public class TaskTest {
     assertThat("Restarted task must be back in active state!",
         classUnderTest.isActive(), is(true));
     assertThat("Restarted task must have any records!",
-        classUnderTest.hasAnyRecords(), is(true));
+        classUnderTest.hasRecords(), is(true));
     assertThat("Restarted task must exactly have two records!", records.size(), equalTo(2));
     assertThat("Restarted task must have an active record!",
         classUnderTest.hasActiveRecord(), is(true));
@@ -272,65 +240,18 @@ public class TaskTest {
   }
 
 
-  @Test
-  public void testTaskHasNoRecordAfter() throws Exception {
-    addDummyRecordWithStartDateOffset(-600000L);
-    Date currentDate = new Date();
+  /*
+      The possible arguments for the addRecord() method can be categorized into two equivalence
+      classes:
 
-    boolean result = classUnderTest.hasRecordsAfter(currentDate);
+      1) Any record object different from null
+      2) null
 
-    assertThat("Task must not have any records after 'currentDate'!",
-        result, equalTo(false));
-  }
+      The expected behavior for arguments of type 1 is that they're added to the list of records
+      hold by a task.
+      The expected behavior for arguments of type 2 is that an IllegalArgumentException is thrown.
+   */
 
-  @Test
-  public void testTaskHasRecordAfter() throws Exception {
-    addDummyRecordWithStartDateOffset(600000L);
-    Date currentDate = new Date();
-
-    boolean result = classUnderTest.hasRecordsAfter(currentDate);
-
-    assertThat("Task must have any records after 'currentDate'!",
-        result, equalTo(true));
-  }
-
-  @Test
-  public void testTaskHasRecordAfterThrowsExceptionOnNullArgument() {
-    expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("Date argument must not be null!");
-
-    classUnderTest.hasRecordsAfter(null);
-  }
-
-  @Test
-  public void testTaskHasRecordBefore() throws Exception {
-    addDummyRecordWithStartDateOffset(-1000000L);
-    Date currentDate = new Date();
-
-    boolean result = classUnderTest.hasRecordsBefore(currentDate);
-
-    assertThat("Task must have any record with start date before 'currentDate'!",
-        result, equalTo(true));
-  }
-
-  @Test
-  public void testTaskHasNoRecordBefore() throws Exception {
-    addDummyRecordWithStartDateOffset(1000000L);
-    Date currentDate = new Date();
-
-    boolean result = classUnderTest.hasRecordsBefore(currentDate);
-
-    assertThat("Task must not have any record with start date before 'currentDate'!",
-        result, equalTo(false));
-  }
-
-  @Test
-  public void testTaskHasRecordsBeforeThrowsExceptionOnNullArgument() throws Exception {
-    expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("Date argument must not be null!");
-
-    classUnderTest.hasRecordsBefore(null);
-  }
 
   /**
    * If <code>addRecord</code> gets called with a valid non-null {@link Record} argument,
@@ -340,13 +261,11 @@ public class TaskTest {
   public void testAddValidRecord() throws Exception {
     Record recordMock = mock(Record.class);
 
-    Method addRecordMethod = getMethodFromTestClass("addRecord", new Class[]{Record.class});
-    addRecordMethod.invoke(classUnderTest, recordMock);
+    classUnderTest.addRecord(recordMock);
 
     Field recordsField = getFieldFromTestClass("records");
     List<Record> records = (List<Record>) recordsField.get(classUnderTest);
-
-    assertThat(records.contains(recordMock), equalTo(true));
+    assertThat(records.contains(recordMock), is(true));
   }
 
   /**
@@ -373,57 +292,6 @@ public class TaskTest {
     assertThat(records.size(), equalTo(0));
   }
 
-  @Test
-  public void testComputeOverallDurationWithRecords() throws Exception {
-    addDummyRecordWithDuration(1000);
-    addDummyRecordWithDuration(2000);
-    float duration = classUnderTest.getOverallDuration();
-
-    assertThat(duration, equalTo(3000f));
-  }
-
-  @Test
-  public void testComputeOverallDurationWithoutAnyRecord() {
-    float duration = classUnderTest.getOverallDuration();
-
-    assertThat(duration, equalTo(0f));
-  }
-
-  /**
-   * Test the equals method.
-   */
-  @Test
-  public void testEquals() {
-    Task task1 = new Task();
-
-    assertFalse(task1.equals(null));
-    assertTrue(task1.equals(task1));
-    assertFalse(task1.equals(new Object()));
-
-    Task task2 = new Task();
-
-    assertTrue(task1.equals(task2));
-
-    task1.id = 1;
-    task2.id = 2;
-    assertFalse(task1.equals(task2));
-
-    task2.id = 1;
-    assertTrue(task1.equals(task2));
-
-    Record testRecord = mock(Record.class);
-    task1.addRecord(testRecord);
-
-    assertFalse(task1.equals(task2));
-
-    task2.addRecord(testRecord);
-    assertTrue(task1.equals(task2));
-
-    Record testRecord2 = mock(Record.class);
-
-    task2.addRecord(testRecord2);
-    assertFalse(task2.equals(task1));
-  }
 
   private void addDummyRecordWithStartDateOffset(long offsetInMillis) throws Exception {
     Date startDate = new Date(System.currentTimeMillis() + offsetInMillis);
@@ -447,23 +315,4 @@ public class TaskTest {
     recordsField.set(classUnderTest, records);
   }
 
-
-  private Field getFieldFromTestClass(String fieldName) throws NoSuchFieldException {
-    if (fieldName != null && !fieldName.isEmpty()) {
-      Field field = Task.class.getDeclaredField(fieldName);
-      field.setAccessible(true);
-      return field;
-    }
-    throw new IllegalArgumentException("Field name must not be null or empty!");
-  }
-
-  private Method getMethodFromTestClass(String methodName, Class<?>[] params) throws
-      NoSuchMethodException {
-    if (methodName != null && !methodName.isEmpty()) {
-      Method method = Task.class.getDeclaredMethod(methodName, params);
-      method.setAccessible(true);
-      return method;
-    }
-    throw new IllegalArgumentException("Method name must not be null or empty!");
-  }
 }
