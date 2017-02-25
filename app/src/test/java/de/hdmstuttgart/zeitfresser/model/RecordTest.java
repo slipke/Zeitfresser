@@ -11,14 +11,26 @@ import static org.mockito.Mockito.when;
 import android.database.Cursor;
 
 import de.hdmstuttgart.zeitfresser.db.DbStatements;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * A test class for {@link Record} which mainly focuses on validation of the class' behavior in
+ * case of allowed and forbidden internal state transitions (see state diagram for class Record).
+ *
+ * @author benedikt.hensle, patrick.kleindienst
+ */
 public class RecordTest extends RecordBaseTest {
 
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+  }
 
   /**
    * This test case verifies a records's initial state. Both start and end date must be null.
