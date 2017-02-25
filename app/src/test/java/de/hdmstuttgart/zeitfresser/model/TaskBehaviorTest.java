@@ -1,10 +1,11 @@
 package de.hdmstuttgart.zeitfresser.model;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.database.Cursor;
@@ -46,8 +47,9 @@ public class TaskBehaviorTest extends TaskBaseTest {
   }
 
   /**
-   * Verify that {@link Task#hasRecordsAfter(Date)} returns <code>false</code> for
-   *  a task which has no record starting after <code>testDate</code>.
+   * Verify that {@link Task#hasRecordsAfter(Date)} calls {@link Record#getStart()} on the record
+   * mocks and returns <code>false</code> for a task which has no record starting after
+   * <code>testDate</code>.
    */
   @Test
   public void testTaskHasNoRecordAfter() {
@@ -56,21 +58,26 @@ public class TaskBehaviorTest extends TaskBaseTest {
 
     boolean result = classUnderTest.hasRecordsAfter(testDate);
 
+    verify(testRecordA, times(1)).getStart();
+    verify(testRecordB, times(1)).getStart();
     assertThat("Task must not have any records after 'currentDate'!",
         result, is(false));
   }
 
   /**
-   * Verify that {@link Task#hasRecordsAfter(Date)} returns <code>true</code> for
-   *  a task which has at least a single record starting after <code>testDate</code>.
+   * Verify that {@link Task#hasRecordsAfter(Date)} calls {@link Record#getStart()} on the record
+   * mocks and returns <code>true</code> for a task which has at least a single record starting
+   * after <code>testDate</code>.
    */
   @Test
   public void testTaskHasRecordAfter() throws Exception {
-    when(testRecordA.getStart()).thenReturn(new Date(testDate.getTime() + 1000));
-    when(testRecordB.getStart()).thenReturn(new Date(testDate.getTime()));
+    when(testRecordA.getStart()).thenReturn(new Date(testDate.getTime()));
+    when(testRecordB.getStart()).thenReturn(new Date(testDate.getTime() + 1000));
 
     boolean result = classUnderTest.hasRecordsAfter(testDate);
 
+    verify(testRecordA, times(1)).getStart();
+    verify(testRecordB, times(1)).getStart();
     assertThat("Task must have any records after 'currentDate'!",
         result, is(true));
   }
@@ -86,28 +93,35 @@ public class TaskBehaviorTest extends TaskBaseTest {
     expectedException.expectMessage("Argument for param 'date' must not be null!");
 
     classUnderTest.hasRecordsAfter(null);
+
+    verify(testRecordA, times(0)).getStart();
+    verify(testRecordB, times(0)).getStart();
   }
 
 
   /**
-   * Verify that {@link Task#hasRecordsBefore(Date)} returns <code>true</code> for
-   *  a task which has at least a single record starting before <code>testDate</code>.
+   * Verify that {@link Task#hasRecordsBefore(Date)} calls {@link Record#getStart()} on the
+   * record mocks and returns <code>true</code> for a task which has at least a single record
+   * starting before <code>testDate</code>.
    */
   @Test
   public void testTaskHasRecordBefore() throws Exception {
-    when(testRecordA.getStart()).thenReturn(new Date(testDate.getTime() - 10000));
-    when(testRecordB.getStart()).thenReturn(new Date(testDate.getTime()));
+    when(testRecordA.getStart()).thenReturn(new Date(testDate.getTime()));
+    when(testRecordB.getStart()).thenReturn(new Date(testDate.getTime() - 10000));
 
     boolean result = classUnderTest.hasRecordsBefore(testDate);
 
+    verify(testRecordA, times(1)).getStart();
+    verify(testRecordB, times(1)).getStart();
     assertThat("Task must have any record with start date before 'currentDate'!",
         result, is(true));
   }
 
 
   /**
-   * Verify that {@link Task#hasRecordsBefore(Date)} returns <code>false</code> for
-   *  a task which does not have at least a single record starting after <code>testDate</code>.
+   * Verify that {@link Task#hasRecordsBefore(Date)} calls {@link Record#getStart()} on the
+   * record mocks and returns <code>false</code> for a task which does not have at least a single
+   * record starting after <code>testDate</code>.
    */
   @Test
   public void testTaskHasNoRecordBefore() throws Exception {
@@ -116,6 +130,8 @@ public class TaskBehaviorTest extends TaskBaseTest {
 
     boolean result = classUnderTest.hasRecordsBefore(testDate);
 
+    verify(testRecordA, times(1)).getStart();
+    verify(testRecordB, times(1)).getStart();
     assertThat("Task must not have any record with start date before 'currentDate'!",
         result, is(false));
   }
@@ -131,6 +147,9 @@ public class TaskBehaviorTest extends TaskBaseTest {
     expectedException.expectMessage("Argument for param 'date' must not be null!");
 
     classUnderTest.hasRecordsBefore(null);
+
+    verify(testRecordA, times(0)).getStart();
+    verify(testRecordB, times(0)).getStart();
   }
 
 
@@ -145,6 +164,8 @@ public class TaskBehaviorTest extends TaskBaseTest {
 
     float duration = classUnderTest.getOverallDuration();
 
+    verify(testRecordA, times(1)).getDuration();
+    verify(testRecordB, times(1)).getDuration();
     assertThat(duration, is(3000f));
   }
 
