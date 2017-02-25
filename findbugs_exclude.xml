@@ -7,8 +7,18 @@
         <Class name="~.*\.Manifest\$.*"/>
     </Match>
     <Match>
-        <Class name="de.hdmstuttgart.zeitfresser.model.manager.TaskManagerBaseTest"/>
-        <Method name="testIsActiveTask"/>
+        <Class name="de.hdmstuttgart.zeitfresser.model.manager.TaskManagerPublicApiTest"/>
+        <Method name="testIsTaskActive"/>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
+    <Match>
+        <Class name="de.hdmstuttgart.zeitfresser.model.TaskEqualsHashcodeTest"/>
+        <Method name="testEqualsReturnsFalseOnNoTaskArg"/>
+        <Bug pattern="EC_UNRELATED_TYPES"/>
+    </Match>
+    <Match>
+        <Class name="de.hdmstuttgart.zeitfresser.model.RecordEqualsHashcodeTest"/>
+        <Method name="testEqualsReturnsFalseOnWrongArgType"/>
+        <Bug pattern="EC_UNRELATED_TYPES"/>
     </Match>
 </FindBugsFilter>
