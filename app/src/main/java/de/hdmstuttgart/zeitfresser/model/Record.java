@@ -17,7 +17,6 @@ import java.util.Observable;
 public class Record extends Observable {
 
   private long id = 0;
-  private long recordId;
   private Date start = null;
   private Date end = null;
 
