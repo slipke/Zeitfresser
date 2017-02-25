@@ -3,6 +3,7 @@ package de.hdmstuttgart.zeitfresser.model;
 import android.database.Cursor;
 import android.util.Log;
 
+import de.hdmstuttgart.zeitfresser.R;
 import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 import java.text.ParseException;
@@ -14,7 +15,7 @@ import java.util.Observable;
  * This class represents a record, which in turn stands for a single phase of execution of a {@link
  * Task}. As the Task class, it's implementation style also avoids the anemic domain model style.
  */
-public class Record extends Observable {
+public class Record extends Observable implements Cloneable {
 
   private long id = 0;
   private Date start = null;
@@ -181,5 +182,22 @@ public class Record extends Observable {
     hashcode = hashcode * multiplier + ((end == null) ? 0 : end.hashCode());
 
     return hashcode;
+  }
+
+
+  @Override
+  public Record clone() {
+    Record record = null;
+
+    try {
+      record = (Record) super.clone();
+      record.id = this.id;
+      record.start = this.start;
+      record.end = this.end;
+    } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
+    }
+
+    return record;
   }
 }

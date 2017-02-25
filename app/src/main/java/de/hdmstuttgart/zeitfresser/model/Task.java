@@ -38,16 +38,19 @@ public class Task {
     return new Task(name, id);
   }
 
+  /**
+   * A static factory method for task instances.
+   *
+   * @param name The name of the new task.
+   * @return A new task instance.
+   */
   public static Task withName(String name) {
     return new Task(name, ++instanceCounter);
   }
 
-  protected Task() {
-    this("Test", 1);
-  }
-
-  protected Task(String name, long id) {
+  private Task(String name, long id) {
     Objects.requireNonNull(name);
+
     this.name = name;
     this.records = new LinkedList<>();
     this.id = id;
@@ -62,9 +65,14 @@ public class Task {
   }
 
   public Record getActiveRecord() {
-    return this.activeRecord;
+    return this.activeRecord.clone();
   }
 
+  /**
+   * Checks if task is in use.
+   *
+   * @return True if active, false otherwise.
+   */
   public boolean isActive() {
     return active;
   }
@@ -118,7 +126,12 @@ public class Task {
     }
   }
 
-  public boolean hasActiveRecord() {
+  /**
+   * Check if task has an active record.
+   *
+   * @return True if active record exists, false otherwise.
+   */
+  boolean hasActiveRecord() {
     return activeRecord != null;
   }
 
@@ -176,49 +189,47 @@ public class Task {
     }
   }
 
-  public boolean hasRecords() {
+  /**
+   * Check if task has any records.
+   *
+   * @return True if task has at least on single record, false otherwise.
+   */
+  boolean hasRecords() {
     return !records.isEmpty();
   }
 
-  public String toString() {
-    return this.id + " " + this.name;
-  }
-
-  protected void prepareNewRecord() {
-    Record record = createNewRecord();
+  private void prepareNewRecord() {
+    Record record = new Record();
     setAsActiveRecord(record);
     addRecord(record);
     startActiveRecord();
   }
 
-  protected Record createNewRecord() {
-    return new Record();
-  }
-
-  protected void setAsActiveRecord(Record record) {
+  private void setAsActiveRecord(Record record) {
     this.activeRecord = record;
   }
 
-  protected void startActiveRecord() {
+
+  private void startActiveRecord() {
     this.activeRecord.start();
   }
 
-  protected void disableCurrentActiveRecord() {
+  private void disableCurrentActiveRecord() {
     stopActiveRecord();
     setAsActiveRecord(null);
   }
 
-  protected void stopActiveRecord() {
+  private void stopActiveRecord() {
     activeRecord.stop();
   }
 
 
-  /**
-   * Very simple implementation for object comparison, should fit our needs.
-   *
-   * @param other The other object
-   * @return boolean
-   */
+  @Override
+  public String toString() {
+    return this.id + " " + this.name;
+  }
+
+
   @Override
   public boolean equals(Object other) {
     if (other == null) {
