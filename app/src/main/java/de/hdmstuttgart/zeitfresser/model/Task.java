@@ -230,20 +230,19 @@ public class Task {
     if (!(other instanceof Task)) {
       return false;
     }
-    Task taskClass = (Task) other;
 
-    // Check if id, name and records.size() match
-    if (this.getId() != taskClass.getId()
-        || !this.getName().equals(taskClass.getName())
-        || this.records.size() != taskClass.records.size()) {
+    Task otherTask = (Task) other;
+
+    if (this.getId() != otherTask.getId()) {
       return false;
     }
 
-    // Check records
-    for (Record record : this.records) {
-      if (!taskClass.records.contains(record)) {
-        return false;
-      }
+    if (!this.getName().equals(otherTask.getName())) {
+      return false;
+    }
+
+    if (!this.records.equals(otherTask.records)) {
+      return false;
     }
 
     return true;
@@ -251,7 +250,13 @@ public class Task {
 
   @Override
   public int hashCode() {
-    assert false : "hashCode not designed";
-    return 42; // any arbitrary constant will do
+    int hashcode = 17;
+    int multiplier = 5;
+
+    hashcode = hashcode * multiplier + ((int) (id >>> 32) + (int) (id & 0xFFFFFFFF));
+    hashcode = hashcode * multiplier + name.hashCode();
+    hashcode = hashcode * multiplier + records.hashCode();
+
+    return hashcode;
   }
 }
