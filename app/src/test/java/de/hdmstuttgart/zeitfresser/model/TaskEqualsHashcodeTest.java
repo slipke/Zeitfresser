@@ -19,14 +19,14 @@ import java.util.LinkedList;
  * <ul>
  * <li>Equivalence class 1: null ( -> false)</li>
  * <li>Equivalence class 2: this ( -> true)</li>
- * <li>Equivalence class 3: <code>!(other instanceof Task) ( -> false)</li>
+ * <li>Equivalence class 3: <code>!(other instanceof Task)</code> ( -> false)</li>
  * <li>Equivalence class 4: <code>this.getId() != other.getId()</code> ( -> false)</li>
  * <li>Equivalence class 5: <code>!this.getName().equals(other.Name())</code> ( -> false)</li>
- * <li>Equivalence class 6:
- * <code>!this.getRecords().equals(other.getRecords())</code> ( -> false)</li>
- * <li>Equivalence class 7: Two objects with identical attributes ( -> true)
+ * <li>Equivalence class 6:<code>!this.getRecords().equals(other.getRecords())</code>
+ * ( -> false)</li>
+ * <li>Equivalence class 7: Task objects with identical attributes as test task ( -> true)</li>
  * </ul>
- * <p>
+ * <br/>
  * By categorizing the different types of arguments that way, we can also make sure that every
  * if-branch in our equals() method is entered at least once and we therefore get a high coverage.
  * <br/>
