@@ -3,7 +3,6 @@ package de.hdmstuttgart.zeitfresser.model;
 import android.database.Cursor;
 import android.util.Log;
 
-import de.hdmstuttgart.zeitfresser.R;
 import de.hdmstuttgart.zeitfresser.db.DbStatements;
 
 import java.text.ParseException;
@@ -99,17 +98,15 @@ public class Record extends Observable implements Cloneable {
    * Start the record.
    */
   public void start() {
-    if (start != null && end != null) {
-      if (start.getTime() > end.getTime()) {
-        // if start time is even bigger than end time then
-        // start was called twice
-        throw new IllegalStateException();
+    if (start == null) {
+      start = new Date();
+    } else {
+      if (end != null) {
+        throw new IllegalStateException("Unable to re-start finished record!");
+      } else {
+        throw new IllegalStateException("Unable to start already active record!");
       }
-    } else if (start != null && end == null) {
-      // record was started twice, but not stopped
-      throw new IllegalStateException();
     }
-    start = new Date();
   }
 
   /**
@@ -117,16 +114,14 @@ public class Record extends Observable implements Cloneable {
    */
   public void stop() {
     if (start == null) {
-      throw new IllegalStateException();
-    }
-    if (end != null) {
-      if (end.getTime() >= start.getTime()) {
-        /* if end time is even bigger than start time then
-           stop was called twice */
-        throw new IllegalStateException();
+      throw new IllegalStateException("Unable to stop inactive record!");
+    } else {
+      if (end != null) {
+        throw new IllegalStateException("Unable to stop already inactive record!");
+      } else {
+        end = new Date();
       }
     }
-    end = new Date();
   }
 
   /**
@@ -194,8 +189,8 @@ public class Record extends Observable implements Cloneable {
       record.id = this.id;
       record.start = this.start;
       record.end = this.end;
-    } catch (CloneNotSupportedException e) {
-      e.printStackTrace();
+    } catch (CloneNotSupportedException ex) {
+      ex.printStackTrace();
     }
 
     return record;
