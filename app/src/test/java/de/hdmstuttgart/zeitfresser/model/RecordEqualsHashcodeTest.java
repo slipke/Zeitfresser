@@ -18,10 +18,10 @@ import java.util.Date;
  * <li>Equivalence class 3: <code>!(other instanceOf Record) (-> false)</code></li>
  * <li>Equivalence class 4: <code>!(this.getStart().equals(other.getStart())) (-> false)
  * </code></li>
- * <li>Equivalence class 5: <code>!(this.getEnd().equals(other.getEnd())) (-> false)</code></li>
- * <li>Equivalence class 6: <code>this.getId() != other.getId() (-> false)</code></li>
+ * <li>Equivalence class 5: <code>!(this.getEnd().equals(other.getEnd()))</code> (-> false)</li>
+ * <li>Equivalence class 6: <code>this.getId() != other.getId()</code> (-> false)</li>
  * <li>Equivalence class 7: A record instances with same property values and a memory
- * address different from <code>this</code> (-> true)</code></li>
+ * address different from <code>this</code> (-> true)</li>
  * </ul>
  * <br/>
  * <br/>
