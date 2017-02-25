@@ -177,7 +177,13 @@ public class Record extends Observable {
 
   @Override
   public int hashCode() {
-    assert false : "hashCode not designed";
-    return 42; // any arbitrary constant will do
+    int hashcode = 17;
+    int multiplier = 5;
+
+    hashcode = hashcode * multiplier + (int) id;
+    hashcode = hashcode * multiplier + ((start == null) ? 0 : start.hashCode());
+    hashcode = hashcode * multiplier + ((end == null) ? 0 : end.hashCode());
+
+    return hashcode;
   }
 }
