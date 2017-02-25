@@ -4,7 +4,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * Created by patrick on 25.02.17.
+ * A test suite for all test classes related to {@link Task}.
+ *
+ * @author patrick.kleindienst
  */
 
 @RunWith(Suite.class)

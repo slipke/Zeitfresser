@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
  *
  * @author patrick.kleindienst
  */
-
 public class TaskBaseTest {
 
   @Rule

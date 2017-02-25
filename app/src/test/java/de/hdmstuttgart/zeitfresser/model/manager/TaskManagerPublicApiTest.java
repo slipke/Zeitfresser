@@ -21,9 +21,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by patrick on 22.02.17.
+ * A test class for verifying the behavior of the public methods of {@link Task}.
+ *
+ * @author patrick.kleindienst
  */
-
 public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
 
 
