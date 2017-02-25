@@ -199,7 +199,7 @@ public class Task {
   }
 
   private void prepareNewRecord() {
-    Record record = new Record();
+    Record record = Record.create();
     setAsActiveRecord(record);
     addRecord(record);
     startActiveRecord();

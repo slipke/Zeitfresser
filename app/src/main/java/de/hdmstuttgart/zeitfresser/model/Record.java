@@ -29,6 +29,10 @@ public class Record extends Observable implements Cloneable {
     return new Record();
   }
 
+  private Record() {
+
+  }
+
   /**
    * Builds a single {@link Record} instance from a cursor.
    *
@@ -152,11 +156,11 @@ public class Record extends Observable implements Cloneable {
       return false;
     }
 
-    if (this.getEnd() == null && otherRecord.getEnd() != null) {
+    if (this.getEnd() != null && !this.getEnd().equals(otherRecord.getEnd())) {
       return false;
     }
 
-    if (this.getEnd() != null && !this.getEnd().equals(otherRecord.getEnd())) {
+    if (otherRecord.getEnd() != null && !otherRecord.getEnd().equals(this.getEnd())) {
       return false;
     }
 
