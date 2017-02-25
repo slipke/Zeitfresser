@@ -292,27 +292,4 @@ public class TaskStateTest extends TaskBaseTest {
     assertThat(records.size(), equalTo(0));
   }
 
-
-  private void addDummyRecordWithStartDateOffset(long offsetInMillis) throws Exception {
-    Date startDate = new Date(System.currentTimeMillis() + offsetInMillis);
-    Date endDate = new Date(startDate.getTime() + 1000);
-    Record record = Record.create();
-
-    Field recordsField = getFieldFromTestClass("records");
-    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
-    records.add(record);
-    recordsField.set(classUnderTest, records);
-  }
-
-  private void addDummyRecordWithDuration(int offset) throws Exception {
-    Date startDate = new Date();
-    Date endDate = new Date(startDate.getTime() + offset);
-    Record testRecord = Record.create();
-
-    Field recordsField = getFieldFromTestClass("records");
-    List<Record> records = (List<Record>) recordsField.get(classUnderTest);
-    records.add(testRecord);
-    recordsField.set(classUnderTest, records);
-  }
-
 }
