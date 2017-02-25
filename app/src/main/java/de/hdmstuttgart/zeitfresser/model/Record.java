@@ -128,10 +128,6 @@ public class Record extends Observable {
     end = new Date();
   }
 
-  private boolean hasStartAndEndTime() {
-    return (start != null && end != null);
-  }
-
   /**
    * Simple object comparison which should fit our needs.
    *
