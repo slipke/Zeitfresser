@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import java.lang.reflect.Field;
+
 /**
  * A base class for test classes concerning {@link Record}.
  *
@@ -18,8 +20,16 @@ public class RecordBaseTest {
   protected Record record;
 
   @Before
-  public void setUp() {
-    record = new Record();
+  public void setUp() throws Exception {
+    record = Record.create();
+  }
+
+  protected void setRecordFieldValue(Record record, String fieldName, Object value) throws
+      NoSuchFieldException,
+      IllegalAccessException {
+    Field declaredField = Record.class.getDeclaredField(fieldName);
+    declaredField.setAccessible(true);
+    declaredField.set(record, value);
   }
 
 }
