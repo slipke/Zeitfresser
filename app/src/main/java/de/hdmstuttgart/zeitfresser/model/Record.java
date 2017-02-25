@@ -180,7 +180,7 @@ public class Record extends Observable {
     int hashcode = 17;
     int multiplier = 5;
 
-    hashcode = hashcode * multiplier + (int) id;
+    hashcode = hashcode * multiplier + ((int) (id >>> 32) + (int) (id & 0xFFFFFFFF));
     hashcode = hashcode * multiplier + ((start == null) ? 0 : start.hashCode());
     hashcode = hashcode * multiplier + ((end == null) ? 0 : end.hashCode());
 
