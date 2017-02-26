@@ -32,6 +32,13 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
   public ExpectedException expectedException = ExpectedException.none();
 
 
+  /*
+      Equivalence classes for startTask(task):
+
+      1) A task object different from null ( -> invokes start() on task)
+      2) null (-> IllegalArgumentException)
+   */
+
   /**
    * The startTask() method should invoke the start() method of our mocked Task once.
    */
@@ -52,6 +59,13 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
   }
 
 
+  /*
+      Equivalence classes for stopTask(task):
+
+      1) A task object different from null (-> invokes stop() on task)
+      2) null (-> IllegalArgumentException)
+   */
+
   /**
    * The stopTask() method should invoke the stop() method of our mocked Task once.
    */
@@ -71,6 +85,15 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
   public void testStopTaskFailsOnNullArg() {
     this.stopTask(null);
   }
+
+
+  /*
+      Equivalence classes for isTaskActive(task):
+
+      1) A task object different from null (-> invokes isActive() on task)
+      2) null (-> IllegalArgumentException)
+   */
+
 
   /**
    * The isTaskActive() method should invoke the isActive() of our mocked Task once.
@@ -93,6 +116,13 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
   }
 
 
+  /*
+      Equivalence classes for getOverallDurationForTask(task):
+
+      1) A task object different from null (-> returns accumulative durations of all records)
+      2) null (-> IllegalArgumentException)
+   */
+
   /**
    * The getOverallDurationForTask() method should invoke the getOverallDuration() method of our.
    * mocked Task once
@@ -107,13 +137,21 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
 
 
   /**
-   * This test should fail, since the parameter to getOverallDurationForTask() is null.
+   * This test should fail, since the parameter to <code>getOverallDurationForTask()</code> is null.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testGetOverallDurationForTaskFailsOnNullArg() {
     this.getOverallDurationForTask(null);
   }
 
+
+  /*
+      Equivalence classes for asNamesList(taskList):
+
+      1) A list containing n task instances, where n > 0 (-> returns a list of n task names)
+      2) A list containing zero task instances (-> returns an empty list)
+      3) null (-> IllegalArgumentException)
+   */
 
   /**
    * The asNamesList() method should convert a list of tasks to a list containing their
@@ -141,14 +179,10 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
     assertThat(result.contains(task2Name), is(true));
   }
 
-  @Test
-  public void testAsNamesListThrowsExceptionOnNullArg() {
-    expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("Argument 'tasks' must not be null!");
-
-    this.asNamesList(null);
-  }
-
+  /**
+   * If an empty list is passed as an argument to <code>asNamesList()</code>, we expect it to
+   * return an empty list.
+   */
   @Test
   public void testAsNamesReturnsEmptyListOnEmptyArgList() {
     List<String> result = this.asNamesList(new LinkedList<Task>());
@@ -157,6 +191,31 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
     assertThat(result.isEmpty(), is(true));
   }
 
+  /**
+   * When <code>asNamesList()</code> gets invoked with null as argument, we expect it to fail
+   * with an {@link IllegalArgumentException}.
+   */
+  @Test
+  public void testAsNamesListThrowsExceptionOnNullArg() {
+    expectedException.expect(IllegalArgumentException.class);
+    expectedException.expectMessage("Argument 'tasks' must not be null!");
+
+    this.asNamesList(null);
+  }
+
+
+  /*
+      Equivalence classes for asEntryList(taskList):
+
+      1) A list containing n task instances, where n > 0 (-> returns list of n Entry instances)
+      2) A list containing zero task instances (-> returns an empty list)
+      3) null (-> IllegalArgumentException)
+   */
+
+
+  /**
+   * We expect <code>asEntryList()</code> to return a list of entries for a valid list argument.
+   */
   @Test
   public void testAsEntryList() {
     Task mockedTask1 = mock(Task.class);
@@ -189,15 +248,10 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
   }
 
 
-  @Test
-  public void testAsEntryListThrowsExceptionOnNullArg() {
-    expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("Argument 'tasks' must not be null!");
-
-    this.asEntryList(null);
-  }
-
-
+  /**
+   * We expect <code>asEntryList()</code> to return an empty list if the argument list is also
+   * empty.
+   */
   @Test
   public void testAsEntryListReturnsEmptyListOnEmptyArgList() {
     List<Entry> result = this.asEntryList(new LinkedList<Task>());
@@ -207,28 +261,75 @@ public class TaskManagerPublicApiTest extends TaskManagerBaseTest {
   }
 
 
+  /**
+   * If <code>null</code> gets passed as an argument, an <code>IllegalArgumentException</code>
+   * shall be thrown.
+   */
+  @Test
+  public void testAsEntryListThrowsExceptionOnNullArg() {
+    expectedException.expect(IllegalArgumentException.class);
+    expectedException.expectMessage("Argument 'tasks' must not be null!");
+
+    this.asEntryList(null);
+  }
+
+  /*
+      For public method getFilteredTasks(fromDate, untilDate), the following equivalence classes
+      exist:
+
+      > Parameter "from":
+        1) null (-> Argument ignored for filtering)
+        2) valid Date object (-> lower bound for filtering)
+
+      > Parameter "until":
+        1) null (-> Argument ignored for filtering)
+        2) valid Date object (-> upper bound for filtering)
+
+      Testing any combination of these possible argument values leads to four test cases.
+   */
+
+  /**
+   * Combination #1: Both arguments are <code>null</code>.
+   */
   @Test
   public void testGetFilteredTasksForBothArgsNull() {
     List<Task> tasks = this.getFilteredTasks(null, null);
 
     assertThat(tasks, notNullValue());
-    assertThat(tasks.size(), equalTo(3));
+    assertThat(tasks.size(), is(3));
   }
 
+  /**
+   * Combination #2: "From" is <code>null</code>, "Until" is valid.
+   */
   @Test
   public void testGetFilteredTasksForFromIsNull() {
     List<Task> tasks = this.getFilteredTasks(null, testUntilDate);
 
     assertThat(tasks, notNullValue());
-    assertThat(tasks.size(), equalTo(2));
+    assertThat(tasks.size(), is(2));
   }
 
+  /**
+   * Combination #3: "Until" is <code>null</code>, "From" is valid.
+   */
   @Test
   public void testGetFilteredTasksForUntilIsNull() {
     List<Task> tasks = this.getFilteredTasks(testFromDate, null);
 
     assertThat(tasks, notNullValue());
-    assertThat(tasks.size(), equalTo(2));
+    assertThat(tasks.size(), is(2));
+  }
+
+  /**
+   * Combination #4: Both arguments are valid.
+   */
+  @Test
+  public void testGetFilteredTasksForBothArgsValid() {
+    List<Task> tasks = this.getFilteredTasks(testFromDate, testUntilDate);
+
+    assertThat(tasks, notNullValue());
+    assertThat(tasks.size(), is(1));
   }
 
   private void assertEntry(Entry entry, float duration, long taskId) {

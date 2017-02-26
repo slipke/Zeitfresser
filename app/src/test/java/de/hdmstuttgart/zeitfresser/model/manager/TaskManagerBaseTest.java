@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A base class for all test classes related to {@link TaskManager}.
+ */
 public class TaskManagerBaseTest extends TaskManager {
 
   private static final int MILLIS_PER_DAY = 1000 * 3600 * 24;
@@ -21,6 +24,11 @@ public class TaskManagerBaseTest extends TaskManager {
   Date testUntilDate = new Date(testFromDate.getTime() + MILLIS_PER_DAY);
 
 
+  /**
+   * Bootstrap a list of {@link Task} instances which can be used for testing by subclasses.
+   *
+   * @return a list of mocked tasks.
+   */
   @Override
   public List<Task> getTaskList() {
     List<Task> tasks = new LinkedList<>();

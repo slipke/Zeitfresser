@@ -31,9 +31,9 @@ public class TaskManagerFilterZeroDurationTasksTest extends TaskManagerBaseTest 
   private Method filterZeroDurationTasks;
 
   /**
-   * Setup the task.
+   * Doing setup.
    *
-   * @throws Exception Exception
+   * @throws Exception if reflection call fails.
    */
   @Before
   public void setUp() throws Exception {
@@ -47,19 +47,22 @@ public class TaskManagerFilterZeroDurationTasksTest extends TaskManagerBaseTest 
 
 
   /**
-   * TDD Design Decision: <br/>
+   * <h3>Requirement:</h3>
    * If <code>null</code> is passed to <code>filterZeroDurationTasks</code>, an
    * {@link IllegalArgumentException} shall be thrown.
-   * <br/><br/>
-   * Goal: <br/>
+   * <br/>
+   * <h3>Goal:</h3>
    * This test invokes the method with a null argument and checks if the expected exception
    * is actually thrown. It fails if no exception has been thrown or the exception is not an
    * <code>IllegalArgumentException.</code>
-   * <br/><br/>
-   * Implementation: <br/>
+   * <br/>
+   * <h3>Implementation:</h3>
    * We add a check to the method body which compares the passed list to <code>null</code>. If
    * the condition evaluates to true (argument is <code>null</code>), an
    * <code>IllegalArgumentException</code> is thrown.
+   * <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
    */
   @Test
   public void testFilterZeroDurationTasksFailsOnNullArg() throws Exception {
@@ -73,17 +76,20 @@ public class TaskManagerFilterZeroDurationTasksTest extends TaskManagerBaseTest 
 
 
   /**
-   * TDD Design Decision: <br/>
+   * <h3>Requirement:</h3>
    * If an empty task list is passed to <code>filterZeroDurationTasks</code>, we expect the
    * method to do nothing but return an empty list itself.
-   * <br/><br/>
-   * Goal: <br/>
+   * <br/>
+   * <h3>Goal:</h3>
    * This test invokes the method with an empty task list as an argument and verifies that an
    * empty list is returned.
-   * <br/><br/>
-   * Implementation: <br/>
+   * <br/>
+   * <h3>Implementation:</h3>
    * Inside the else-branch, which is empty at this stage of development, add a simple return
    * statement that returns an empty list, like <code>return new LinkedList<>()</code>.
+   * <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
    */
   @Test
   public void testFilterZeroDurationTasksReturnsEmptyList() throws Exception {
@@ -95,23 +101,26 @@ public class TaskManagerFilterZeroDurationTasksTest extends TaskManagerBaseTest 
 
 
   /**
-   * TDD Design Decision: <br/>
+   * <h3>Requirement:</h3>
    * If a task list with size > 0 is passed as an argument to <code>filterZeroDurationTasks</code>,
    * every task in the list which has an overall duration equal to null is filtered by this method.
    * We therefore expect it to return a list of tasks which contains all the tasks from the input
    * list whose overall duration is > 0.
-   * <br/><br/>
-   * Goal: <br/>
+   * <br/>
+   * <h3>Goal:</h3>
    * This test creates a list containing to mocked task objects, of which one of them returns 0
    * if <code>getOverallDuration()</code> is called, whilst the other one returns a value greater
    * than 0. As specified, we expect the method to return a list which only contains the second
    * task mock object.
-   * <br/><br/>
-   * Implementation: <br/>
+   * <br/>
+   * <h3>Implementation:</h3>
    * To make the test pass, we replace the <code>return new LinkedList<>()</code> statement by a
    * loop which iterates over all tasks in the argument list and only adds the current task to
    * the output list if its returns an overall duration > 0. After the iteration over the input
    * list is done, the output list is returned.
+   * <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
    */
   @Test
   public void testFilterZeroDurationTasksFiltersAsExpected() throws Exception {

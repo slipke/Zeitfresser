@@ -15,17 +15,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by patrick on 22.02.17.
+ * A test class for {@link TaskManager#getTasksWithRecordsEarlierThan(Date, List)}.
+ *
+ * @author patrick.kleindienst
  */
 
 public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBaseTest {
 
   private Method getTasksWithRecordsEarlierThan;
 
+
   /**
-   * Setup the test.
+   * Performing necessary setup.
    *
-   * @throws Exception Exception
+   * @throws Exception if reflection call fails.
    */
   @Before
   public void setUp() throws Exception {
@@ -38,7 +41,22 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
     }
   }
 
-
+  /**
+   * <h3>Requirement:</h3>
+   * When the first argument (date) is null, we want the invocation to fail with an
+   * {@link IllegalArgumentException}.
+   * <br/>
+   * <h3>Goal:</h3>
+   * Write a test which fails with the expected exception when <code>null</code> is passed as
+   * first argument.
+   * <br/>
+   * <h3>Implementation:</h3>
+   * Use an if-statement which checks if date == null. If this condition evaluates to
+   * <code>true</code>, throw an <code>IllegalArgumentException</code>.
+   * <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
+   */
   @Test
   public void testGetTasksWithRecordsEarlierThanThrowsExceptionFirstArgIsNull() throws Exception {
     try {
@@ -50,6 +68,21 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
     }
   }
 
+  /**
+   * <h3>Requirement:</h3>
+   * If the second argument (list of tasks to filter) is <code>null</code>, the invocation must
+   * fail with an {@link IllegalArgumentException}.
+   * <br/>
+   * <h3>Goal:</h3>
+   * Write a test case which fails if the method is called with a second argument equal to null.
+   * <br/>
+   * <h3>Implementation:</h3>
+   * Use another if-statement which checks if the second argument is null. If <code>true</code>,
+   * throw an <code>IllegalArgumentException</code>.
+   * <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
+   */
   @Test
   public void testGetTasksWithRecordsEarlierThanThrowsExceptionSecondArgIsNull() throws Exception {
     try {
@@ -61,6 +94,21 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
     }
   }
 
+  /**
+   * <h3>Requirement:</h3>
+   *  If both arguments are <code>null</code>, an {@link IllegalArgumentException} is thrown. We
+   *  added this test case only for completeness, since this requirement is already covered by
+   *  the previous test cases and therefore not really necessary.
+   *  <br/>
+   *  <h3>Goal:</h3>
+   *  Write a test which fails if both arguments are null.
+   *  <br/>
+   *  <h3>Implementation:</h3>
+   *  Not needed, since existing implementation already covers that.
+   *  <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
+   */
   @Test
   public void testGetTasksWithRecordsEarlierThanThrowsExceptionBothArgsAreNull() throws
       Exception {
@@ -74,6 +122,20 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
   }
 
 
+  /**
+   * <h3>Requirement:</h3>
+   * If an empty task list is provided as second argument, the method must return an empty list
+   * itself since there's nothing to filter.
+   * <br/>
+   * <h3>Goal:</h3>
+   * Create a test case which checks if an emtpy list is returned in that case.
+   * <br/>
+   * <h3>Implementation:</h3>
+   * Add a return statement after the null-checks which statically returns an empty list.
+   * <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
+   */
   @Test
   public void testGetTasksWithRecordsEarlierThanReturnsEmptyList() throws Exception {
     Object result = getTasksWithRecordsEarlierThan.invoke(this, new Date(), new LinkedList<>());
@@ -83,6 +145,22 @@ public class TaskManagerGetTasksWithRecordsEarlierThanTest extends TaskManagerBa
     assertThat(((LinkedList) result).isEmpty(), equalTo(true));
   }
 
+  /**
+   * <h3>Requirement:</h3>
+   * If a valid date as well as a non-empty list are given as argument, we expect the method to
+   * filter out all tasks which don't have any records starting before the given date.
+   * <br/>
+   * <h3>Goal:</h3>
+   * Implement a test case which checks if only the expected tasks are returned.
+   * <br/>
+   * <h3>Implementation:</h3>
+   * Statically return an empty list is not appropriate any more. Iterate over all tasks in the
+   * list provided as argument and only collect these tasks which have at least a single record
+   * that starts earlier than the given date.
+   * <br/><br/>
+   *
+   * @throws Exception if reflection call fails.
+   */
   @Test
   public void testGetTasksWithRecordsEarlierThanFiltersProperly() throws Exception {
     Object result = getTasksWithRecordsEarlierThan.invoke(this, testUntilDate, getTaskList());

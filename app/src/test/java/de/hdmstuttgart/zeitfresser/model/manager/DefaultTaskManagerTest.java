@@ -10,7 +10,9 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * Created by simonlipke on 17.02.17.
+ * A test class for {@link DefaultTaskManager}.
+ *
+ * @author simon.lipke
  */
 
 public class DefaultTaskManagerTest {
