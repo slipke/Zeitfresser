@@ -65,11 +65,7 @@ public class Task {
   }
 
   public Record getActiveRecord() {
-    if (this.activeRecord != null) {
-      return this.activeRecord.clone();
-    } else {
-      return null;
-    }
+    return activeRecord;
   }
 
   /**
@@ -117,6 +113,15 @@ public class Task {
 
 
   /**
+   * Check if task has an active record.
+   *
+   * @return True if active record exists, false otherwise.
+   */
+  boolean hasActiveRecord() {
+    return activeRecord != null;
+  }
+
+  /**
    * Stop the current task if it is active and has an active record which captures time. If this
    * method is called on an inactive task or on a task which has no active record, an
    * {@link IllegalStateException} is thrown.
@@ -128,15 +133,6 @@ public class Task {
     } else {
       throw new IllegalStateException("Can't stop inactive task.");
     }
-  }
-
-  /**
-   * Check if task has an active record.
-   *
-   * @return True if active record exists, false otherwise.
-   */
-  boolean hasActiveRecord() {
-    return activeRecord != null;
   }
 
   /**

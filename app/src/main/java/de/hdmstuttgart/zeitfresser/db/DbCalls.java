@@ -108,8 +108,18 @@ public class DbCalls {
 
     ContentValues values = new ContentValues();
     values.put(DbStatements.COLUMN_NAME_TASKID, task.getId());
-    values.put(DbStatements.COLUMN_NAME_START, formatter.format(record.getStart()));
-    values.put(DbStatements.COLUMN_NAME_END, formatter.format(record.getEnd()));
+
+    if (record.getStart() != null) {
+      values.put(DbStatements.COLUMN_NAME_START, formatter.format(record.getStart()));
+    } else {
+      values.put(DbStatements.COLUMN_NAME_START, "");
+    }
+
+    if (record.getEnd() != null) {
+      values.put(DbStatements.COLUMN_NAME_END, formatter.format(record.getEnd()));
+    } else {
+      values.put(DbStatements.COLUMN_NAME_END, "");
+    }
 
     SQLiteDatabase db = dbManager.getWritableDatabase();
     db.insert(DbStatements.TABLE_NAME_RECORD, null, values);
