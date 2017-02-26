@@ -78,13 +78,13 @@ public abstract class TaskManager {
    * end date at all.
    *
    * @param from Defines the start of the period of interest (if not null).
-   * @param to   Defines the end of the period of interest (if not null).
+   * @param until   Defines the end of the period of interest (if not null).
    * @return A list of tasks matching the given date range.
    */
-  public List<Task> getFilteredTasks(Date from, Date to) {
+  public List<Task> getFilteredTasks(Date from, Date until) {
     List<Task> tasks = getTaskList();
 
-    if (from == null && to == null) {
+    if (from == null && until == null) {
       return filterZeroDurationTasks(tasks);
     }
 
@@ -92,8 +92,8 @@ public abstract class TaskManager {
       tasks = getTasksWithRecordsLaterThan(from, tasks);
     }
 
-    if (to != null) {
-      tasks = getTasksWithRecordsEarlierThan(to, tasks);
+    if (until != null) {
+      tasks = getTasksWithRecordsEarlierThan(until, tasks);
     }
 
     return filterZeroDurationTasks(tasks);
