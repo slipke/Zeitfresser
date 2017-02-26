@@ -65,7 +65,11 @@ public class Task {
   }
 
   public Record getActiveRecord() {
-    return this.activeRecord.clone();
+    if (this.activeRecord != null) {
+      return this.activeRecord.clone();
+    } else {
+      return null;
+    }
   }
 
   /**
