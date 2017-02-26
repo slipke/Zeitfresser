@@ -81,7 +81,7 @@ public class TaskManagerGetTasksWithRecordsLaterThanTest extends TaskManagerBase
    * exception in case that condition is true.
    * <br/><br/>
    *
-   * @throws Exception
+   * @throws Exception if reflection call fails.
    */
   @Test
   public void testGetTasksWithRecordsLaterThanThrowsExceptionSecondArgNull() throws Exception {
