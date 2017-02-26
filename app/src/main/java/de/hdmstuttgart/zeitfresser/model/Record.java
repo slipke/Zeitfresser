@@ -128,12 +128,7 @@ public class Record extends Observable implements Cloneable {
     }
   }
 
-  /**
-   * Simple object comparison which should fit our needs.
-   *
-   * @param other Object to compare
-   * @return boolean
-   */
+
   @Override
   public boolean equals(Object other) {
     if (other == null) {
